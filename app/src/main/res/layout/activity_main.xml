@@ -2,62 +2,36 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_black"
     tools:context=".MainActivity">
 
-    <ImageButton
-        android:id="@+id/scan_button"
-        style="?android:attr/borderlessButtonStyle"
-        android:layout_width="250dp"
-        android:layout_height="250dp"
-
-        android:layout_marginBottom="50dp"
-        android:background="@drawable/big_rounded_button"
-
-        android:contentDescription="@string/scan_code_content_desc"
-        android:cropToPadding="true"
-        android:scaleType="center"
-        android:src="@drawable/ic_scan"
-
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="0dp"
+        android:layout_marginEnd="0dp"
+        app:labelVisibilityMode="unlabeled"
+        app:itemIconTint="@color/bottom_nav_color"
+        app:itemBackground="@android:color/transparent"
+        android:background="?android:attr/windowBackground"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:menu="@menu/bottom_nav_menu" />
 
-    <TextView
-        android:id="@+id/start_scanning_text"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="50dp"
-        android:layout_marginEnd="32dp"
-
-        android:text="@string/start_scanning_text"
-        android:textColor="@color/white"
-        android:textSize="50sp"
-
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/start_scanning_subtext"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="32dp"
-
-        android:text="@string/start_scanning_subtext"
-        android:textColor="@color/white"
-        android:textSize="18sp"
-
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/start_scanning_text" />
-
+    <fragment
+        android:id="@+id/main_fragment"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:defaultNavHost="true"
+        app:layout_constraintBottom_toTopOf="@id/nav_view"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navGraph="@navigation/mobile_navigation" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
