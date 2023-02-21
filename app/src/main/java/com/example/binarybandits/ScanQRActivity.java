@@ -29,7 +29,6 @@ public class ScanQRActivity  extends AppCompatActivity  {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-
                         String contents = result.getText();
                         String hash = qrController.getHash(contents);
                         String name = qrController.generateUniqueName(hash);
