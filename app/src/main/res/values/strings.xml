@@ -11,5 +11,17 @@
 
     <string name="username_placeholder_text">Username</string>
     <string name="score_text">0</string>
+    <string name="welcomeText">Welcome to QRHunter!</string>
+    <string name="intro_text">Find.Collect.Compete</string>
+    <string name="into_text2">Start your journey today!</string>
+    <string name="username_edit">profile icon</string>
+    <string name="login_image">login box</string>
+    <string name="create_image">create box</string>
+    <string name="login">Login</string>
+    <string name="create_an_account">Create</string>
+    <string name="icon_of_profile">icon of profile</string>
+    <string name="username">Username</string>
+    <string name="or">Or</string>
+    <string name="Create_an_account">Create an Account</string>
 
 </resources>

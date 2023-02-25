@@ -128,7 +128,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="120dp"
         android:layout_marginTop="584dp"
-        android:text="@string/create_an_account"
+        android:text="@string/Create_an_account"
         android:textColor="#FFFFFF"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
