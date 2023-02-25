@@ -18,8 +18,9 @@ public class ScanQRActivity  extends AppCompatActivity  {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scanqr);
-        Objects.requireNonNull(getSupportActionBar()).hide();
-
+        if(getSupportActionBar() != null) {
+            getSupportActionBar().hide();
+        }
         qrController = new QRController();
         scannerView = findViewById(R.id.scanner_view);
         codeScanner = new CodeScanner(this, scannerView);

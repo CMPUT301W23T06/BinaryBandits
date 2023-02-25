@@ -13,4 +13,12 @@
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+
+    <!-- Source: StackOverflow -->
+    <!-- URL: https://stackoverflow.com/questions/22105775/imageview-in-circular-through-xml (Retrieved Feb. 24 2023) -->
+    <!-- Author: https://stackoverflow.com/users/2016562/gabriele-mariotti -->
+    <style name="roundedImageView">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
 </resources>
