@@ -23,5 +23,14 @@
     <string name="username">Username</string>
     <string name="or">Or</string>
     <string name="Create_an_account">Create an Account</string>
+    <string name="ready_to_get_started">Ready to get started?</string>
+    <string name="textBoxOne">textBoxOne</string>
+    <string name="textBoxTwo">textBoxTwo</string>
+    <string name="full_name">Full name</string>
+    <string name="phone_number">Phone number</string>
+    <string name="enter_the_account_information_below_and_we_ll_be_scanning_in_no_time">Enter the account information below and we\'ll be scanning in no time.</string>
+    <string name="already_have_an_account">Already have an account?</string>
+    <string name="button">Button</string>
+    <string name="image">image</string>
 
 </resources>

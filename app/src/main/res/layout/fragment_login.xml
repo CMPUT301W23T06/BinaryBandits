@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background_black">
 
     <TextView
-        android:id="@+id/welcomeText"
+        android:id="@+id/startText"
         android:layout_width="322dp"
         android:layout_height="128dp"
         android:layout_marginTop="96dp"
@@ -43,16 +44,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.172"
         app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/username_btn"
-        android:layout_width="343dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="392dp"
-        android:visibility="invisible"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/login_btn"
@@ -111,7 +102,7 @@
         app:tint="#FF426F" />
 
     <TextView
-        android:id="@+id/loginText"
+        android:id="@+id/login_Text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="180dp"
@@ -136,15 +127,15 @@
 
     <ImageView
         android:id="@+id/profileIcon"
-        android:layout_width="44dp"
-        android:layout_height="26dp"
+        android:layout_width="37dp"
+        android:layout_height="22dp"
         android:layout_marginStart="44dp"
         android:layout_marginTop="404dp"
+        android:contentDescription="@string/icon_of_profile"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_profile"
-        app:tint="#8A8A8E"
-        android:contentDescription="@string/icon_of_profile" />
+        app:tint="#8A8A8E" />
 
     <EditText
         android:id="@+id/editUsername"
