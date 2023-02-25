@@ -23,7 +23,9 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Objects.requireNonNull(getSupportActionBar()).hide();
+        if(getSupportActionBar() != null) {
+            getSupportActionBar().hide();
+        }
         this.getWindow().setStatusBarColor(this.getResources().getColor(R.color.background_black));
 
         bottomNavigationView = findViewById(R.id.nav_view);
