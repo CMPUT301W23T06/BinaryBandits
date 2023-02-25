@@ -1,10 +1,5 @@
 package com.example.binarybandits;
 import android.util.Log;
-
-//import com.github.atomfrede.jadenticon.Jadenticon;
-
-import java.io.File;
-import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Random;
@@ -108,6 +103,32 @@ public class QRController {
 
     public void generateUniqueVisualRep(String hash) {
 
+    }
+
+    public int calculatePoints(String hash) {
+        int score = 0;
+        int counter = 1;
+
+        int i = 0;
+        for (; i < hash.length()-1; i++) {
+            // counting number or repetitions of character at index i
+            while(hash.charAt(i) == hash.charAt(i+1)) {
+                counter += 1;
+                if (i >= hash.length()-2) {
+                    break;
+                }
+                i += 1;
+            }
+            // converting hex to decimal
+            int decimal = Integer.parseInt(Character.toString(hash.charAt(i)),16);
+            // updating score
+            if (counter > 1) {
+                score += Math.pow(decimal, counter - 1);
+            }
+            counter = 1;
+        }
+
+        return score;
     }
 
 
