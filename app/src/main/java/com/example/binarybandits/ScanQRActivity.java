@@ -33,9 +33,11 @@ public class ScanQRActivity  extends AppCompatActivity  {
                         String contents = result.getText();
                         String hash = qrController.getHash(contents);
                         String name = qrController.generateUniqueName(hash);
+                        int points = qrController.calculatePoints(hash);
                         System.out.println("Contents: " + contents);
                         System.out.println("Hash: " + hash);
                         System.out.println("Unique Name: " + name);
+                        System.out.println("Points: " + Integer.toString(points));
                     }
                 });
             }
