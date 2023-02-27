@@ -32,5 +32,8 @@
     <string name="already_have_an_account">Already have an account?</string>
     <string name="button">Button</string>
     <string name="image">image</string>
+    <string name="search">Search</string>
+    <string name="qr_code">QR Code</string>
+    <string name="_1000">1000</string>
 
 </resources>
