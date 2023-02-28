@@ -1,5 +1,4 @@
 package com.example.binarybandits;
-import android.util.Log;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Random;
@@ -67,7 +66,7 @@ public class QRController {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
             hash = digest.digest(source.getBytes());
         } catch (NoSuchAlgorithmException e) {
-            Log.wtf("", "Can't calculate SHA-256");
+            System.out.println("Can't calculate SHA-256");
         }
 
         // converting to string
