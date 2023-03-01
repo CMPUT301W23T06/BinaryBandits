@@ -9,8 +9,6 @@ import androidx.fragment.app.Fragment;
 import com.example.binarybandits.R;
 import com.example.binarybandits.ScanQRActivity;
 
-import java.util.Objects;
-
 public class HomeFragment extends Fragment {
 
     private ImageButton scanButton;
@@ -22,7 +20,7 @@ public class HomeFragment extends Fragment {
         scanButton.setOnClickListener(new View.OnClickListener()   {
             public void onClick(View v)  {
                 Intent myIntent = new Intent(getActivity(), ScanQRActivity.class);
-                // myIntent.putExtra("key", value); //Optional parameters
+                // myIntent.putExtra("key", value); // Optional parameters
                 requireActivity().startActivity(myIntent);
             }
         });

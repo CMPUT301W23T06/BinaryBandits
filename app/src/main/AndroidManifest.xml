@@ -26,6 +26,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".ScanQRActivity"/>
+
         <meta-data
             android:name="com.google.android.gms.vision.DEPENDENCIES"
             android:value="barcode" />

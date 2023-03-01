@@ -1,4 +1,5 @@
 package com.example.binarybandits;
+import android.content.Intent;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -6,9 +7,8 @@ import com.budiyev.android.codescanner.CodeScanner;
 import com.budiyev.android.codescanner.CodeScannerView;
 import com.budiyev.android.codescanner.DecodeCallback;
 import com.google.zxing.Result;
-import java.util.Objects;
 
-public class ScanQRActivity  extends AppCompatActivity  {
+public class ScanQRActivity extends AppCompatActivity {
 
     private CodeScannerView scannerView;
     private CodeScanner codeScanner;
@@ -34,10 +34,17 @@ public class ScanQRActivity  extends AppCompatActivity  {
                         String hash = qrController.getHash(contents);
                         String name = qrController.generateUniqueName(hash);
                         int points = qrController.calculatePoints(hash);
+                        String visualRep = qrController.generateUniqueVisualRep(hash);
                         System.out.println("Contents: " + contents);
                         System.out.println("Hash: " + hash);
                         System.out.println("Unique Name: " + name);
-                        System.out.println("Points: " + Integer.toString(points));
+                        System.out.println("Points: " + points);
+                        System.out.println("Visual Representation:-");
+                        System.out.println(visualRep);
+
+//                        Intent myIntent = new Intent(ScanQRActivity.this, QRInfoTempActivity.class);
+//                        myIntent.putExtra("fill", visualRep); // Optional parameters
+//                        ScanQRActivity.this.startActivity(myIntent);
                     }
                 });
             }
