@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "607299751709",
+    "project_id": "qr-hunter-ca5ef",
+    "storage_bucket": "qr-hunter-ca5ef.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:607299751709:android:d33a6d64b95e37d1971bf4",
+        "android_client_info": {
+          "package_name": "com.example.binarybandits"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "607299751709-0v3g3o6vbs8sj1gq8ol8jm3g9680tlf7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB25PtcprBGh8XZw2PZcOxnydbZ7w3SWLQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "607299751709-0v3g3o6vbs8sj1gq8ol8jm3g9680tlf7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
