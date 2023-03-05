@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/qr_code"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:layout_weight="1">
+
+    <ImageView
+        android:id="@+id/qr_code_visual_representation"
+        android:layout_width="83dp"
+        android:layout_height="36dp"
+        android:layout_weight="0.2"
+        android:src="@drawable/ic_scan" />
+
+    <TextView
+        android:id="@+id/qr_code_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/qr_code"
+        android:padding="10dp"
+        android:textSize="12sp"
+        android:maxLines="1"
+        android:layout_weight="0.5"/>
+
+    <TextView
+        android:id="@+id/qr_code_score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/score_text"
+        android:padding="10dp"
+        android:textSize="12sp"
+        android:layout_weight="0.3"/>
+
+</LinearLayout>
