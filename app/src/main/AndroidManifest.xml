@@ -6,6 +6,7 @@
     <uses-feature
         android:name="android.hardware.camera"
         android:required="true"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
         android:allowBackup="true"
@@ -26,7 +27,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".ScanQRActivity"/>
-
+        <activity android:name=".qrcode.QRCodeInfoActivity"/>
         <meta-data
             android:name="com.google.android.gms.vision.DEPENDENCIES"
             android:value="barcode" />

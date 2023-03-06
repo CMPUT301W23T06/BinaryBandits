@@ -42,8 +42,8 @@ public class ScanQRActivity extends AppCompatActivity {
                         System.out.println("Visual Representation:-");
                         System.out.println(visualRep);
 
-//                        Intent myIntent = new Intent(ScanQRActivity.this, QRInfoTempActivity.class);
-//                        myIntent.putExtra("fill", visualRep); // Optional parameters
+//                        Intent myIntent = new Intent(ScanQRActivity.this, QRCodeInfoActivity.class);
+//                        myIntent.putExtra("hash", hash); // Optional parameters
 //                        ScanQRActivity.this.startActivity(myIntent);
                     }
                 });
