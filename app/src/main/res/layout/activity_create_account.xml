@@ -35,31 +35,12 @@
         android:layout_height="50dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="536dp"
-        android:visibility="invisible"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/imageBox7"
-        android:layout_width="346dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="536dp"
-        android:contentDescription="@string/create_image"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/big_rounded_button"
-        app:tint="#FF426F" />
-
-    <TextView
-        android:id="@+id/createText2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="120dp"
-        android:layout_marginTop="548dp"
         android:text="@string/Create_an_account"
         android:textColor="#FFFFFF"
         android:textSize="20sp"
+        android:textAllCaps="false"
+        android:backgroundTint="@color/red"
+        android:background="@drawable/big_rounded_button"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
