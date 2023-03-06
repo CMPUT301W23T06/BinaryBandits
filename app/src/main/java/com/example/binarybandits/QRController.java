@@ -148,6 +148,7 @@ public class QRController {
             }
             // converting hex to decimal
             int decimal = Integer.parseInt(Character.toString(hash.charAt(i)),16);
+            decimal = decimal == 0 ? 20 : decimal;
             // updating score
             if (counter > 1) {
                 score += Math.pow(decimal, counter - 1);
