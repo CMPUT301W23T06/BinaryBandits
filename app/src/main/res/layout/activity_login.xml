@@ -57,6 +57,7 @@
         android:textColor="#FFFFFF"
         android:textSize="20sp"
         android:background="@drawable/big_rounded_button"
+        android:backgroundTint="@color/yellow"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

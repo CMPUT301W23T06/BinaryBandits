@@ -47,6 +47,7 @@ public class AuthController {
     public static void login(Context ctx, String username) {
         // assumes username is not null or empty
         setUserLoggedInStatus(ctx, true);
+        setUsername(ctx, username);
         Intent myIntent = new Intent(ctx, MainActivity.class);
         ctx.startActivity(myIntent);
     }
@@ -59,6 +60,7 @@ public class AuthController {
 
     public static void register(Context ctx, String username, String name, String phone) {
         setUserLoggedInStatus(ctx, true);
+        setUsername(ctx, username);
         Intent myIntent = new Intent(ctx, MainActivity.class);
         ctx.startActivity(myIntent);
     }

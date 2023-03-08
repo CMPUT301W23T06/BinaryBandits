@@ -1,9 +1,10 @@
 package com.example.binarybandits.qrcode;
 import android.os.Bundle;
 import android.widget.ImageView;
-
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.binarybandits.R;
+import com.example.binarybandits.controllers.AuthController;
+import com.squareup.picasso.Picasso;
 
 public class QRCodeInfoActivity extends AppCompatActivity {
 
@@ -19,17 +20,15 @@ public class QRCodeInfoActivity extends AppCompatActivity {
         String hash;
 
         if (extras != null) {
-            hash = extras.getString("name");
-            // and get whatever type user account id is
+            hash = extras.getString("hash");
+            System.out.println("yessssssssss");
         } else {
-            hash = "wildlife";
+            hash = AuthController.getUsername(QRCodeInfoActivity.this);
         }
 
-//        new DownloadImageTask((ImageView) findViewById(R.id.imageView))
-//                .execute("https://picsum.photos/seed/" + hash + "/300");
-
-        new DownloadImageTask((ImageView) findViewById(R.id.imageView))
-                .execute("https://api.api-ninjas.com/v1/randomimage?category=" + hash);
+        String url = "https://api.dicebear.com/5.x/shapes/png?seed=" + hash;
+        ImageView imageView = findViewById(R.id.imageView);
+        Picasso.get().load(url).into(imageView);
 
 
 
