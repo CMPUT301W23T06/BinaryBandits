@@ -1,14 +1,26 @@
 package com.example.binarybandits.models;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+
 import java.util.ArrayList;
 
 public class Player {
 
-    public Player(String username, String phone, int totalScore, Bitmap playerAvatar, ArrayList<QRCode> qrCodesScanned) {
+
+    public Player(String username, String phone) {
+        this.username = username;
+        this.phone = phone;
+        this.totalScore = 0;
+        this.totalQRCodes = 0;
+        this.playerAvatar = null; //temporary
+        this.qrCodesScanned = new ArrayList<QRCode>();
+    }
+    public Player(String username, String phone, int totalScore, int totalQRCodes, Bitmap playerAvatar, ArrayList<QRCode> qrCodesScanned) {
         this.username = username;
         this.phone = phone;
         this.totalScore = totalScore;
+        this.totalQRCodes = totalQRCodes;
         this.playerAvatar = playerAvatar;
         this.qrCodesScanned = qrCodesScanned;
     }
@@ -16,6 +28,7 @@ public class Player {
     String username;
     String phone;
     int totalScore;
+    int totalQRCodes;
     Bitmap playerAvatar;
     ArrayList<QRCode> qrCodesScanned;
 
@@ -49,6 +62,14 @@ public class Player {
 
     public void setPlayerAvatar(Bitmap playerAvatar) {
         this.playerAvatar = playerAvatar;
+    }
+
+    public int getTotalQRCodes() {
+        return totalQRCodes;
+    }
+
+    public void setTotalQRCodes(int totalQRCodes) {
+        this.totalQRCodes = totalQRCodes;
     }
 
     public ArrayList<QRCode> getQrCodesScanned() {
