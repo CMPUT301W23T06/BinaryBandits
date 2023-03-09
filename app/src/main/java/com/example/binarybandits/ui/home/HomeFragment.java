@@ -8,6 +8,7 @@ import android.widget.ImageButton;
 import androidx.fragment.app.Fragment;
 import com.example.binarybandits.R;
 import com.example.binarybandits.ScanQRActivity;
+import com.example.binarybandits.controllers.PermissionsController;
 
 public class HomeFragment extends Fragment {
 
@@ -24,6 +25,8 @@ public class HomeFragment extends Fragment {
                 requireActivity().startActivity(myIntent);
             }
         });
+
+        PermissionsController.askAllPermissions(getActivity());
 
         return view;
     }
