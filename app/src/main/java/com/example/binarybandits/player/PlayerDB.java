@@ -99,6 +99,15 @@ public class PlayerDB {
 
     /**
      *
+     */
+    public Player getCurrentPlayer() {
+        //collectionReference.document()
+
+        return null; //temporary
+    }
+
+    /**
+     *
      * @param player
      */
     public void updatePlayer(Player player, String fieldToUpdate, Object newValue) {

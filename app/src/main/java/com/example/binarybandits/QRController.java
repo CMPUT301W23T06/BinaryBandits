@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class QRController {
-
+    //All code written in this class has been moved to ScannerController
     String[] animalNames = new String[] {
             "Lion", "Tiger", "Leopard", "Cheetah", "Jaguar",
             "Elephant", "Rhino", "Hippopotamus", "Giraffe", "Zebra",
