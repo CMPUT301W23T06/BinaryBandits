@@ -20,7 +20,7 @@ public class QRCode {
     String name;
     int points;
     String scannerUID;
-    Pair<Double, Double> coordinates;
+    Pair<Double, Double> coordinates; //Need to change to Geolocation class
     Bitmap locationImage;
     ArrayList<String> comments;
 
