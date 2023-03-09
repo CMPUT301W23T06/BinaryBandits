@@ -1,6 +1,7 @@
 package com.example.binarybandits.ui.leaderboard;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,7 +34,10 @@ public class LeaderboardArrayAdapter extends ArrayAdapter {
             Player player = (Player) getItem(position);
             TextView playerName = view.findViewById(R.id.player_name_text);
             TextView score = view.findViewById((R.id.score_Player));
+            TextView rank = view.findViewById(R.id.rank_number);
             playerName.setText(player.getUsername());
+            score.setText(Integer.toString(player.getTotalScore()));
+            rank.setText("#" + Integer.toString(position+4));
             return view;
         }
     }

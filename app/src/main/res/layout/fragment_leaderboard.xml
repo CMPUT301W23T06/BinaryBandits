@@ -88,7 +88,7 @@
         android:layout_width="101dp"
         android:layout_height="94dp"
         android:layout_marginStart="152dp"
-        android:layout_marginTop="180dp"
+        android:layout_marginTop="175dp"
         android:contentDescription="@string/image"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -107,11 +107,12 @@
 
     <TextView
         android:id="@+id/player2"
-        android:layout_width="wrap_content"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="48dp"
-        android:layout_marginTop="240dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="245dp"
         android:text="@string/username"
+        android:textAlignment="center"
         android:textColor="#EFEFEF"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -129,55 +130,66 @@
 
     <TextView
         android:id="@+id/player1_score"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="188dp"
-        android:layout_marginTop="292dp"
+        android:layout_width="75dp"
+        android:layout_height="18dp"
+        android:layout_marginStart="170dp"
+        android:layout_marginTop="293dp"
+        android:layout_marginEnd="170dp"
         android:text="@string/_1000"
+        android:textAlignment="center"
         android:textColor="#00F244"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/player2_score"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="64dp"
-        android:layout_marginTop="260dp"
+        android:layout_width="64dp"
+        android:layout_height="26dp"
+        android:layout_marginStart="45dp"
+        android:layout_marginTop="266dp"
         android:text="@string/_1000"
+        android:textAlignment="center"
         android:textColor="#00F244"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/player3_score"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="69dp"
+        android:layout_height="23dp"
         android:layout_marginStart="312dp"
-        android:layout_marginTop="260dp"
+        android:layout_marginTop="266dp"
+        android:layout_marginEnd="64dp"
         android:text="@string/_1000"
+        android:textAlignment="center"
         android:textColor="#00F244"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/player3"
-        android:layout_width="wrap_content"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="296dp"
-        android:layout_marginTop="240dp"
+        android:layout_marginTop="245dp"
         android:text="@string/username"
+        android:textAlignment="center"
         android:textColor="#EFEFEF"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.893"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/player1"
-        android:layout_width="0dp"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="172dp"
+        android:layout_marginStart="152dp"
         android:layout_marginTop="272dp"
         android:text="@string/username"
+        android:textAlignment="center"
         android:textColor="#EFEFEF"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
