@@ -81,7 +81,7 @@
         app:tint="#333333" />
 
     <EditText
-        android:id="@+id/editFullNameSignUp"
+        android:id="@+id/editUsernameSignUp"
         android:layout_width="288dp"
         android:layout_height="48dp"
         android:layout_marginStart="84dp"
@@ -96,7 +96,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/editUsernameSignUp"
+        android:id="@+id/editFullNameSignUp"
         android:layout_width="288dp"
         android:layout_height="48dp"
         android:layout_marginStart="84dp"
