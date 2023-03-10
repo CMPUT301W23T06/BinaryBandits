@@ -6,7 +6,8 @@ import java.util.ArrayList;
 
 public class QRCode {
 
-    public QRCode(String hash, String name, int points, String scannerUID, Pair<Double, Double> coordinates, Bitmap locationImage, ArrayList<String> comments) {
+    public QRCode(String hash, String name, int points, String scannerUID, Pair<Double, Double> coordinates,
+                  Bitmap locationImage, ArrayList<String> comments, int numPlayersScannedBy) {
         this.hash = hash;
         this.name = name;
         this.points = points;
@@ -23,6 +24,7 @@ public class QRCode {
     Pair<Double, Double> coordinates; //Need to change to Geolocation class
     Bitmap locationImage;
     ArrayList<String> comments;
+    int numPlayersScannedBy;
 
     public String getHash() {
         return hash;
@@ -78,5 +80,17 @@ public class QRCode {
 
     public void setComments(ArrayList<String> comments) {
         this.comments = comments;
+    }
+
+    public int getNumPlayersScannedBy() {
+        return numPlayersScannedBy;
+    }
+
+    public void incrementNumPlayersScannedBy() {
+        this.numPlayersScannedBy = numPlayersScannedBy + 1;
+    }
+
+    public void decrementNumPlayersScannedBy() {
+        this.numPlayersScannedBy = numPlayersScannedBy - 1;
     }
 }

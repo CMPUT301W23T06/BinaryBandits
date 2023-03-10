@@ -89,6 +89,8 @@ public class AuthController {
         // assumes username is not null or empty
         setUserLoggedInStatus(ctx, true);
         setUsername(ctx, username);
+        PlayerDB db = new PlayerDB(new DBConnector());
+
         Intent myIntent = new Intent(ctx, MainActivity.class);
         ctx.startActivity(myIntent);
     }
