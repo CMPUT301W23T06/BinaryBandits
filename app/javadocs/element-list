@@ -1,0 +1,12 @@
+com.example.binarybandits
+com.example.binarybandits.controllers
+com.example.binarybandits.models
+com.example.binarybandits.player
+com.example.binarybandits.qrcode
+com.example.binarybandits.ui.auth
+com.example.binarybandits.ui.home
+com.example.binarybandits.ui.leaderboard
+com.example.binarybandits.ui.maps
+com.example.binarybandits.ui.profile
+com.example.binarybandits.ui.QRedit
+com.example.binarybandits.ui.QRpage

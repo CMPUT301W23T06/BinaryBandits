@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.example.binarybandits.DBConnector;
@@ -13,6 +15,8 @@ import com.example.binarybandits.R;
 import com.example.binarybandits.controllers.AuthController;
 import com.example.binarybandits.models.Player;
 import com.example.binarybandits.player.PlayerDB;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.squareup.picasso.Picasso;
 
 public class ProfileFragment extends Fragment {
@@ -26,6 +30,7 @@ public class ProfileFragment extends Fragment {
         String url = "https://api.dicebear.com/5.x/avataaars-neutral/png?seed=" + AuthController.getUsername(getActivity());
         imageView = view.findViewById(R.id.profileIconImageView);
         Picasso.get().load(url).into(imageView);
+        getCurrentPlayer();
         return view;
     }
 
@@ -37,6 +42,11 @@ public class ProfileFragment extends Fragment {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         String username = preferences.getString("login_username", "");
         PlayerDB db = new PlayerDB(new DBConnector());
-        db.getPlayer(username); //temporary
+        db.getPlayer(username, new PlayerDB.Callback() {
+            @Override
+            public void onCallback(Player player) {
+
+            }
+        }); //temporary
     }
 }

@@ -88,9 +88,9 @@ public class Player {
         return qrCodesScanned;
     }
 
-    /*public void setQrCodesScanned(ArrayList<QRCode> qrCodesScanned) {
+    public void setQrCodesScanned(ArrayList<QRCode> qrCodesScanned) {
         this.qrCodesScanned = qrCodesScanned;
-    }*/
+    }
 
     public void addQRCodeScanned(QRCode qrCode) {
         qrCodesScanned.add(qrCode);
