@@ -1,6 +1,7 @@
 package com.example.binarybandits.player;
 
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
@@ -8,6 +9,7 @@ import androidx.annotation.NonNull;
 
 import com.example.binarybandits.DBConnector;
 import com.example.binarybandits.models.Player;
+import com.example.binarybandits.models.QRCode;
 import com.example.binarybandits.ui.auth.LogInActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -102,11 +104,19 @@ public class PlayerDB {
         //To-do: Implement getPlayer() -> Alex
         //Referenced: https://cloud.google.com/firestore/docs/query-data/get-data#javaandroid_2
         DocumentReference documentReference = collectionReference.document(username);
-        /*documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+        documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 if (documentSnapshot.exists()) {
-                    Player player = documentSnapshot.toObject(Player.class);
+                    //Player player = documentSnapshot.toObject(Player.class);
+                    String username = documentSnapshot.getString("username");
+                    String phone = documentSnapshot.getString("phone");
+                    Bitmap avatar = (Bitmap)documentSnapshot.get("avatar");
+                    int totalScore = Integer.parseInt(documentSnapshot.getString("totalScore"));
+                    int totalQRCodes = Integer.parseInt(documentSnapshot.getString("totalQRCodes"));
+                    //ArrayList<QRCode> qrCodesScanned = (ArrayList<QRCode>) documentSnapshot.get("qrCodesScanned");
+
+                    //Player player = new Player(username, phone, avatar, totalScore, totalQRCodes);
                     Log.d(TAG, "Player information retrieved from database");
                 }
                 else {
@@ -118,7 +128,8 @@ public class PlayerDB {
             public void onFailure(@NonNull Exception e) {
                 Log.d(TAG, "Could not retrieve document reference!" + e.toString());
             }
-        });*/
+        });
+        /*
         documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -130,7 +141,7 @@ public class PlayerDB {
                     Log.d(TAG, "Player not found in database!");
                 }
             }
-        });
+        });*/
     }
 
     /**
