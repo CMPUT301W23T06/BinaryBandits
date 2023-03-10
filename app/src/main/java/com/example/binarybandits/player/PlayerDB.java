@@ -1,11 +1,14 @@
 package com.example.binarybandits.player;
 
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
 import com.example.binarybandits.DBConnector;
 import com.example.binarybandits.models.Player;
+import com.example.binarybandits.ui.auth.LogInActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -15,6 +18,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -35,7 +39,8 @@ public class PlayerDB {
     }
 
     /**
-     * Adds a new player to the Players collection in the database
+     * Adds a new player to the Players collection in the database. A new player with a username
+     * already in the database is not added.
      * @param player New player to add to the Players collection in the database
      */
     public void addPlayer(Player player) {
@@ -60,17 +65,18 @@ public class PlayerDB {
     }
 
     /**
-     *
+     * If a username is available, add a player to the database
      * @param username
      * @param player
      */
     public void addOnSuccess(String username, Player player) {
         HashMap<String, Object> data = new HashMap<>();
-        data.put("Phone Number", player.getPhone());
-        data.put("Avatar", player.getPlayerAvatar());
-        data.put("Score", player.getTotalScore());
-        data.put("Total QR Codes", player.getTotalQRCodes());
-        data.put("Scanned QR Codes", player.getQrCodesScanned());
+        data.put("username", player.getUsername());
+        data.put("phone", player.getPhone());
+        data.put("playerAvatar", player.getPlayerAvatar());
+        data.put("totalScore", player.getTotalScore());
+        data.put("totalQRCodes", player.getTotalQRCodes());
+        data.put("qrCodesScanned", player.getQrCodesScanned());
         collectionReference
                 .document(username)
                 .set(data)
@@ -89,28 +95,58 @@ public class PlayerDB {
     }
 
     /**
-     *
+     * Get a Player based on username
      * @param username
      */
-    public Player getPlayer(String username) {
+    public void getPlayer(String username) {
         //To-do: Implement getPlayer() -> Alex
-        return null; //temporary
+        //Referenced: https://cloud.google.com/firestore/docs/query-data/get-data#javaandroid_2
+        DocumentReference documentReference = collectionReference.document(username);
+        /*documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if (documentSnapshot.exists()) {
+                    Player player = documentSnapshot.toObject(Player.class);
+                    Log.d(TAG, "Player information retrieved from database");
+                }
+                else {
+                    Log.d(TAG, "Player not found in database!");
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d(TAG, "Could not retrieve document reference!" + e.toString());
+            }
+        });*/
+        documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    Player player = task.getResult().toObject(Player.class);
+                    Log.d(TAG, "Player information retrieved from database");
+                }
+                else {
+                    Log.d(TAG, "Player not found in database!");
+                }
+            }
+        });
     }
 
     /**
-     *
+     * Query all player for leaderboard
      */
-    public Player getCurrentPlayer() {
-        //collectionReference.document()
+    public void getAllPlayers() {
 
-        return null; //temporary
     }
 
+
     /**
-     *
+     * Update a field in a Player document
      * @param player
      */
     public void updatePlayer(Player player, String fieldToUpdate, Object newValue) {
+        //Alex: I'm not sure if this works. Need to test this method
         collectionReference.document(player.getUsername()).update(fieldToUpdate, newValue);
     }
 }

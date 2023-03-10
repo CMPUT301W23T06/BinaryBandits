@@ -1,8 +1,6 @@
-package com.example.binarybandits;
-import android.util.Pair;
+package com.example.binarybandits.controllers;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
 import java.util.Random;
 
 public class QRController {
@@ -100,36 +98,6 @@ public class QRController {
 
         return preAdjectives[preAdjIndex] + adjectives[adjIndex] + animalNames[animalIndex];
 
-    }
-
-    public String generateUniqueVisualRep(String hash) {
-        long seed = Long.parseLong(hash.substring(0, 15), 16);
-        Random rand = new Random(seed);
-        StringBuilder visualRep = new StringBuilder();
-
-        ArrayList<Pair<Integer, Integer>> fill = new ArrayList<>();
-        int numFills = 8;
-        int gridWidth = 5;
-        for (int i = 0; i < numFills; i++) {
-            int row = rand.nextInt(gridWidth);
-            int col = rand.nextInt(gridWidth);
-
-            fill.add(new Pair<>(row, col));
-            fill.add(new Pair<>(row, gridWidth - 1 - col));
-        }
-
-        for (int i = 0; i < gridWidth; i++) {
-            for (int j = 0; j < gridWidth; j++) {
-                if (fill.contains(new Pair<>(i, j))) {
-                    visualRep.append(". ");
-                } else {
-                    visualRep.append("0 ");
-                }
-            }
-            visualRep.append("\n");
-        }
-
-        return visualRep.toString();
     }
 
     public int calculatePoints(String hash) {
