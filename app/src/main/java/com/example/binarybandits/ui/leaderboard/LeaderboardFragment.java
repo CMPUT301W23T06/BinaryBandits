@@ -20,11 +20,14 @@ public class LeaderboardFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         LeaderboardViewModel leaderboardViewModel = new LeaderboardViewModel();
         leaderboardViewModel.sortPlayer_list();
         ArrayList<Player> players = leaderboardViewModel.getPlayerList();
+
+        // Inflate the layout for this fragment
         View leaderboard = inflater.inflate(R.layout.fragment_leaderboard, container, false);
+
+        // instantiate variables for top three players
         ListView playerList = leaderboard.findViewById(R.id.playerList);
         TextView nameOne = leaderboard.findViewById(R.id.player1);
         TextView nameTwo = leaderboard.findViewById(R.id.player2);
@@ -32,19 +35,39 @@ public class LeaderboardFragment extends Fragment {
         TextView scoreOne = leaderboard.findViewById(R.id.player1_score);
         TextView scoreTwo = leaderboard.findViewById(R.id.player2_score);
         TextView scoreThree = leaderboard.findViewById(R.id.player3_score);
-        nameOne.setText(players.get(0).getUsername());
-        nameTwo.setText(players.get(1).getUsername());
-        nameThree.setText(players.get(2).getUsername());
-        scoreOne.setText(Integer.toString(players.get(0).getTotalScore()));
-        scoreTwo.setText(Integer.toString(players.get(1).getTotalScore()));
-        scoreThree.setText(Integer.toString(players.get(2).getTotalScore()));
-        players.remove(0);
-        players.remove(0);
-        players.remove(0);
-        ArrayAdapter<Player> playerArrayAdapter = new LeaderboardArrayAdapter(getActivity(), players);
-        playerList.setAdapter(playerArrayAdapter);
+
+        // set values of top three players
+        if(players.size()>0) {
+            nameOne.setText(players.get(0).getUsername());
+            scoreOne.setText(Integer.toString(players.get(0).getTotalScore()));
+        }
+
+        if(players.size()>1) {
+            nameTwo.setText(players.get(1).getUsername());
+            scoreTwo.setText(Integer.toString(players.get(1).getTotalScore()));
+        }
+        if(players.size()>2) {
+            nameThree.setText(players.get(2).getUsername());
+            scoreThree.setText(Integer.toString(players.get(2).getTotalScore()));
+        }
+
+        // call ArrayAdapter to add each item in array to ListView
+        if(players.size()>3) {
+            // remove top three players from players array
+            removePlayers(players);
+            ArrayAdapter<Player> playerArrayAdapter = new LeaderboardArrayAdapter(getActivity(), players);
+            playerList.setAdapter(playerArrayAdapter);
+        }
         return leaderboard;
     }
 
+    /**
+     * remove top three players from array of players
+     * @param players
+     */
+    public void removePlayers(ArrayList<Player> players){
+        for(int i = 0; i<3; i++)
+            players.remove(0);
+    }
 
 }
