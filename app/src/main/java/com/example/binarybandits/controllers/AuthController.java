@@ -37,7 +37,7 @@ public class AuthController {
     public static void setUsername(Context ctx, String username) {
         SharedPreferences.Editor editor = getSharedPreferences(ctx).edit();
         editor.putString(PREF_LOGIN_USERNAME, username);
-        editor.commit();
+        editor.apply();
     }
 
     /**
@@ -57,7 +57,7 @@ public class AuthController {
     public static void setUserLoggedInStatus(Context ctx, boolean status) {
         SharedPreferences.Editor editor = getSharedPreferences(ctx).edit();
         editor.putBoolean(PREF_USER_LOGIN_STATUS, status);
-        editor.commit();
+        editor.apply();
     }
 
     /**
@@ -77,7 +77,7 @@ public class AuthController {
         SharedPreferences.Editor editor = getSharedPreferences(ctx).edit();
         editor.remove(PREF_LOGIN_USERNAME);
         editor.remove(PREF_USER_LOGIN_STATUS);
-        editor.commit();
+        editor.apply();
     }
 
     /**

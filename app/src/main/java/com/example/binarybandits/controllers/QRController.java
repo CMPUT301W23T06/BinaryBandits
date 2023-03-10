@@ -1,4 +1,6 @@
 package com.example.binarybandits.controllers;
+import com.example.binarybandits.models.QRCode;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Random;
@@ -127,5 +129,8 @@ public class QRController {
         return score;
     }
 
+//    public QRCode getQRCodeFromName(String name) {
+//
+//    }
 
 }
