@@ -38,13 +38,8 @@ import javax.security.auth.callback.Callback;
  */
 public class PlayerDB {
     private final String TAG = "PlayerDB";
-    public Callback callback;
     private FirebaseFirestore db;
     private final CollectionReference collectionReference;
-
-    public interface Callback {
-        void onCallback(Player player);
-    }
     /**
      * Retrieve the database and the reference for the Players collection
      * @param connector
@@ -134,7 +129,7 @@ public class PlayerDB {
      * Get a Player based on username
      * @param username
      */
-    public void getPlayer(String username, Callback callback) {
+    public void getPlayer(String username, PlayerCallback callback) {
         //To-do: Implement getPlayer() -> Alex
         //Referenced: https://cloud.google.com/firestore/docs/query-data/get-data#javaandroid_2
         DocumentReference documentReference = collectionReference.document(username);
@@ -151,10 +146,10 @@ public class PlayerDB {
                     //ArrayList<QRCode> qrCodesScanned = (ArrayList<QRCode>) documentSnapshot.get("qrCodesScanned");
                     ArrayList<QRCode> qrCodesScanned = new ArrayList<>(); //temporary
 
-                    Player player = new Player(username, phone, totalQRCodes, totalScore, avatar, qrCodesScanned);
+                    Player player = new Player(username, phone, totalScore, totalQRCodes, avatar, qrCodesScanned);
                     Log.d(TAG, "Player information retrieved from database");
-                    Log.d(TAG, "Player Name: " + player.getUsername() + "\n Phone Number: " + player.getPhone());
-                    callback.onCallback(player);
+                    Log.d(TAG, "Player Name: " + player.getUsername() + "\n Score: " + player.getTotalScore());
+                    callback.onPlayerCallback(player);
                 }
                 else {
                     Log.d(TAG, "Player not found in database!");
@@ -174,11 +169,6 @@ public class PlayerDB {
     public void getAllPlayers() {
 
     }
-
-    public void getQRCodes(String username) {
-
-    }
-
 
     /**
      * Update a field in a Player document
