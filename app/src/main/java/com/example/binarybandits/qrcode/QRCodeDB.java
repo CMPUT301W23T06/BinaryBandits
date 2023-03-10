@@ -1,11 +1,14 @@
 package com.example.binarybandits.qrcode;
 
 
+import android.graphics.Bitmap;
 import android.util.Log;
+import android.util.Pair;
 
 import androidx.annotation.NonNull;
 
 import com.example.binarybandits.DBConnector;
+import com.example.binarybandits.Geolocation;
 import com.example.binarybandits.models.Player;
 import com.example.binarybandits.models.QRCode;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -17,8 +20,10 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Stores, retrieves, adds, and deletes QR code data
@@ -39,8 +44,8 @@ public class QRCodeDB {
      */
     public void addQRCode(QRCode qrCode) {
         //Referenced: https://stackoverflow.com/questions/53332471/checking-if-a-document-exists-in-a-firestore-collection
-        String id = qrCode.getScannerUID();
-        DocumentReference documentReference = collectionReference.document(id);
+        String name = qrCode.getName();
+        DocumentReference documentReference = collectionReference.document(name);
         documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -48,13 +53,10 @@ public class QRCodeDB {
                     DocumentSnapshot document = task.getResult();
                     if(!document.exists()) {
                         Log.d(TAG, "New QRCode!");
-                        addOnSuccess(id, qrCode);
+                        addOnSuccess(name, qrCode);
                     }
                     else {
                         Log.d(TAG, "QRCode already in database!");
-                        //Get QRCode information from database
-                        Map<String, Object> data = document.getData();
-                        System.out.println(data); //For testing purposes
                     }
                 }
             }
@@ -63,25 +65,29 @@ public class QRCodeDB {
 
     /**
      *
-     * @param id
+     * @param name
      * @param qrCode
      */
-    public void addOnSuccess(String id, QRCode qrCode) {
+    public void addOnSuccess(String name, QRCode qrCode) {
         HashMap<String, Object> data = new HashMap<>();
-        data.put("Name", qrCode.getName());
-        data.put("Hash", qrCode.getHash());
-        data.put("Points", qrCode.getPoints());
+        data.put("name", qrCode.getName());
+        data.put("scannerUID", qrCode.getScannerUID());
+        data.put("hash", qrCode.getHash());
+        data.put("points", qrCode.getPoints());
         //To-do: Add Geolocation to data
+        data.put("geolocation", qrCode.getCoordinates());
+        data.put("locationImage", qrCode.getLocationImage());
+        data.put("comments", qrCode.getComments());
+        data.put("numPlayersScannedBy", qrCode.getNumPlayersScannedBy());
 
-        data.put("LocationImage", qrCode.getLocationImage());
-        data.put("Comments", qrCode.getComments());
         collectionReference
-                .document(id)
+                .document(name)
                 .set(data)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
                         Log.d(TAG, "QRCode has been added successfully!");
+                        Log.d(TAG, "Name: " + qrCode.getName() + "\nPoints: " + qrCode.getPoints());
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -94,11 +100,47 @@ public class QRCodeDB {
 
     /**
      *
+     */
+    public void getQRCode(String id, QRCodeCallback callback) {
+        DocumentReference documentReference = collectionReference.document(id);
+        documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if (documentSnapshot.exists()) {
+                    //Player player = documentSnapshot.toObject(Player.class);
+                    String scannerUID = documentSnapshot.getString("scannerUID");
+                    String hash = documentSnapshot.getString("hash");
+                    String name = documentSnapshot.getString("name");
+                    int points = Integer.parseInt(documentSnapshot.getString("points"));
+                    Geolocation coordinates = (Geolocation) documentSnapshot.get("coordinates");
+                    Bitmap locationImage = (Bitmap)documentSnapshot.get("locationImage");
+                    ArrayList<String> comments = (ArrayList<String>)documentSnapshot.get("comments");
+                    int numPlayersScannedBy = Integer.parseInt(documentSnapshot.getString("numPlayerScannedBy"));
+
+                    QRCode qrCode = new QRCode(hash, name, points, scannerUID, coordinates,
+                            locationImage, comments, numPlayersScannedBy);
+                    Log.d(TAG, "QR code information retrieved from database");
+                    Log.d(TAG, "Name: " + name + "\nPoints: " + points);
+                    callback.onQRCodeCallback(qrCode);
+                }
+                else {
+                    Log.d(TAG, "QR code not found in database!");
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d(TAG, "Could not retrieve document reference!" + e.toString());
+            }
+        });
+    }
+
+    /**
+     *
      * @param qrCode
      */
     public void updateQRCode(QRCode qrCode) {
         //To-do: Implement updateQRCode() -> Alex
-        //collectionReference.document(qrCode.getScannerUID());
     }
 
     /**
