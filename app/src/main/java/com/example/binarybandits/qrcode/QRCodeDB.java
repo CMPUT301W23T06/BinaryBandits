@@ -18,6 +18,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Stores, retrieves, adds, and deletes QR code data
@@ -51,6 +52,9 @@ public class QRCodeDB {
                     }
                     else {
                         Log.d(TAG, "QRCode already in database!");
+                        //Get QRCode information from database
+                        Map<String, Object> data = document.getData();
+                        System.out.println(data); //For testing purposes
                     }
                 }
             }
@@ -94,6 +98,7 @@ public class QRCodeDB {
      */
     public void updateQRCode(QRCode qrCode) {
         //To-do: Implement updateQRCode() -> Alex
+        //collectionReference.document(qrCode.getScannerUID());
     }
 
     /**
@@ -102,6 +107,15 @@ public class QRCodeDB {
      */
     public void deleteQRCode(QRCode qrCode) {
         //To-do: Implement deleteQRCode() -> Alex
-
+        if(qrCode.getNumPlayersScannedBy() == 1) {
+            //Delete QRCode from DB if no one else has scanned the QRCode
+            collectionReference.document(qrCode.getScannerUID()).delete();
+        }
+        else {
+            //Decrement numPlayersScannedBy
+            qrCode.decrementNumPlayersScannedBy();
+            //Update QRCode in database
+            updateQRCode(qrCode);
+        }
     }
 }
