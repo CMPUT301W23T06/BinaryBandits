@@ -8,9 +8,10 @@
 
     <TextView
         android:id="@+id/startText"
-        android:layout_width="322dp"
-        android:layout_height="128dp"
+        android:layout_width="418dp"
+        android:layout_height="126dp"
         android:layout_marginTop="96dp"
+        android:paddingHorizontal="37dp"
         android:text="@string/welcomeText"
         android:textColor="#FFFFFF"
         android:textSize="45sp"
@@ -21,29 +22,33 @@
 
     <TextView
         android:id="@+id/intro1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="456dp"
+        android:layout_width="411dp"
+        android:layout_height="26dp"
+        android:paddingHorizontal="37dp"
         android:text="@string/intro_text"
         android:textColor="#FF426F"
         android:textSize="19sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.166"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.329" />
 
     <TextView
         android:id="@+id/intro2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="432dp"
+        android:layout_width="411dp"
+        android:layout_height="27dp"
+        android:paddingHorizontal="37dp"
         android:text="@string/into_text2"
         android:textColor="#FFFFFF"
         android:textSize="19sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.172"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.366" />
 
     <Button
         android:id="@+id/loginBtn"
