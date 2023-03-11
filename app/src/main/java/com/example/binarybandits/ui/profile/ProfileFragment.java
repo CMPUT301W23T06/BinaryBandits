@@ -1,21 +1,17 @@
 package com.example.binarybandits.ui.profile;
 import static androidx.databinding.DataBindingUtil.setContentView;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.example.binarybandits.DBConnector;
@@ -26,12 +22,9 @@ import com.example.binarybandits.models.QRCode;
 import com.example.binarybandits.player.PlayerCallback;
 import com.example.binarybandits.player.PlayerDB;
 import com.example.binarybandits.qrcode.QRArrayAdapter;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.squareup.picasso.Picasso;
+import com.example.binarybandits.qrcode.DownloadImageTask;
 
 import java.util.ArrayList;
-import java.util.concurrent.CountDownLatch;
 
 public class ProfileFragment extends Fragment {
 
@@ -41,9 +34,8 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
-        String url = "https://api.dicebear.com/5.x/avataaars-neutral/png?seed=" + AuthController.getUsername(getActivity());
         imageView = view.findViewById(R.id.profileIconImageView);
-        Picasso.get().load(url).into(imageView);
+        DownloadImageTask.loadAvatarImageIntoView(imageView, AuthController.getUsername(getActivity()));
         getCurrentPlayer(view);
         return view;
     }
