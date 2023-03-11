@@ -77,7 +77,7 @@ public class LeaderboardViewModel extends ViewModel {
      * Reference: https://www.javatpoint.com/insertion-sort-in-java
      * sort array of players based on score using insertion sort
      */
-    public void sortPlayer_list(){
+    public ArrayList<Player> sortPlayer_list(ArrayList<Player> sortedPlayerList){
         int len = sortedPlayerList.size();
         int i;
         int k;
@@ -90,8 +90,9 @@ public class LeaderboardViewModel extends ViewModel {
                 k = k -1;
             }
             sortedPlayerList.set(k+1, key);
-        }
 
+        }
+        return sortedPlayerList;
     }
 
     /**
