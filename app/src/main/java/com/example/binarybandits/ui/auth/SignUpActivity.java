@@ -44,7 +44,7 @@ public class SignUpActivity extends AppCompatActivity {
                 } else if (name.isEmpty()) {
                     editFullNameField.startAnimation(vibrate);
                 } else if (phone.isEmpty()) {
-                    editPhoneField.startAnimation(vibrate);
+                    editPhoneField.startAnimation(vibrate); //phone number is optional
                 } else {
                     AuthController.register(SignUpActivity.this, username, name, phone);
                 }
