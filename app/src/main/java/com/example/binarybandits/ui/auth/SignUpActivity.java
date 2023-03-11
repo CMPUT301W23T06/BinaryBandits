@@ -43,10 +43,14 @@ public class SignUpActivity extends AppCompatActivity {
                     editUsernameField.startAnimation(vibrate);
                 } else if (name.isEmpty()) {
                     editFullNameField.startAnimation(vibrate);
-                } else if (phone.isEmpty()) {
-                    editPhoneField.startAnimation(vibrate);
                 } else {
+                    if(phone.isEmpty()) {
+                        phone = null;
+                    }
                     AuthController.register(SignUpActivity.this, username, name, phone);
+                    editUsernameField.setText("");
+                    editFullNameField.setText("");
+                    editPhoneField.setText("");
                 }
             }
         });
