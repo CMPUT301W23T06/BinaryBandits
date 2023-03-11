@@ -1,5 +1,6 @@
 package com.example.binarybandits.ui.leaderboard;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,8 +11,12 @@ import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
+import com.example.binarybandits.DBConnector;
 import com.example.binarybandits.R;
 import com.example.binarybandits.models.Player;
+import com.example.binarybandits.player.PlayerDB;
+import com.example.binarybandits.player.PlayerListCallback;
+import com.google.android.material.tabs.TabLayout;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -36,6 +41,37 @@ public class LeaderboardFragment extends Fragment {
         TextView scoreTwo = leaderboard.findViewById(R.id.player2_score);
         TextView scoreThree = leaderboard.findViewById(R.id.player3_score);
 
+        PlayerDB db = new PlayerDB(new DBConnector());
+
+        db.getAllPlayers(players, new PlayerListCallback() {
+            @Override
+            public void onPlayerListCallback(ArrayList<Player> playerResultsList) {
+                Log.d("Leaderboard", playerResultsList.toString());
+                // set values of top three players
+                if(players.size()>0) {
+                    nameOne.setText(players.get(0).getUsername());
+                    scoreOne.setText(Integer.toString(players.get(0).getTotalScore()));
+                }
+
+                if(players.size()>1) {
+                    nameTwo.setText(players.get(1).getUsername());
+                    scoreTwo.setText(Integer.toString(players.get(1).getTotalScore()));
+                }
+                if(players.size()>2) {
+                    nameThree.setText(players.get(2).getUsername());
+                    scoreThree.setText(Integer.toString(players.get(2).getTotalScore()));
+                }
+
+                // call ArrayAdapter to add each item in array to ListView
+                if(players.size()>3) {
+                    // remove top three players from players array
+                    removePlayers(players);
+                    ArrayAdapter<Player> playerArrayAdapter = new LeaderboardArrayAdapter(getActivity(), players);
+                    playerList.setAdapter(playerArrayAdapter);
+                }
+            }
+        });
+        /*
         // set values of top three players
         if(players.size()>0) {
             nameOne.setText(players.get(0).getUsername());
@@ -66,7 +102,7 @@ public class LeaderboardFragment extends Fragment {
             removePlayers(players);
             ArrayAdapter<Player> playerArrayAdapter = new LeaderboardArrayAdapter(getActivity(), players);
             playerList.setAdapter(playerArrayAdapter);
-        }
+        }*/
         return leaderboard;
     }
 
