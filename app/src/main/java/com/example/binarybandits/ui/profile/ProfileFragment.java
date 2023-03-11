@@ -29,6 +29,7 @@ import com.example.binarybandits.models.QRCode;
 import com.example.binarybandits.player.PlayerCallback;
 import com.example.binarybandits.player.PlayerDB;
 import com.example.binarybandits.qrcode.QRArrayAdapter;
+import com.example.binarybandits.qrcode.QRCodeCallback;
 import com.example.binarybandits.qrcode.QRCodeInfoActivity;
 import com.example.binarybandits.ui.QRpage.QRpage;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -65,18 +66,24 @@ public class ProfileFragment extends Fragment {
         usernameText.setText(username);
 
 
-        ListView QRlist = view.findViewById(R.id.list_view_player_qr_codes);
-        ArrayList<QRCode> dataList = new ArrayList<>();
-
-        for (int i = 0; i < 10; i++) {
-            dataList.add(new QRCode("hash", "name", 50));
-        }
 
 
-        ArrayAdapter<QRCode> QRAdapter = new QRArrayAdapter(getActivity(), dataList);
+//        for (int i = 0; i < 10; i++) {
+//            dataList.add(new QRCode("hash", "name", 50));
+//        }
 
-
-        QRlist.setAdapter(QRAdapter);
+//        db.getPlayer(username, new PlayerCallback() {
+//            @Override
+//            public void onPlayerCallback(Player player) {
+//                ListView QRlist = view.findViewById(R.id.list_view_player_qr_codes);
+//                ArrayList<QRCode> dataList = new ArrayList<>();
+//                dataList = player.getQrCodesScanned();
+//                ArrayAdapter<QRCode> QRAdapter = new QRArrayAdapter(getActivity(), dataList);
+//                QRlist.setAdapter(QRAdapter);
+//            }
+//
+//
+//        });
 
 
 
@@ -97,23 +104,29 @@ public class ProfileFragment extends Fragment {
 
                     //Get ListView of QR codes scanned
 
+                    ListView QRlist = view.findViewById(R.id.list_view_player_qr_codes);
+                    ArrayList<QRCode> dataList = new ArrayList<>();
+                    dataList = player.getQrCodesScanned();
+                    ArrayAdapter<QRCode> QRAdapter = new QRArrayAdapter(getActivity(), dataList);
+                    QRlist.setAdapter(QRAdapter);
 
 
+                    ArrayList<QRCode> finalDataList = dataList;
+                    QRlist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
+
+                            Intent myIntent = new Intent(getActivity(), QRCodeInfoActivity.class);
+                            myIntent.putExtra("name", String.valueOf(finalDataList.get(position).getName()));
+                            getActivity().startActivity(myIntent);
+
+                        }
+                    });
                 }
             }
         });
 
-        QRlist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-
-                Intent myIntent = new Intent(getActivity(), QRCodeInfoActivity.class);
-                myIntent.putExtra("name", String.valueOf(dataList.get(position).getName()));
-                getActivity().startActivity(myIntent);
-
-            }
-        });
     }
 }
