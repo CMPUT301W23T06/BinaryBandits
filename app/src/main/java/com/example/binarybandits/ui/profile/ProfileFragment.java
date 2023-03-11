@@ -4,6 +4,7 @@ import static androidx.databinding.DataBindingUtil.setContentView;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import androidx.fragment.app.Fragment;
 import com.example.binarybandits.DBConnector;
 import com.example.binarybandits.R;
 import com.example.binarybandits.controllers.AuthController;
+import com.example.binarybandits.controllers.PlayerController;
 import com.example.binarybandits.models.Player;
 import com.example.binarybandits.models.QRCode;
 import com.example.binarybandits.player.PlayerCallback;
@@ -29,6 +31,7 @@ import java.util.ArrayList;
 public class ProfileFragment extends Fragment {
 
     private ImageView imageView;
+    private PlayerController playerController;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -86,6 +89,7 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onPlayerCallback(Player player) {
                 if (player != null) {
+                    playerController = new PlayerController(player);
                     TextView scoreText = view.findViewById(R.id.score_text);
                     scoreText.setText(String.valueOf(player.getTotalScore()));
 
@@ -93,8 +97,23 @@ public class ProfileFragment extends Fragment {
                     totalQRText.setText(String.valueOf(player.getTotalQRCodes()));
 
                     //Get highest/lowest scoring QR codes
+                    TextView highestQRCode = view.findViewById(R.id.highest_score_text);
+                    QRCode playerHighestQRCode = playerController.getHighestQRCode();
+                    if(playerHighestQRCode != null) {
+                        highestQRCode.setText(String.valueOf(playerHighestQRCode.getPoints()));
+                    }
+                    else {
+                        highestQRCode.setText("0");
+                    }
 
-
+                    TextView lowestQRCode = view.findViewById(R.id.lowest_score_text);
+                    QRCode playerLowestQRCode = playerController.getLowestQRCode();
+                    if(playerLowestQRCode != null) {
+                        lowestQRCode.setText(String.valueOf(playerLowestQRCode.getPoints()));
+                    }
+                    else {
+                        lowestQRCode.setText("0");
+                    }
 
                     //Get ListView of QR codes scanned
 

@@ -20,6 +20,7 @@ public class QRCode {
         this.name = name;
         this.points = points;
         this.numPlayersScannedBy = 1;
+        this.visualRep = visualRep;
     }
 
     /**
@@ -58,6 +59,7 @@ public class QRCode {
     Bitmap locationImage;
     ArrayList<String> comments;
     int numPlayersScannedBy;
+    Picasso visualRep;
 
     public String getHash() {
         return hash;
@@ -126,6 +128,4 @@ public class QRCode {
     public void decrementNumPlayersScannedBy() {
         this.numPlayersScannedBy = numPlayersScannedBy - 1;
     }
-
-
 }
