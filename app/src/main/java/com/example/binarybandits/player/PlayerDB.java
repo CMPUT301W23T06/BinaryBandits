@@ -225,29 +225,10 @@ public class PlayerDB {
     /**
      *
      */
-    public void getPlayersByScore(ArrayList<Player> playerList, PlayerListCallback callback) {
+    public void getPlayersByScore(ArrayList<Player> playerList) {
+        //Alex: I am still working on this function!
         //Referenced: https://firebase.google.com/docs/firestore/query-data/order-limit-data
         Query sortQuery = collectionReference.orderBy("score", Query.Direction.ASCENDING);
-        collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
-            @Override
-            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException error) {
-                playerList.clear();
-
-                for(QueryDocumentSnapshot doc: queryDocumentSnapshots) {
-                    String username = doc.getString("username");
-                    String phone = doc.getString("phone");
-                    Bitmap avatar = (Bitmap)doc.get("avatar");
-                    int totalScore = Objects.requireNonNull(doc.getLong("totalScore")).intValue();
-                    int totalQRCodes = Objects.requireNonNull(doc.getLong("totalQRCodes")).intValue();
-                    ArrayList<Map<String, Object>> qrCodesScanned = (ArrayList<Map<String, Object>>) doc.get("qrCodesScanned");
-
-                    ArrayList<QRCode> convertedQRCodes = getPlayerHelper(qrCodesScanned, totalQRCodes);
-                    Player player = new Player(username, phone, totalScore, totalQRCodes, avatar, convertedQRCodes);
-                    playerList.add(player);
-                }
-                callback.onPlayerListCallback(playerList);
-            }
-        });
     }
 
 
