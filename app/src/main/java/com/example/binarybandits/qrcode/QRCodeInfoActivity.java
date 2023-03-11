@@ -21,7 +21,7 @@ public class QRCodeInfoActivity extends AppCompatActivity {
 
         if (extras != null) {
             hash = extras.getString("hash");
-            System.out.println("yessssssssss");
+            //System.out.println("yessssssssss");
         } else {
             hash = AuthController.getUsername(QRCodeInfoActivity.this);
         }
