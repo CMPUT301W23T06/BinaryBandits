@@ -159,15 +159,93 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.023" />
 
-    <ListView
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/materialToolbar"
         android:layout_width="375dp"
-        android:layout_height="75dp"
+        android:layout_height="73dp"
         android:background="#333333"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.47"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.894" />
+        app:layout_constraintVertical_bias="0.895" />
+
+    <TextView
+        android:id="@+id/your_ranking_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Your Ranking:"
+        android:textColor="#FF426F"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.07"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.827" />
+
+    <TextView
+        android:id="@+id/user_rank"
+        android:layout_width="41dp"
+        android:layout_height="17dp"
+        android:layout_marginStart="12dp"
+        android:text="#1"
+        android:textColor="@color/yellow"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.071"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.87" />
+
+    <ImageView
+        android:id="@+id/users_image"
+        android:layout_width="34dp"
+        android:layout_height="37dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="60dp"
+        android:background="#00FFFFFF"
+        android:contentDescription="@string/image"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.267"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.876"
+        app:srcCompat="@drawable/ic_profile" />
+
+    <TextView
+        android:id="@+id/current_username"
+        android:layout_width="109dp"
+        android:layout_height="25dp"
+        android:text="TextView"
+        android:textColor="#FFFFFF"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.652"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.876" />
+
+    <TextView
+        android:id="@+id/current_user_score"
+        android:layout_width="72dp"
+        android:layout_height="20dp"
+        android:layout_marginEnd="5dp"
+        android:gravity="right"
+        android:text="TextView"
+        android:textColor="@color/red"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.916"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.869" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
