@@ -13,13 +13,14 @@ import androidx.fragment.app.Fragment;
 
 import com.example.binarybandits.DBConnector;
 import com.example.binarybandits.R;
+import com.example.binarybandits.controllers.AuthController;
 import com.example.binarybandits.models.Player;
 import com.example.binarybandits.player.PlayerDB;
 import com.example.binarybandits.player.PlayerListCallback;
-import com.google.android.material.tabs.TabLayout;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class LeaderboardFragment extends Fragment {
     LeaderboardViewModel leaderboardViewModel = new LeaderboardViewModel();
@@ -39,6 +40,11 @@ public class LeaderboardFragment extends Fragment {
         TextView scoreOne = leaderboard.findViewById(R.id.player1_score);
         TextView scoreTwo = leaderboard.findViewById(R.id.player2_score);
         TextView scoreThree = leaderboard.findViewById(R.id.player3_score);
+        ImageView user_image = leaderboard.findViewById(R.id.users_image);
+        TextView user_name = leaderboard.findViewById(R.id.current_username);
+        TextView user_score = leaderboard.findViewById(R.id.current_user_score);
+        TextView users_rank = leaderboard.findViewById(R.id.user_rank);
+        String user = AuthController.getUsername(getActivity());
 
         PlayerDB db = new PlayerDB(new DBConnector());
 
@@ -48,6 +54,22 @@ public class LeaderboardFragment extends Fragment {
                 Log.d("Leaderboard", playerResultsList.toString());
                 // sort players list
                 players = leaderboardViewModel.sortPlayer_list(players);
+
+                // get current player profile
+                int user_rank = 0;
+                Player current_user = players.get(0);
+                for(int i=0; i<players.size(); i++)
+                    if(Objects.equals(players.get(i).getUsername(), user)){
+                        current_user = players.get(i);
+                        user_rank = i+1;
+                    }
+
+                // set users info at bottom of leaderboard
+                user_name.setText(current_user.getUsername());
+                user_score.setText(Integer.toString(current_user.getTotalScore()));
+                users_rank.setText("#"+Integer.toString(user_rank));
+                String url_user = "https://api.dicebear.com/5.x/avataaars-neutral/png?seed=" + current_user.getUsername();
+                Picasso.get().load(url_user).into(user_image);
 
                 // set values of top three players
                 if(players.size()>0) {
@@ -82,38 +104,6 @@ public class LeaderboardFragment extends Fragment {
                 }
             }
         });
-        /*
-        // set values of top three players
-        if(players.size()>0) {
-            nameOne.setText(players.get(0).getUsername());
-            scoreOne.setText(Integer.toString(players.get(0).getTotalScore()));
-            String url1 = "https://api.dicebear.com/5.x/avataaars-neutral/png?seed=" + players.get(0).getUsername();
-            ImageView image1 = leaderboard.findViewById(R.id.limage1);
-            Picasso.get().load(url1).into(image1);
-        }
-
-        if(players.size()>1) {
-            nameTwo.setText(players.get(1).getUsername());
-            scoreTwo.setText(Integer.toString(players.get(1).getTotalScore()));
-            String url2 = "https://api.dicebear.com/5.x/avataaars-neutral/png?seed=" + players.get(1).getUsername();
-            ImageView image2 = leaderboard.findViewById(R.id.limage2);
-            Picasso.get().load(url2).into(image2);
-        }
-        if(players.size()>2) {
-            nameThree.setText(players.get(2).getUsername());
-            scoreThree.setText(Integer.toString(players.get(2).getTotalScore()));
-            String url3 = "https://api.dicebear.com/5.x/avataaars-neutral/png?seed=" + players.get(2).getUsername();
-            ImageView image3 = leaderboard.findViewById(R.id.limage3);
-            Picasso.get().load(url3).into(image3);
-        }
-
-        // call ArrayAdapter to add each item in array to ListView
-        if(players.size()>3) {
-            // remove top three players from players array
-            removePlayers(players);
-            ArrayAdapter<Player> playerArrayAdapter = new LeaderboardArrayAdapter(getActivity(), players);
-            playerList.setAdapter(playerArrayAdapter);
-        }*/
         return leaderboard;
     }
 
