@@ -100,6 +100,11 @@ public class AuthController {
                     Intent myIntent = new Intent(ctx, MainActivity.class);
                     ctx.startActivity(myIntent);
                 }
+                else {
+                    //Need to move Toast to a View class
+                    Toast message = Toast.makeText(ctx, "Player not found!", Toast.LENGTH_LONG);
+                    message.show();
+                }
             }
         });
     }

@@ -139,8 +139,9 @@ public class PlayerDB {
      * @param username Current player's username
      */
     public void getPlayer(String username, PlayerCallback callback) {
-        //To-do: Implement getPlayer() -> Alex
         //Referenced: https://cloud.google.com/firestore/docs/query-data/get-data#javaandroid_2
+        //Author:
+        //License:
         DocumentReference documentReference = collectionReference.document(username);
         documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
@@ -233,10 +234,38 @@ public class PlayerDB {
     /**
      *
      */
-    public void getPlayersByScore(ArrayList<Player> playerList) {
+    public void getPlayersByScore(ArrayList<Player> playerList, PlayerListCallback callback) {
         //Alex: I am still working on this function!
         //Referenced: https://firebase.google.com/docs/firestore/query-data/order-limit-data
+        //Referenced:
         Query sortQuery = collectionReference.orderBy("score", Query.Direction.ASCENDING);
+        sortQuery.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                playerList.clear();
+
+                for(QueryDocumentSnapshot doc: task.getResult()) {
+                    String username = doc.getString("username");
+                    String phone = doc.getString("phone");
+                    Bitmap avatar = (Bitmap)doc.get("avatar");
+                    int totalScore = Objects.requireNonNull(doc.getLong("totalScore")).intValue();
+                    int totalQRCodes = Objects.requireNonNull(doc.getLong("totalQRCodes")).intValue();
+                    ArrayList<Map<String, Object>> qrCodesScanned = (ArrayList<Map<String, Object>>) doc.get("qrCodesScanned");
+
+                    ArrayList<QRCode> convertedQRCodes = getPlayerHelper(qrCodesScanned, totalQRCodes);
+                    Player player = new Player(username, phone, totalScore, totalQRCodes, avatar, convertedQRCodes);
+                    playerList.add(player);
+                }
+                callback.onPlayerListCallback(playerList);
+            }
+        });
+    }
+
+
+    /**
+     *
+     */
+    public void searchPlayer(String input) {
     }
 
 

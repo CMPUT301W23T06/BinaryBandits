@@ -48,6 +48,7 @@ public class LogInActivity extends AppCompatActivity {
                 } else {
                     AuthController.login(LogInActivity.this, username);
                 }
+                editUsernameField.setText("");
             }
         });
 
