@@ -2,6 +2,7 @@ package com.example.binarybandits.ui.profile;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,14 +52,16 @@ public class ProfileFragment extends Fragment {
         db.getPlayer(username, new PlayerCallback() {
             @Override
             public void onPlayerCallback(Player player) {
-                TextView scoreText = view.findViewById(R.id.score_text);
-                scoreText.setText(String.valueOf(player.getTotalScore()));
+                if (player != null) {
+                    TextView scoreText = view.findViewById(R.id.score_text);
+                    scoreText.setText(String.valueOf(player.getTotalScore()));
 
-                TextView totalQRText = view.findViewById(R.id.total_qr_scanned_text);
-                totalQRText.setText(String.valueOf(player.getTotalQRCodes()));
-                //Get highest/lowest scoring QR codes
+                    TextView totalQRText = view.findViewById(R.id.total_qr_scanned_text);
+                    totalQRText.setText(String.valueOf(player.getTotalQRCodes()));
+                    //Get highest/lowest scoring QR codes
 
-                //Get ListView of QR codes scanned
+                    //Get ListView of QR codes scanned
+                }
             }
         });
     }

@@ -1,19 +1,15 @@
 package com.example.binarybandits.player;
 
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.preference.PreferenceManager;
-import android.telecom.Call;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.MutableLiveData;
 
 import com.example.binarybandits.DBConnector;
+import com.example.binarybandits.Geolocation;
 import com.example.binarybandits.models.Player;
 import com.example.binarybandits.models.QRCode;
-import com.example.binarybandits.ui.auth.LogInActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -27,11 +23,12 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Objects;
 
-import javax.security.auth.callback.Callback;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * Stores, retrieves, adds, and deletes Player data
@@ -64,6 +61,7 @@ public class PlayerDB {
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if(task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
+                    //Add a user to the database if their username is unique
                     if(!document.exists()) {
                         Log.d(TAG, "Valid username");
                         addOnSuccess(username, player);
@@ -101,7 +99,7 @@ public class PlayerDB {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.d(TAG, "Player could not be added!" + e.toString());
+                        Log.d(TAG, "Player could not be added!" + e);
                     }
                 });
     }
@@ -137,16 +135,62 @@ public class PlayerDB {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 if (documentSnapshot.exists()) {
-                    //Player player = documentSnapshot.toObject(Player.class);
                     String username = documentSnapshot.getString("username");
                     String phone = documentSnapshot.getString("phone");
                     Bitmap avatar = (Bitmap)documentSnapshot.get("avatar");
                     int totalScore = Objects.requireNonNull(documentSnapshot.getLong("totalScore")).intValue();
                     int totalQRCodes = Objects.requireNonNull(documentSnapshot.getLong("totalQRCodes")).intValue();
-                    //ArrayList<QRCode> qrCodesScanned = (ArrayList<QRCode>) documentSnapshot.get("qrCodesScanned");
-                    ArrayList<QRCode> qrCodesScanned = new ArrayList<>(); //temporary
+                    ArrayList<Map<String, Object>> qrCodesScanned = (ArrayList<Map<String, Object>>) documentSnapshot.get("qrCodesScanned");
 
-                    Player player = new Player(username, phone, totalScore, totalQRCodes, avatar, qrCodesScanned);
+                    //Referenced:
+                    ArrayList<QRCode> convertedQRCodes = new ArrayList<QRCode>();
+                    if(qrCodesScanned != null) {
+                        //Create a QRCode based on the map representation generated from reading Firebase DB
+                        for (int i = 0; i < totalQRCodes; i++) {
+                            Map<String, Object> map = qrCodesScanned.get(i);
+                            String name = map.get("name").toString();
+                            String hash = map.get("hash").toString();
+                            int points = Integer.parseInt(map.get("points").toString());
+
+                            String scannerUID;
+                            if(map.get("scannerUID") == null) {
+                                scannerUID = null;
+                            }
+                            else {
+                                scannerUID = map.get("scannerUID").toString();
+                            }
+
+                            Geolocation coordinates;
+                            if(map.get("coordinates") == null) {
+                                coordinates = null;
+                            }
+                            else {
+                                coordinates = (Geolocation)map.get("coordinates");
+                            }
+
+                            Bitmap locationImage;
+                            if(map.get("locationImage") == null) {
+                                locationImage = null;
+                            }
+                            else {
+                                locationImage = (Bitmap)map.get("locationImage");
+                            }
+
+                            ArrayList<String> comments;
+                            if(map.get("comments") == null) {
+                                comments = null;
+                            }
+                            else {
+                                comments = (ArrayList<String>)map.get("comments");
+                            }
+                            int numPlayersScannedBy = Integer.parseInt(map.get("numPlayersScannedBy").toString());
+
+                            QRCode qrCode = new QRCode(hash, name, points, scannerUID, coordinates,
+                                    locationImage, comments, numPlayersScannedBy);
+                            convertedQRCodes.add(qrCode);
+                        }
+                    }
+                    Player player = new Player(username, phone, totalScore, totalQRCodes, avatar, convertedQRCodes);
                     Log.d(TAG, "Player information retrieved from database");
                     Log.d(TAG, "Player Name: " + player.getUsername() + "\n Score: " + player.getTotalScore());
                     callback.onPlayerCallback(player);
@@ -158,7 +202,7 @@ public class PlayerDB {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Log.d(TAG, "Could not retrieve document reference!" + e.toString());
+                Log.d(TAG, "Could not retrieve document reference!" + e);
             }
         });
     }
@@ -174,8 +218,15 @@ public class PlayerDB {
      * Update a field in a Player document
      * @param player
      */
-    public void updatePlayer(Player player, String fieldToUpdate, Object newValue) {
+    public void updatePlayer(Player player) {
         //Alex: I'm not sure if this works. Need to test this method
-        collectionReference.document(player.getUsername()).update(fieldToUpdate, newValue);
+        collectionReference.document(player.getUsername()).update(
+                "username", player.getUsername(),
+                "phone", player.getPhone(),
+                "totalScore", player.getTotalScore(),
+                "totalQRCodes", player.getTotalQRCodes(),
+                "playerAvatar", player.getPlayerAvatar(),
+                "qrCodesScanned", player.getQrCodesScanned()
+        );
     }
 }

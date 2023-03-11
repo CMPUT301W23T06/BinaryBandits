@@ -57,6 +57,13 @@ public class QRCodeDB {
                     }
                     else {
                         Log.d(TAG, "QRCode already in database!");
+                        getQRCode(name, new QRCodeCallback() {
+                            @Override
+                            public void onQRCodeCallback(QRCode qrCode) {
+                                qrCode.incrementNumPlayersScannedBy();
+                                updateQRCode(qrCode);
+                            }
+                        });
                     }
                 }
             }
@@ -74,7 +81,6 @@ public class QRCodeDB {
         data.put("scannerUID", qrCode.getScannerUID());
         data.put("hash", qrCode.getHash());
         data.put("points", qrCode.getPoints());
-        //To-do: Add Geolocation to data
         data.put("geolocation", qrCode.getCoordinates());
         data.put("locationImage", qrCode.getLocationImage());
         data.put("comments", qrCode.getComments());
@@ -101,21 +107,20 @@ public class QRCodeDB {
     /**
      *
      */
-    public void getQRCode(String id, QRCodeCallback callback) {
-        DocumentReference documentReference = collectionReference.document(id);
+    public void getQRCode(String name, QRCodeCallback callback) {
+        DocumentReference documentReference = collectionReference.document(name);
         documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 if (documentSnapshot.exists()) {
-                    //Player player = documentSnapshot.toObject(Player.class);
                     String scannerUID = documentSnapshot.getString("scannerUID");
                     String hash = documentSnapshot.getString("hash");
                     String name = documentSnapshot.getString("name");
-                    int points = Integer.parseInt(documentSnapshot.getString("points"));
+                    int points = documentSnapshot.getLong("points").intValue();
                     Geolocation coordinates = (Geolocation) documentSnapshot.get("coordinates");
                     Bitmap locationImage = (Bitmap)documentSnapshot.get("locationImage");
                     ArrayList<String> comments = (ArrayList<String>)documentSnapshot.get("comments");
-                    int numPlayersScannedBy = Integer.parseInt(documentSnapshot.getString("numPlayerScannedBy"));
+                    int numPlayersScannedBy = documentSnapshot.getLong("numPlayersScannedBy").intValue();
 
                     QRCode qrCode = new QRCode(hash, name, points, scannerUID, coordinates,
                             locationImage, comments, numPlayersScannedBy);
@@ -141,6 +146,15 @@ public class QRCodeDB {
      */
     public void updateQRCode(QRCode qrCode) {
         //To-do: Implement updateQRCode() -> Alex
+        collectionReference.document(qrCode.getName())
+                .update("name", qrCode.getName(),
+                        "scannerUID", qrCode.getScannerUID(),
+                        "hash", qrCode.getHash(),
+                        "points", qrCode.getPoints(),
+                        "coordinates", qrCode.getCoordinates(),
+                        "locationImage", qrCode.getLocationImage(),
+                        "comments", qrCode.getComments(),
+                        "numPlayersScannedBy", qrCode.getNumPlayersScannedBy());
     }
 
     /**
