@@ -15,11 +15,15 @@ import androidx.fragment.app.Fragment;
 
 import com.example.binarybandits.R;
 import com.example.binarybandits.models.Player;
+import com.example.binarybandits.player.PlayerCallback;
+import com.example.binarybandits.player.PlayerDB;
+import com.example.binarybandits.DBConnector;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,14 +34,72 @@ public class LeaderboardSearchFragment extends Fragment {
     private FirebaseFirestore db;
 
     public LeaderboardSearchFragment() {
-        // Required empty public constructor
+        /*DBConnector dbConnector = new DBConnector();
+        PlayerDB playerDB = new PlayerDB(dbConnector);
+        ArrayList<Player> players = new ArrayList<>();
+
+
+        String searchText = searchInput.getText().toString();
+        playerDB.getPlayer(searchText, new PlayerCallback() {
+            @Override
+            public void onPlayerCallback(Player searchedPlayer) {
+                players.add(searchedPlayer);
+            }
+        });*/
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_leaderboard_search, container, false);
+        // Inflate the layout for this fragment
+        View search = inflater.inflate(R.layout.fragment_leaderboard_search, container, false);
 
-        searchInput = rootView.findViewById(R.id.search_bar);
+        DBConnector dbConnector = new DBConnector();
+        PlayerDB playerDB = new PlayerDB(dbConnector);
+        ArrayList<Player> players = new ArrayList<>();
+        //ArrayList<String> usernames = new ArrayList<>();
+        //ArrayList<Integer> scores = new ArrayList<>();
+
+        searchInput = search.findViewById(R.id.search_bar);
+        String searchText = searchInput.getText().toString();
+
+        if ((searchText).length() != 0) {
+            playerDB.getPlayer(searchText, new PlayerCallback() {
+                @Override
+                public void onPlayerCallback(Player searchedPlayer) {
+                    players.add(searchedPlayer);
+                    //usernames.add(searchedPlayer.getUsername());
+                    //scores.add(searchedPlayer.getTotalScore());
+
+                }
+            });
+            // display all players in ListView
+            ListView searchResults = search.findViewById(R.id.search_results);
+
+            ArrayAdapter<Player> playerArrayAdapter = new LeaderboardSearchArrayAdapter(getActivity(), players);
+            searchResults.setAdapter(playerArrayAdapter);
+
+
+
+
+
+            //ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, usernames);
+            //searchResults.setAdapter(adapter);
+
+
+        }
+
+
+
+
+        //ArrayAdapter<Player> playerArrayAdapter = new LeaderboardArrayAdapter(getActivity(), players);
+        //listView.setAdapter(playerArrayAdapter);
+
+
+    return search;
+
+
+        /*searchInput = rootView.findViewById(R.id.search_bar);
         searchResults = rootView.findViewById(R.id.search_results);
         db = FirebaseFirestore.getInstance();
 
@@ -71,21 +133,29 @@ public class LeaderboardSearchFragment extends Fragment {
                 // handle errors here
             }
         });
-    }
+    }*/
 
-    private void displayResults(List<DocumentSnapshot> results) {
+
+
+        /*private void displayResults(List<DocumentSnapshot> results) {
         List<String> usernames = new ArrayList<>();
-        List<String> names = new ArrayList<>();
+        //List<String> names = new ArrayList<>();
         for (DocumentSnapshot document : results) {
-            names.add(document.getString("username"));
-            names.add(document.getString("name"));
+            usernames.add(document.getString("username"));
+            //names.add(document.getString("name"));
             //names.add(document.getString("points"));
 
         }
         // display the names in a ListView
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, usernames);
-        searchResults.setAdapter(adapter);
-    }
+        //LeaderboardViewModel leaderboardViewModel = new LeaderboardViewModel();
+        //ArrayList<Player> names = leaderboardViewModel.getPlayerList();
+        ArrayAdapter<Player> playerArrayAdapter = new LeaderboardArrayAdapter(getActivity(), usernames);
+
+        searchResults.setAdapter(playerArrayAdapter);
+        //ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, usernames);
+        //searchResults.setAdapter(adapter);
+    }*/
 
 
+        }
 }

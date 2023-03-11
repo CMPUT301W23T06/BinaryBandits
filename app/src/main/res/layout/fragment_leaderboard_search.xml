@@ -31,7 +31,6 @@
         android:ems="2"
         android:hint="@string/search"
         android:inputType="textPersonName"
-        android:text="@string/search"
         android:textColor="@color/background_black"
         app:layout_constraintEnd_toEndOf="@+id/imageBox"
         app:layout_constraintStart_toStartOf="parent"

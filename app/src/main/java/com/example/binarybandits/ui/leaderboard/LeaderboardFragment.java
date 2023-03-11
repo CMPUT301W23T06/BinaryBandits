@@ -5,10 +5,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.binarybandits.R;
 import com.example.binarybandits.models.Player;
@@ -58,7 +60,25 @@ public class LeaderboardFragment extends Fragment {
             ArrayAdapter<Player> playerArrayAdapter = new LeaderboardArrayAdapter(getActivity(), players);
             playerList.setAdapter(playerArrayAdapter);
         }
+
+
+        Button button = leaderboard.findViewById(R.id.button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                button.setVisibility(View.GONE);
+                FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                transaction.add(R.id.fragment_container, new LeaderboardSearchFragment());
+                transaction.addToBackStack(null);
+                transaction.commit();
+            }
+
+        });
+
+
         return leaderboard;
+
     }
 
     /**
@@ -69,5 +89,9 @@ public class LeaderboardFragment extends Fragment {
         for(int i = 0; i<3; i++)
             players.remove(0);
     }
+
+
+
+
 
 }
