@@ -15,6 +15,7 @@ import com.example.binarybandits.DBConnector;
 import com.example.binarybandits.R;
 import com.example.binarybandits.controllers.AuthController;
 import com.example.binarybandits.models.Player;
+import com.example.binarybandits.player.PlayerCallback;
 import com.example.binarybandits.player.PlayerDB;
 import com.example.binarybandits.player.PlayerListCallback;
 import com.squareup.picasso.Picasso;
@@ -48,12 +49,13 @@ public class LeaderboardFragment extends Fragment {
 
         PlayerDB db = new PlayerDB(new DBConnector());
 
-        db.getAllPlayers(players, new PlayerListCallback() {
+        db.getPlayersByQuery(db.getSortedPlayers(), new PlayerListCallback() {
             @Override
             public void onPlayerListCallback(ArrayList<Player> playerResultsList) {
                 Log.d("Leaderboard", playerResultsList.toString());
                 // sort players list
-                players = leaderboardViewModel.sortPlayer_list(players);
+                //players = leaderboardViewModel.sortPlayer_list(players);
+                players = playerResultsList;
 
                 // get current player profile
                 int user_rank = 0;
@@ -104,6 +106,7 @@ public class LeaderboardFragment extends Fragment {
                 }
             }
         });
+
         return leaderboard;
     }
 
