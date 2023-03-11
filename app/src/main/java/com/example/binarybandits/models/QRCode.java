@@ -125,4 +125,6 @@ public class QRCode {
     public void decrementNumPlayersScannedBy() {
         this.numPlayersScannedBy = numPlayersScannedBy - 1;
     }
+
+
 }
