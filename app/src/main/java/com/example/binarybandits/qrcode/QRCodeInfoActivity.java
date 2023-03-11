@@ -57,7 +57,7 @@ public class QRCodeInfoActivity extends AppCompatActivity {
                 }
             });
 
-            hash = extras.getString("hash");
+            //hash = extras.getString("hash");
         } else {
             System.out.println("error");
         }
@@ -75,8 +75,8 @@ public class QRCodeInfoActivity extends AppCompatActivity {
             }
         });
 
-        ImageView imageView = findViewById(R.id.imageView);
-        DownloadImageTask.loadQRImageIntoView(imageView, hash);
+        //ImageView imageView = findViewById(R.id.imageView);
+        //DownloadImageTask.loadQRImageIntoView(imageView, hash);
 
 
     }
