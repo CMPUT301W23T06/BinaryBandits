@@ -31,46 +31,7 @@ public class LeaderboardViewModel extends ViewModel {
         mText = new MutableLiveData<>();
         mText.setValue("This is leaderboard fragment");
         sortedPlayerList = new ArrayList<>();
-        //DBConnector dbConnector = new DBConnector();
-        //CollectionReference playersCollection = dbConnector.getCollectionReference("Players");
-//        playersCollection
-//                .get()
-//                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//                    @Override
-//                    public void onComplete(Task<QuerySnapshot> task) {
-//                        if (task.isSuccessful()) {
-//                            for (QueryDocumentSnapshot document : task.getResult()) {
-//                                Log.d(TAG, document.getId() + " => " + document.getData());
-//                                String user = document.getId();
-//                                String phone = document.getString("phone");
-//                                //Player player = new Player();
-//                                //sortedPlayerList.add(player)
-//                            }
-//                        }
-//                    }
-//                });
 
-        // create random players to test
-        Player player1 = new Player("John", null, 500, 0, null, null);
-        sortedPlayerList.add(player1);
-        Player player2 = new Player("Karen", null, 600, 0, null, null);
-        sortedPlayerList.add(player2);
-        Player player3 = new Player("Jake", null, 800, 0, null, null);
-        sortedPlayerList.add(player3);
-        Player player4 = new Player("Chad", null, 100, 0, null, null);
-        sortedPlayerList.add(player4);
-        Player player5 = new Player("Alex", null, 6000, 0, null, null);
-        sortedPlayerList.add(player5);
-        Player player6 = new Player("Vera", null, 2800, 0, null, null);
-        sortedPlayerList.add(player6);
-        Player player7 = new Player("Advik", null, 1100, 0, null, null);
-        sortedPlayerList.add(player7);
-        Player player8 = new Player("Sukhnoor", null, 6400, 0, null, null);
-        sortedPlayerList.add(player8);
-        Player player9 = new Player("Aryaman", null, 10000, 0, null, null);
-        sortedPlayerList.add(player9);
-        Player player0 = new Player("Logan", null, 1100, 0, null, null);
-        sortedPlayerList.add(player0);
     }
 
     /**
