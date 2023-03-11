@@ -5,16 +5,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.binarybandits.DBConnector;
 import com.example.binarybandits.R;
 import com.example.binarybandits.controllers.AuthController;
 import com.example.binarybandits.models.Player;
+import com.example.binarybandits.player.PlayerCallback;
 import com.example.binarybandits.player.PlayerDB;
 import com.example.binarybandits.player.PlayerListCallback;
 import com.squareup.picasso.Picasso;
@@ -48,12 +51,13 @@ public class LeaderboardFragment extends Fragment {
 
         PlayerDB db = new PlayerDB(new DBConnector());
 
-        db.getAllPlayers(players, new PlayerListCallback() {
+        db.getPlayersByQuery(db.getSortedPlayers(), new PlayerListCallback() {
             @Override
             public void onPlayerListCallback(ArrayList<Player> playerResultsList) {
                 Log.d("Leaderboard", playerResultsList.toString());
                 // sort players list
-                players = leaderboardViewModel.sortPlayer_list(players);
+                //players = leaderboardViewModel.sortPlayer_list(players);
+                players = playerResultsList;
 
                 // get current player profile
                 int user_rank = 0;
@@ -104,8 +108,26 @@ public class LeaderboardFragment extends Fragment {
                 }
             }
         });
+
+        // set onclick listener for search button to open search fragment
+        Button button = leaderboard.findViewById(R.id.button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                button.setVisibility(View.GONE);
+                FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                transaction.replace(R.id.fragment_container, new LeaderboardSearchFragment());
+                transaction.addToBackStack(null);
+                transaction.commit();
+            }
+
+        });
+
         return leaderboard;
     }
+
+
 
     /**
      * remove top three players from array of players

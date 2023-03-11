@@ -11,8 +11,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.binarybandits.DBConnector;
 import com.example.binarybandits.R;
 import com.example.binarybandits.controllers.AuthController;
+
 import com.example.binarybandits.models.QRCode;
 import com.squareup.picasso.Picasso;
+
 
 public class QRCodeInfoActivity extends AppCompatActivity {
 
@@ -32,6 +34,7 @@ public class QRCodeInfoActivity extends AppCompatActivity {
 
 
         if (extras != null) {
+
             String name = extras.getString("name");
             db.getQRCode(name, new QRCodeCallback() {
                 @Override
@@ -53,11 +56,11 @@ public class QRCodeInfoActivity extends AppCompatActivity {
 
                 }
             });
+
+            hash = extras.getString("hash");
         } else {
             System.out.println("error");
         }
-
-
 
 
 
@@ -72,6 +75,8 @@ public class QRCodeInfoActivity extends AppCompatActivity {
             }
         });
 
+        ImageView imageView = findViewById(R.id.imageView);
+        DownloadImageTask.loadQRImageIntoView(imageView, hash);
 
 
     }

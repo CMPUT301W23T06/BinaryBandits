@@ -25,6 +25,8 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 
+import org.checkerframework.checker.units.qual.A;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -142,37 +144,44 @@ public class PlayerDB {
         //Referenced: https://cloud.google.com/firestore/docs/query-data/get-data#javaandroid_2
         //Author:
         //License:
-        DocumentReference documentReference = collectionReference.document(username);
-        documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                Player player;
-                if (documentSnapshot.exists()) {
-                    String username = documentSnapshot.getString("username");
-                    String phone = documentSnapshot.getString("phone");
-                    Bitmap avatar = (Bitmap)documentSnapshot.get("avatar");
-                    int totalScore = Objects.requireNonNull(documentSnapshot.getLong("totalScore")).intValue();
-                    int totalQRCodes = Objects.requireNonNull(documentSnapshot.getLong("totalQRCodes")).intValue();
-                    ArrayList<Map<String, Object>> qrCodesScanned = (ArrayList<Map<String, Object>>) documentSnapshot.get("qrCodesScanned");
 
-                    ArrayList<QRCode> convertedQRCodes = getPlayerHelper(qrCodesScanned, totalQRCodes);
-                    player = new Player(username, phone, totalScore, totalQRCodes, avatar, convertedQRCodes);
-                    Log.d(TAG, "Player information retrieved from database");
-                    Log.d(TAG, "Player Name: " + player.getUsername() + "\n Score: " + player.getTotalScore());
+        if(username != null && !username.isEmpty()) {
+            DocumentReference documentReference = collectionReference.document(username);
+            documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                @Override
+                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                    Player player;
+                    if (documentSnapshot.exists()) {
+                        String username = documentSnapshot.getString("username");
+                        String phone = documentSnapshot.getString("phone");
+                        Bitmap avatar = (Bitmap) documentSnapshot.get("avatar");
+                        int totalScore = Objects.requireNonNull(documentSnapshot.getLong("totalScore")).intValue();
+                        int totalQRCodes = Objects.requireNonNull(documentSnapshot.getLong("totalQRCodes")).intValue();
+                        ArrayList<Map<String, Object>> qrCodesScanned = (ArrayList<Map<String, Object>>) documentSnapshot.get("qrCodesScanned");
+
+                        ArrayList<QRCode> convertedQRCodes = getPlayerHelper(qrCodesScanned, totalQRCodes);
+                        player = new Player(username, phone, totalScore, totalQRCodes, avatar, convertedQRCodes);
+                        Log.d(TAG, "Player information retrieved from database");
+                        Log.d(TAG, "Player Name: " + player.getUsername() + "\n Score: " + player.getTotalScore());
+                        callback.onPlayerCallback(player);
+                    } else {
+                        player = null;
+                        Log.d(TAG, "Player not found in database!");
+                        ;
+                    }
                     callback.onPlayerCallback(player);
                 }
-                else {
-                    player = null;
-                    Log.d(TAG, "Player not found in database!");;
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.d(TAG, "Could not retrieve document reference!" + e);
                 }
-                callback.onPlayerCallback(player);
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.d(TAG, "Could not retrieve document reference!" + e);
-            }
-        });
+            });
+        }
+        else {
+            //Pass null to callback if username is empty or null
+            callback.onPlayerCallback(null);
+        }
     }
 
     /**
@@ -232,40 +241,57 @@ public class PlayerDB {
     }
 
     /**
-     *
+     * Get players that satisfy an inputted query
+     * @param query
+     * @param callback
      */
-    public void getPlayersByScore(ArrayList<Player> playerList, PlayerListCallback callback) {
-        //Alex: I am still working on this function!
-        //Referenced: https://firebase.google.com/docs/firestore/query-data/order-limit-data
-        //Referenced:
-        Query sortQuery = collectionReference.orderBy("score", Query.Direction.ASCENDING);
-        sortQuery.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+    public void getPlayersByQuery(Query query, PlayerListCallback callback) {
+        //Referenced: https://stackoverflow.com/questions/72607619/firestore-database-java-add-where-condition-before-get-collection
+        ArrayList<Player> playerList = new ArrayList<>();
+        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                playerList.clear();
+                if (task.isSuccessful()) {
+                    for(QueryDocumentSnapshot doc: task.getResult()) {
+                        Log.d(TAG, doc.getString("username"));
+                        if (doc != null) {
+                            String username = doc.getString("username");
+                            String phone = doc.getString("phone");
+                            Bitmap avatar = (Bitmap) doc.get("avatar");
+                            int totalScore = Objects.requireNonNull(doc.getLong("totalScore")).intValue();
+                            int totalQRCodes = Objects.requireNonNull(doc.getLong("totalQRCodes")).intValue();
+                            ArrayList<Map<String, Object>> qrCodesScanned = (ArrayList<Map<String, Object>>) doc.get("qrCodesScanned");
 
-                for(QueryDocumentSnapshot doc: task.getResult()) {
-                    String username = doc.getString("username");
-                    String phone = doc.getString("phone");
-                    Bitmap avatar = (Bitmap)doc.get("avatar");
-                    int totalScore = Objects.requireNonNull(doc.getLong("totalScore")).intValue();
-                    int totalQRCodes = Objects.requireNonNull(doc.getLong("totalQRCodes")).intValue();
-                    ArrayList<Map<String, Object>> qrCodesScanned = (ArrayList<Map<String, Object>>) doc.get("qrCodesScanned");
-
-                    ArrayList<QRCode> convertedQRCodes = getPlayerHelper(qrCodesScanned, totalQRCodes);
-                    Player player = new Player(username, phone, totalScore, totalQRCodes, avatar, convertedQRCodes);
-                    playerList.add(player);
+                            ArrayList<QRCode> convertedQRCodes = getPlayerHelper(qrCodesScanned, totalQRCodes);
+                            Player player = new Player(username, phone, totalScore, totalQRCodes, avatar, convertedQRCodes);
+                            playerList.add(player);
+                            Log.d(TAG, "Player added!");
+                        }
+                    }
+                    Log.d(TAG, playerList.toString());
+                    callback.onPlayerListCallback(playerList);
                 }
-                callback.onPlayerListCallback(playerList);
+                else {
+                    Log.d(TAG, task.getException().getMessage());
+                }
             }
         });
+    }
+
+    /**
+     *
+     */
+    public Query getSortedPlayers() {
+        return collectionReference.orderBy("totalScore", Query.Direction.DESCENDING);
     }
 
 
     /**
      *
      */
-    public void searchPlayer(String input) {
+    public Query searchPlayer(String input) {
+        //Referenced: https://stackoverflow.com/questions/46568142/google-firestore-query-on-substring-of-a-property-value-text-search
+        return collectionReference.orderBy("username").startAt(input).endAt(input + '~');
     }
 
 

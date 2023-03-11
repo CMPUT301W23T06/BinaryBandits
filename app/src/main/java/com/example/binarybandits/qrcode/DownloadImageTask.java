@@ -1,35 +1,17 @@
 package com.example.binarybandits.qrcode;
-
-import android.annotation.SuppressLint;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
-import android.util.Log;
 import android.widget.ImageView;
-import java.io.InputStream;
+import com.squareup.picasso.Picasso;
 
-@SuppressLint("StaticFieldLeak")
-public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
-    private ImageView bmImage;
+public class DownloadImageTask {
 
-    public DownloadImageTask(ImageView bmImage) {
-        this.bmImage = bmImage;
+    public static void loadAvatarImageIntoView(ImageView imageView, String username) {
+        String url = "https://api.dicebear.com/5.x/avataaars-neutral/png?seed=" + username;
+        Picasso.get().load(url).fit().centerCrop().into(imageView);
     }
 
-    protected Bitmap doInBackground(String... urls) {
-        String urldisplay = urls[0];
-        Bitmap mIcon11 = null;
-        try {
-            InputStream in = new java.net.URL(urldisplay).openStream();
-            mIcon11 = BitmapFactory.decodeStream(in);
-        } catch (Exception e) {
-            Log.e("Error", e.getMessage());
-            e.printStackTrace();
-        }
-        return mIcon11;
+    public static void loadQRImageIntoView(ImageView imageView, String hash) {
+        String url = "https://api.dicebear.com/5.x/shapes/png?seed=" + hash;
+        Picasso.get().load(url).fit().centerCrop().into(imageView);
     }
 
-    protected void onPostExecute(Bitmap result) {
-        bmImage.setImageBitmap(result);
-    }
 }
