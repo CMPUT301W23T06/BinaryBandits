@@ -22,12 +22,11 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 public class LeaderboardFragment extends Fragment {
+    LeaderboardViewModel leaderboardViewModel = new LeaderboardViewModel();
+    ArrayList<Player> players = leaderboardViewModel.getPlayerList();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        LeaderboardViewModel leaderboardViewModel = new LeaderboardViewModel();
-        leaderboardViewModel.sortPlayer_list();
-        ArrayList<Player> players = leaderboardViewModel.getPlayerList();
 
         // Inflate the layout for this fragment
         View leaderboard = inflater.inflate(R.layout.fragment_leaderboard, container, false);
@@ -47,19 +46,31 @@ public class LeaderboardFragment extends Fragment {
             @Override
             public void onPlayerListCallback(ArrayList<Player> playerResultsList) {
                 Log.d("Leaderboard", playerResultsList.toString());
+                // sort players list
+                players = leaderboardViewModel.sortPlayer_list(players);
+
                 // set values of top three players
                 if(players.size()>0) {
                     nameOne.setText(players.get(0).getUsername());
                     scoreOne.setText(Integer.toString(players.get(0).getTotalScore()));
+                    ImageView image1 = leaderboard.findViewById(R.id.limage1);
+                    String url1 = "https://api.dicebear.com/5.x/avataaars-neutral/png?seed=" + players.get(0).getUsername();
+                    Picasso.get().load(url1).into(image1);
                 }
 
                 if(players.size()>1) {
                     nameTwo.setText(players.get(1).getUsername());
                     scoreTwo.setText(Integer.toString(players.get(1).getTotalScore()));
+                    ImageView image2 = leaderboard.findViewById(R.id.limage2);
+                    String url2 = "https://api.dicebear.com/5.x/avataaars-neutral/png?seed=" + players.get(1).getUsername();
+                    Picasso.get().load(url2).into(image2);
                 }
                 if(players.size()>2) {
                     nameThree.setText(players.get(2).getUsername());
                     scoreThree.setText(Integer.toString(players.get(2).getTotalScore()));
+                    ImageView image3 = leaderboard.findViewById(R.id.limage3);
+                    String url3 = "https://api.dicebear.com/5.x/avataaars-neutral/png?seed=" + players.get(2).getUsername();
+                    Picasso.get().load(url3).into(image3);
                 }
 
                 // call ArrayAdapter to add each item in array to ListView
