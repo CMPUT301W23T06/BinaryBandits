@@ -48,12 +48,13 @@ public class LogInActivity extends AppCompatActivity {
                 } else {
                     AuthController.login(LogInActivity.this, username);
                 }
+                editUsernameField.setText("");
             }
         });
 
         // uncomment this line in production
         // this is added to always start login page when app opens
-//         AuthController.setUserLoggedInStatus(this,false);
+         AuthController.setUserLoggedInStatus(this,false);
 
         if (AuthController.getUserLoggedInStatus(this)) {
             Intent myIntent = new Intent(LogInActivity.this, MainActivity.class);
