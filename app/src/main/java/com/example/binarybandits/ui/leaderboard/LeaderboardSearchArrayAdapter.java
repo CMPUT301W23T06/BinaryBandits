@@ -24,11 +24,12 @@ public class LeaderboardSearchArrayAdapter extends ArrayAdapter {
             parent) {
         View view;
         if (convertView == null) {
-            view = LayoutInflater.from(getContext()).inflate(R.layout.fragment_leaderboard_search_items,
+            view = LayoutInflater.from(getContext()).inflate(R.layout.fragment_leaderboard_items,
                     parent, false);
         } else {
             view = convertView;
         }
+
         // add items to listview
         Player player = (Player) getItem(position);
         TextView playerName = view.findViewById(R.id.player_name_text);
