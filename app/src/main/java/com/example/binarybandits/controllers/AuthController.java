@@ -4,10 +4,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.example.binarybandits.MainActivity;
 import com.example.binarybandits.DBConnector;
 import com.example.binarybandits.models.Player;
+import com.example.binarybandits.player.PlayerCallback;
 import com.example.binarybandits.player.PlayerDB;
 import com.example.binarybandits.ui.auth.LogInActivity;
 
@@ -37,7 +40,7 @@ public class AuthController {
     public static void setUsername(Context ctx, String username) {
         SharedPreferences.Editor editor = getSharedPreferences(ctx).edit();
         editor.putString(PREF_LOGIN_USERNAME, username);
-        editor.commit();
+        editor.apply();
     }
 
     /**
@@ -57,7 +60,7 @@ public class AuthController {
     public static void setUserLoggedInStatus(Context ctx, boolean status) {
         SharedPreferences.Editor editor = getSharedPreferences(ctx).edit();
         editor.putBoolean(PREF_USER_LOGIN_STATUS, status);
-        editor.commit();
+        editor.apply();
     }
 
     /**
@@ -77,7 +80,7 @@ public class AuthController {
         SharedPreferences.Editor editor = getSharedPreferences(ctx).edit();
         editor.remove(PREF_LOGIN_USERNAME);
         editor.remove(PREF_USER_LOGIN_STATUS);
-        editor.commit();
+        editor.apply();
     }
 
     /**
@@ -90,9 +93,20 @@ public class AuthController {
         setUserLoggedInStatus(ctx, true);
         setUsername(ctx, username);
         PlayerDB db = new PlayerDB(new DBConnector());
-
-        Intent myIntent = new Intent(ctx, MainActivity.class);
-        ctx.startActivity(myIntent);
+        db.getPlayer(username, new PlayerCallback() {
+            @Override
+            public void onPlayerCallback(Player player) {
+                if (player != null) {
+                    Intent myIntent = new Intent(ctx, MainActivity.class);
+                    ctx.startActivity(myIntent);
+                }
+                else {
+                    //Need to move Toast to a View class
+                    Toast message = Toast.makeText(ctx, "Player not found!", Toast.LENGTH_LONG);
+                    message.show();
+                }
+            }
+        });
     }
 
     /**
@@ -117,9 +131,21 @@ public class AuthController {
         setUsername(ctx, username);
         Player playerToAdd = new Player(username, phone);
         db = new PlayerDB(new DBConnector());
-        db.addPlayer(playerToAdd);
-        Intent myIntent = new Intent(ctx, MainActivity.class);
-        ctx.startActivity(myIntent);
+        db.getPlayer(username, new PlayerCallback() {
+            @Override
+            public void onPlayerCallback(Player player) {
+                if (player == null) {
+                    db.addPlayer(playerToAdd);
+                    Intent myIntent = new Intent(ctx, MainActivity.class);
+                    ctx.startActivity(myIntent);
+                }
+                else {
+                    //Need to move Toast to a View class
+                    Toast message = Toast.makeText(ctx, "Username is taken!", Toast.LENGTH_LONG);
+                    message.show();
+                }
+            }
+        });
     }
 
 }

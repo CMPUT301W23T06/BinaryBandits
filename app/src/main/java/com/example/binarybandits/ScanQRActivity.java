@@ -3,8 +3,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.view.View;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,9 +14,8 @@ import com.example.binarybandits.models.Player;
 import com.example.binarybandits.models.QRCode;
 import com.example.binarybandits.player.PlayerCallback;
 import com.example.binarybandits.player.PlayerDB;
-import com.google.firebase.firestore.FirebaseFirestore;
+import com.example.binarybandits.ui.QRedit.QRCodeEditActivity;
 import com.example.binarybandits.controllers.QRController;
-import com.example.binarybandits.qrcode.QRCodeInfoActivity;
 import com.google.zxing.Result;
 
 public class ScanQRActivity extends AppCompatActivity {
@@ -56,8 +53,9 @@ public class ScanQRActivity extends AppCompatActivity {
 
                         QRCode qrCode = new QRCode(hash, name, points);
                         getCurrentPlayer(qrCode);
-                        Intent myIntent = new Intent(ScanQRActivity.this, QRCodeInfoActivity.class);
-                        myIntent.putExtra("hash", hash); // Optional parameters
+
+                        Intent myIntent = new Intent(ScanQRActivity.this, QRCodeEditActivity.class);
+                        myIntent.putExtra("hash", hash);
                         ScanQRActivity.this.startActivity(myIntent);
                     }
                 });
