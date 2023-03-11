@@ -31,24 +31,24 @@ public class LeaderboardViewModel extends ViewModel {
         mText = new MutableLiveData<>();
         mText.setValue("This is leaderboard fragment");
         sortedPlayerList = new ArrayList<>();
-        DBConnector dbConnector = new DBConnector();
-        CollectionReference playersCollection = dbConnector.getCollectionReference("Players");
-        playersCollection
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.d(TAG, document.getId() + " => " + document.getData());
-                                String user = document.getId();
-                                String phone = document.getString("phone");
-                                //Player player = new Player();
-                                //sortedPlayerList.add(player)
-                            }
-                        }
-                    }
-                });
+        //DBConnector dbConnector = new DBConnector();
+        //CollectionReference playersCollection = dbConnector.getCollectionReference("Players");
+//        playersCollection
+//                .get()
+//                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                    @Override
+//                    public void onComplete(Task<QuerySnapshot> task) {
+//                        if (task.isSuccessful()) {
+//                            for (QueryDocumentSnapshot document : task.getResult()) {
+//                                Log.d(TAG, document.getId() + " => " + document.getData());
+//                                String user = document.getId();
+//                                String phone = document.getString("phone");
+//                                //Player player = new Player();
+//                                //sortedPlayerList.add(player)
+//                            }
+//                        }
+//                    }
+//                });
 
         // create random players to test
         Player player1 = new Player("John", null, 500, 0, null, null);
