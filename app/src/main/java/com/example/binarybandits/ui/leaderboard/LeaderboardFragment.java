@@ -56,10 +56,9 @@ public class LeaderboardFragment extends Fragment {
                 players = leaderboardViewModel.sortPlayer_list(players);
 
                 // get current player profile
-                int i;
                 int user_rank = 0;
                 Player current_user = players.get(0);
-                for(i=0; i<players.size(); i++)
+                for(int i=0; i<players.size(); i++)
                     if(Objects.equals(players.get(i).getUsername(), user)){
                         current_user = players.get(i);
                         user_rank = i+1;
