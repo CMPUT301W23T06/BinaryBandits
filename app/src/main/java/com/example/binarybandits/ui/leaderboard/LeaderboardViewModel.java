@@ -4,6 +4,7 @@ import static android.content.ContentValues.TAG;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -30,24 +31,24 @@ public class LeaderboardViewModel extends ViewModel {
         mText = new MutableLiveData<>();
         mText.setValue("This is leaderboard fragment");
         sortedPlayerList = new ArrayList<>();
-        DBConnector dbConnector = new DBConnector();
-        CollectionReference playersCollection = dbConnector.getCollectionReference("Players");
-        playersCollection
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.d(TAG, document.getId() + " => " + document.getData());
-                                String user = document.getId();
-                                String phone = document.getString("phone");
-                                //Player player = new Player();
-                                //sortedPlayerList.add(player)
-                            }
-                        }
-                    }
-                });
+        //DBConnector dbConnector = new DBConnector();
+        //CollectionReference playersCollection = dbConnector.getCollectionReference("Players");
+//        playersCollection
+//                .get()
+//                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                    @Override
+//                    public void onComplete(Task<QuerySnapshot> task) {
+//                        if (task.isSuccessful()) {
+//                            for (QueryDocumentSnapshot document : task.getResult()) {
+//                                Log.d(TAG, document.getId() + " => " + document.getData());
+//                                String user = document.getId();
+//                                String phone = document.getString("phone");
+//                                //Player player = new Player();
+//                                //sortedPlayerList.add(player)
+//                            }
+//                        }
+//                    }
+//                });
 
         // create random players to test
         Player player1 = new Player("John", null, 500, 0, null, null);
@@ -76,7 +77,7 @@ public class LeaderboardViewModel extends ViewModel {
      * Reference: https://www.javatpoint.com/insertion-sort-in-java
      * sort array of players based on score using insertion sort
      */
-    public void sortPlayer_list(){
+    public ArrayList<Player> sortPlayer_list(ArrayList<Player> sortedPlayerList){
         int len = sortedPlayerList.size();
         int i;
         int k;
@@ -89,8 +90,9 @@ public class LeaderboardViewModel extends ViewModel {
                 k = k -1;
             }
             sortedPlayerList.set(k+1, key);
-        }
 
+        }
+        return sortedPlayerList;
     }
 
     /**

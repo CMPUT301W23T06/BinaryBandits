@@ -20,6 +20,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -27,6 +28,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -76,8 +78,8 @@ public class PlayerDB {
 
     /**
      * If a username is available, add a player to the database
-     * @param username
-     * @param player
+     * @param username Requested username to associate with a new Player
+     * @param player Player object to add to Players collection
      */
     public void addOnSuccess(String username, Player player) {
         HashMap<String, Object> data = new HashMap<>();
@@ -104,7 +106,12 @@ public class PlayerDB {
                 });
     }
 
-    public void addPlayerToDatalist(ArrayList<Player> playerList) {
+    /**
+     * Get all Players currently in Players collection in the database
+     * @param playerList local copy of the list of Player to update
+     * @param callback has method containing what to do with queried playerList
+     */
+    public void getAllPlayers(ArrayList<Player> playerList, PlayerListCallback callback) {
         collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException error) {
@@ -116,24 +123,30 @@ public class PlayerDB {
                     Bitmap avatar = (Bitmap)doc.get("avatar");
                     int totalScore = Objects.requireNonNull(doc.getLong("totalScore")).intValue();
                     int totalQRCodes = Objects.requireNonNull(doc.getLong("totalQRCodes")).intValue();
-                    ArrayList<QRCode> qrCodesScanned = new ArrayList<>(); //temporary
-                    playerList.add(new Player(username, phone, totalScore, totalQRCodes, avatar, qrCodesScanned));
+                    ArrayList<Map<String, Object>> qrCodesScanned = (ArrayList<Map<String, Object>>) doc.get("qrCodesScanned");
+
+                    ArrayList<QRCode> convertedQRCodes = getPlayerHelper(qrCodesScanned, totalQRCodes);
+                    Player player = new Player(username, phone, totalScore, totalQRCodes, avatar, convertedQRCodes);
+                    playerList.add(player);
                 }
+                callback.onPlayerListCallback(playerList);
             }
         });
     }
 
     /**
      * Get a Player based on username
-     * @param username
+     * @param username Current player's username
      */
     public void getPlayer(String username, PlayerCallback callback) {
-        //To-do: Implement getPlayer() -> Alex
         //Referenced: https://cloud.google.com/firestore/docs/query-data/get-data#javaandroid_2
+        //Author:
+        //License:
         DocumentReference documentReference = collectionReference.document(username);
         documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
+                Player player;
                 if (documentSnapshot.exists()) {
                     String username = documentSnapshot.getString("username");
                     String phone = documentSnapshot.getString("phone");
@@ -142,62 +155,17 @@ public class PlayerDB {
                     int totalQRCodes = Objects.requireNonNull(documentSnapshot.getLong("totalQRCodes")).intValue();
                     ArrayList<Map<String, Object>> qrCodesScanned = (ArrayList<Map<String, Object>>) documentSnapshot.get("qrCodesScanned");
 
-                    //Referenced:
-                    ArrayList<QRCode> convertedQRCodes = new ArrayList<QRCode>();
-                    if(qrCodesScanned != null) {
-                        //Create a QRCode based on the map representation generated from reading Firebase DB
-                        for (int i = 0; i < totalQRCodes; i++) {
-                            Map<String, Object> map = qrCodesScanned.get(i);
-                            String name = map.get("name").toString();
-                            String hash = map.get("hash").toString();
-                            int points = Integer.parseInt(map.get("points").toString());
-
-                            String scannerUID;
-                            if(map.get("scannerUID") == null) {
-                                scannerUID = null;
-                            }
-                            else {
-                                scannerUID = map.get("scannerUID").toString();
-                            }
-
-                            Geolocation coordinates;
-                            if(map.get("coordinates") == null) {
-                                coordinates = null;
-                            }
-                            else {
-                                coordinates = (Geolocation)map.get("coordinates");
-                            }
-
-                            Bitmap locationImage;
-                            if(map.get("locationImage") == null) {
-                                locationImage = null;
-                            }
-                            else {
-                                locationImage = (Bitmap)map.get("locationImage");
-                            }
-
-                            ArrayList<String> comments;
-                            if(map.get("comments") == null) {
-                                comments = null;
-                            }
-                            else {
-                                comments = (ArrayList<String>)map.get("comments");
-                            }
-                            int numPlayersScannedBy = Integer.parseInt(map.get("numPlayersScannedBy").toString());
-
-                            QRCode qrCode = new QRCode(hash, name, points, scannerUID, coordinates,
-                                    locationImage, comments, numPlayersScannedBy);
-                            convertedQRCodes.add(qrCode);
-                        }
-                    }
-                    Player player = new Player(username, phone, totalScore, totalQRCodes, avatar, convertedQRCodes);
+                    ArrayList<QRCode> convertedQRCodes = getPlayerHelper(qrCodesScanned, totalQRCodes);
+                    player = new Player(username, phone, totalScore, totalQRCodes, avatar, convertedQRCodes);
                     Log.d(TAG, "Player information retrieved from database");
                     Log.d(TAG, "Player Name: " + player.getUsername() + "\n Score: " + player.getTotalScore());
                     callback.onPlayerCallback(player);
                 }
                 else {
-                    Log.d(TAG, "Player not found in database!");
+                    player = null;
+                    Log.d(TAG, "Player not found in database!");;
                 }
+                callback.onPlayerCallback(player);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -208,15 +176,102 @@ public class PlayerDB {
     }
 
     /**
-     * Query all player for leaderboard
+     * Helper function for getPlayer that get a list of a Player's QRCodes
+     * @param qrCodesScanned An ArrayList to hold QRCode objects scanned by the Player
+     * @param totalQRCodes Total QR codes to add to qrCodesScanned
      */
-    public void getAllPlayers() {
+    public ArrayList<QRCode> getPlayerHelper(ArrayList<Map<String, Object>> qrCodesScanned, int totalQRCodes) {
+        ArrayList<QRCode> convertedQRCodes = new ArrayList<QRCode>();
+        if(qrCodesScanned != null) {
+            //Create a QRCode based on the map representation generated from reading Firebase DB
+            for (int i = 0; i < totalQRCodes; i++) {
+                Map<String, Object> map = qrCodesScanned.get(i);
+                String name = map.get("name").toString();
+                String hash = map.get("hash").toString();
+                int points = Integer.parseInt(map.get("points").toString());
 
+                String scannerUID;
+                if(map.get("scannerUID") == null) {
+                    scannerUID = null;
+                }
+                else {
+                    scannerUID = map.get("scannerUID").toString();
+                }
+
+                Geolocation coordinates;
+                if(map.get("coordinates") == null) {
+                    coordinates = null;
+                }
+                else {
+                    coordinates = (Geolocation)map.get("coordinates");
+                }
+
+                Bitmap locationImage;
+                if(map.get("locationImage") == null) {
+                    locationImage = null;
+                }
+                else {
+                    locationImage = (Bitmap)map.get("locationImage");
+                }
+
+                ArrayList<String> comments;
+                if(map.get("comments") == null) {
+                    comments = null;
+                }
+                else {
+                    comments = (ArrayList<String>)map.get("comments");
+                }
+                int numPlayersScannedBy = Integer.parseInt(map.get("numPlayersScannedBy").toString());
+
+                QRCode qrCode = new QRCode(hash, name, points, scannerUID, coordinates,
+                        locationImage, comments, numPlayersScannedBy);
+                convertedQRCodes.add(qrCode);
+            }
+        }
+        return convertedQRCodes;
     }
 
     /**
+     *
+     */
+    public void getPlayersByScore(ArrayList<Player> playerList, PlayerListCallback callback) {
+        //Alex: I am still working on this function!
+        //Referenced: https://firebase.google.com/docs/firestore/query-data/order-limit-data
+        //Referenced:
+        Query sortQuery = collectionReference.orderBy("score", Query.Direction.ASCENDING);
+        sortQuery.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                playerList.clear();
+
+                for(QueryDocumentSnapshot doc: task.getResult()) {
+                    String username = doc.getString("username");
+                    String phone = doc.getString("phone");
+                    Bitmap avatar = (Bitmap)doc.get("avatar");
+                    int totalScore = Objects.requireNonNull(doc.getLong("totalScore")).intValue();
+                    int totalQRCodes = Objects.requireNonNull(doc.getLong("totalQRCodes")).intValue();
+                    ArrayList<Map<String, Object>> qrCodesScanned = (ArrayList<Map<String, Object>>) doc.get("qrCodesScanned");
+
+                    ArrayList<QRCode> convertedQRCodes = getPlayerHelper(qrCodesScanned, totalQRCodes);
+                    Player player = new Player(username, phone, totalScore, totalQRCodes, avatar, convertedQRCodes);
+                    playerList.add(player);
+                }
+                callback.onPlayerListCallback(playerList);
+            }
+        });
+    }
+
+
+    /**
+     *
+     */
+    public void searchPlayer(String input) {
+    }
+
+
+    /**
      * Update a field in a Player document
-     * @param player
+     * @param player Player to update
      */
     public void updatePlayer(Player player) {
         //Alex: I'm not sure if this works. Need to test this method

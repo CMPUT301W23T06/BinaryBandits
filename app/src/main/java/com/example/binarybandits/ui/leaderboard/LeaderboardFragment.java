@@ -1,28 +1,32 @@
 package com.example.binarybandits.ui.leaderboard;
-import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
+import com.example.binarybandits.DBConnector;
 import com.example.binarybandits.R;
 import com.example.binarybandits.models.Player;
+import com.example.binarybandits.player.PlayerDB;
+import com.example.binarybandits.player.PlayerListCallback;
+import com.google.android.material.tabs.TabLayout;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class LeaderboardFragment extends Fragment {
+    LeaderboardViewModel leaderboardViewModel = new LeaderboardViewModel();
+    ArrayList<Player> players = leaderboardViewModel.getPlayerList();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        LeaderboardViewModel leaderboardViewModel = new LeaderboardViewModel();
-        leaderboardViewModel.sortPlayer_list();
-        ArrayList<Player> players = leaderboardViewModel.getPlayerList();
 
         // Inflate the layout for this fragment
         View leaderboard = inflater.inflate(R.layout.fragment_leaderboard, container, false);
@@ -36,19 +40,71 @@ public class LeaderboardFragment extends Fragment {
         TextView scoreTwo = leaderboard.findViewById(R.id.player2_score);
         TextView scoreThree = leaderboard.findViewById(R.id.player3_score);
 
+        PlayerDB db = new PlayerDB(new DBConnector());
+
+        db.getAllPlayers(players, new PlayerListCallback() {
+            @Override
+            public void onPlayerListCallback(ArrayList<Player> playerResultsList) {
+                Log.d("Leaderboard", playerResultsList.toString());
+                // sort players list
+                players = leaderboardViewModel.sortPlayer_list(players);
+
+                // set values of top three players
+                if(players.size()>0) {
+                    nameOne.setText(players.get(0).getUsername());
+                    scoreOne.setText(Integer.toString(players.get(0).getTotalScore()));
+                    ImageView image1 = leaderboard.findViewById(R.id.limage1);
+                    String url1 = "https://api.dicebear.com/5.x/avataaars-neutral/png?seed=" + players.get(0).getUsername();
+                    Picasso.get().load(url1).into(image1);
+                }
+
+                if(players.size()>1) {
+                    nameTwo.setText(players.get(1).getUsername());
+                    scoreTwo.setText(Integer.toString(players.get(1).getTotalScore()));
+                    ImageView image2 = leaderboard.findViewById(R.id.limage2);
+                    String url2 = "https://api.dicebear.com/5.x/avataaars-neutral/png?seed=" + players.get(1).getUsername();
+                    Picasso.get().load(url2).into(image2);
+                }
+                if(players.size()>2) {
+                    nameThree.setText(players.get(2).getUsername());
+                    scoreThree.setText(Integer.toString(players.get(2).getTotalScore()));
+                    ImageView image3 = leaderboard.findViewById(R.id.limage3);
+                    String url3 = "https://api.dicebear.com/5.x/avataaars-neutral/png?seed=" + players.get(2).getUsername();
+                    Picasso.get().load(url3).into(image3);
+                }
+
+                // call ArrayAdapter to add each item in array to ListView
+                if(players.size()>3) {
+                    // remove top three players from players array
+                    removePlayers(players);
+                    ArrayAdapter<Player> playerArrayAdapter = new LeaderboardArrayAdapter(getActivity(), players);
+                    playerList.setAdapter(playerArrayAdapter);
+                }
+            }
+        });
+        /*
         // set values of top three players
         if(players.size()>0) {
             nameOne.setText(players.get(0).getUsername());
             scoreOne.setText(Integer.toString(players.get(0).getTotalScore()));
+            String url1 = "https://api.dicebear.com/5.x/avataaars-neutral/png?seed=" + players.get(0).getUsername();
+            ImageView image1 = leaderboard.findViewById(R.id.limage1);
+            Picasso.get().load(url1).into(image1);
         }
 
         if(players.size()>1) {
             nameTwo.setText(players.get(1).getUsername());
             scoreTwo.setText(Integer.toString(players.get(1).getTotalScore()));
+            String url2 = "https://api.dicebear.com/5.x/avataaars-neutral/png?seed=" + players.get(1).getUsername();
+            ImageView image2 = leaderboard.findViewById(R.id.limage2);
+            Picasso.get().load(url2).into(image2);
         }
         if(players.size()>2) {
             nameThree.setText(players.get(2).getUsername());
             scoreThree.setText(Integer.toString(players.get(2).getTotalScore()));
+            String url3 = "https://api.dicebear.com/5.x/avataaars-neutral/png?seed=" + players.get(2).getUsername();
+            ImageView image3 = leaderboard.findViewById(R.id.limage3);
+            Picasso.get().load(url3).into(image3);
         }
 
         // call ArrayAdapter to add each item in array to ListView
@@ -57,7 +113,7 @@ public class LeaderboardFragment extends Fragment {
             removePlayers(players);
             ArrayAdapter<Player> playerArrayAdapter = new LeaderboardArrayAdapter(getActivity(), players);
             playerList.setAdapter(playerArrayAdapter);
-        }
+        }*/
         return leaderboard;
     }
 

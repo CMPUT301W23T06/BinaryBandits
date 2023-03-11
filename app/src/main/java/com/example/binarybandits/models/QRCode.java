@@ -3,6 +3,7 @@ import android.graphics.Bitmap;
 import android.util.Pair;
 
 import com.example.binarybandits.Geolocation;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
