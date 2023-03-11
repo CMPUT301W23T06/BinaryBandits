@@ -1,10 +1,10 @@
 package com.example.binarybandits.ui.leaderboard;
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -12,9 +12,9 @@ import androidx.fragment.app.Fragment;
 
 import com.example.binarybandits.R;
 import com.example.binarybandits.models.Player;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class LeaderboardFragment extends Fragment {
 
@@ -40,15 +40,24 @@ public class LeaderboardFragment extends Fragment {
         if(players.size()>0) {
             nameOne.setText(players.get(0).getUsername());
             scoreOne.setText(Integer.toString(players.get(0).getTotalScore()));
+            String url1 = "https://api.dicebear.com/5.x/avataaars-neutral/png?seed=" + players.get(0).getUsername();
+            ImageView image1 = leaderboard.findViewById(R.id.limage1);
+            Picasso.get().load(url1).into(image1);
         }
 
         if(players.size()>1) {
             nameTwo.setText(players.get(1).getUsername());
             scoreTwo.setText(Integer.toString(players.get(1).getTotalScore()));
+            String url2 = "https://api.dicebear.com/5.x/avataaars-neutral/png?seed=" + players.get(1).getUsername();
+            ImageView image2 = leaderboard.findViewById(R.id.limage2);
+            Picasso.get().load(url2).into(image2);
         }
         if(players.size()>2) {
             nameThree.setText(players.get(2).getUsername());
             scoreThree.setText(Integer.toString(players.get(2).getTotalScore()));
+            String url3 = "https://api.dicebear.com/5.x/avataaars-neutral/png?seed=" + players.get(2).getUsername();
+            ImageView image3 = leaderboard.findViewById(R.id.limage3);
+            Picasso.get().load(url3).into(image3);
         }
 
         // call ArrayAdapter to add each item in array to ListView
