@@ -17,15 +17,20 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.binarybandits.DBConnector;
+import com.example.binarybandits.MainActivity;
 import com.example.binarybandits.R;
+import com.example.binarybandits.ScanQRActivity;
 import com.example.binarybandits.controllers.AuthController;
 import com.example.binarybandits.models.Player;
 import com.example.binarybandits.models.QRCode;
 import com.example.binarybandits.player.PlayerCallback;
 import com.example.binarybandits.player.PlayerDB;
 import com.example.binarybandits.qrcode.QRArrayAdapter;
+import com.example.binarybandits.qrcode.QRCodeInfoActivity;
+import com.example.binarybandits.ui.QRpage.QRpage;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.squareup.picasso.Picasso;
@@ -72,20 +77,6 @@ public class ProfileFragment extends Fragment {
 
 
         QRlist.setAdapter(QRAdapter);
-//
-
-
-//        QRlist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//
-//
-//                Intent i = new Intent(MainActivity.this, showActivity.class);
-//                i.putExtra("cityname", dataList.get(position));
-//                startActivity(i);
-//
-//            }
-//        });
 
 
 
@@ -110,6 +101,18 @@ public class ProfileFragment extends Fragment {
 
 
                 }
+            }
+        });
+
+        QRlist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+
+                Intent myIntent = new Intent(getActivity(), QRCodeInfoActivity.class);
+                myIntent.putExtra("hash", String.valueOf(dataList.get(position)));
+                getActivity().startActivity(myIntent);
+
             }
         });
     }
