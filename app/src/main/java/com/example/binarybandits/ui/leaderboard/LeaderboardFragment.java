@@ -5,11 +5,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.binarybandits.DBConnector;
 import com.example.binarybandits.R;
@@ -107,8 +109,25 @@ public class LeaderboardFragment extends Fragment {
             }
         });
 
+        // set onclick listener for search button to open search fragment
+        Button button = leaderboard.findViewById(R.id.button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                button.setVisibility(View.GONE);
+                FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                transaction.replace(R.id.fragment_container, new LeaderboardSearchFragment());
+                transaction.addToBackStack(null);
+                transaction.commit();
+            }
+
+        });
+
         return leaderboard;
     }
+
+
 
     /**
      * remove top three players from array of players
