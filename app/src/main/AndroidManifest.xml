@@ -28,6 +28,7 @@
         </activity>
         <activity android:name=".ScanQRActivity"/>
         <activity android:name=".qrcode.QRCodeInfoActivity"/>
+        <activity android:name=".ui.QRedit.QRCodeEditActivity"/>
         <meta-data
             android:name="com.google.android.gms.vision.DEPENDENCIES"
             android:value="barcode" />

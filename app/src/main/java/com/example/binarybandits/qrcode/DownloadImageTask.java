@@ -4,9 +4,14 @@ import com.squareup.picasso.Picasso;
 
 public class DownloadImageTask {
 
-    public void loadImageIntoView(ImageView imageView, String username) {
+    public static void loadAvatarImageIntoView(ImageView imageView, String username) {
         String url = "https://api.dicebear.com/5.x/avataaars-neutral/png?seed=" + username;
-        Picasso.get().load(url).into(imageView);
+        Picasso.get().load(url).fit().centerCrop().into(imageView);
+    }
+
+    public static void loadQRImageIntoView(ImageView imageView, String hash) {
+        String url = "https://api.dicebear.com/5.x/shapes/png?seed=" + hash;
+        Picasso.get().load(url).fit().centerCrop().into(imageView);
     }
 
 }
