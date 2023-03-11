@@ -4,9 +4,14 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
+
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.binarybandits.DBConnector;
 import com.example.binarybandits.R;
 import com.example.binarybandits.controllers.AuthController;
+import com.example.binarybandits.models.QRCode;
 import com.squareup.picasso.Picasso;
 
 public class QRCodeInfoActivity extends AppCompatActivity {
@@ -16,23 +21,46 @@ public class QRCodeInfoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_qrpage);
 
+
+        QRCodeDB db = new QRCodeDB(new DBConnector());
+
         if (getSupportActionBar() != null) {
             getSupportActionBar().hide();
         }
 
         Bundle extras = getIntent().getExtras();
-        String hash;
+
 
         if (extras != null) {
-            hash = extras.getString("hash");
-            System.out.println("yessssssssss");
+            String name = extras.getString("name");
+            db.getQRCode(name, new QRCodeCallback() {
+                @Override
+                public void onQRCodeCallback(QRCode qrCode) {
+                    String hash = qrCode.getHash();
+                    String score = Integer.toString(qrCode.getPoints());
+
+                    ImageView qr_image = findViewById(R.id.QRImageView);
+                    TextView qr_name = findViewById(R.id.qr_code_name);
+                    TextView qr_score = findViewById(R.id.qr_code_score);
+
+
+                    String url = "https://api.dicebear.com/5.x/shapes/png?seed=" + hash;
+                    Picasso.get().load(url).into(qr_image);
+
+                    qr_name.setText(name);
+                    qr_score.setText(score);
+
+
+                }
+            });
         } else {
-            hash = AuthController.getUsername(QRCodeInfoActivity.this);
+            System.out.println("error");
         }
 
-        String url = "https://api.dicebear.com/5.x/shapes/png?seed=" + hash;
-        ImageView imageView = findViewById(R.id.QRImageView);
-        Picasso.get().load(url).into(imageView);
+
+
+
+
 
 
         Button back_button = findViewById(R.id.back_button);

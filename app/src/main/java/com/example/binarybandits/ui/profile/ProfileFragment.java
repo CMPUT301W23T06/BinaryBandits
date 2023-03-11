@@ -110,7 +110,7 @@ public class ProfileFragment extends Fragment {
 
 
                 Intent myIntent = new Intent(getActivity(), QRCodeInfoActivity.class);
-                myIntent.putExtra("hash", String.valueOf(dataList.get(position)));
+                myIntent.putExtra("name", String.valueOf(dataList.get(position).getName()));
                 getActivity().startActivity(myIntent);
 
             }
