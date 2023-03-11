@@ -14,7 +14,7 @@ import com.example.binarybandits.models.Player;
 
 import java.util.ArrayList;
 
-public class LeaderboardSearchArrayAdapter extends ArrayAdapter
+public class LeaderboardSearchArrayAdapter extends ArrayAdapter {
     public LeaderboardSearchArrayAdapter(Context context, ArrayList<Player> players) {
         super(context, 0, players);
     }
