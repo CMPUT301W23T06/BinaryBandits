@@ -58,6 +58,11 @@ public class ProfileFragment extends Fragment {
 
                     TextView totalQRText = view.findViewById(R.id.total_qr_scanned_text);
                     totalQRText.setText(String.valueOf(player.getTotalQRCodes()));
+
+                    System.out.println(player.getQrCodesScanned());
+                    for(int i = 0; i < player.getQrCodesScanned().size(); i++) {
+                        System.out.println(player.getQrCodesScanned().get(i).getName() + ": " + player.getQrCodesScanned().get(i).getPoints());
+                    }
                     //Get highest/lowest scoring QR codes
 
                     //Get ListView of QR codes scanned
