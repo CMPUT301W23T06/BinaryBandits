@@ -1,4 +1,4 @@
 package com.example.binarybandits;
 
-public class geolocation {
+public class Geolocation {
 }

@@ -92,11 +92,29 @@ public class Player {
         this.qrCodesScanned = qrCodesScanned;
     }
 
+    public void incrementTotalQRCodes() {
+        this.totalQRCodes += 1;
+    }
+
+    public void decrementTotalQRCodes() {
+        this.totalQRCodes -= 1;
+    }
+
     public void addQRCodeScanned(QRCode qrCode) {
         qrCodesScanned.add(qrCode);
     }
 
     public void removeQRCodeScanned(QRCode qrCode) {
         qrCodesScanned.remove(qrCode);
+    }
+
+    public QRCode getHighestQRCode() {
+
+        return null; //temporary
+    }
+
+    public QRCode getLowestQRCode() {
+
+        return null; //temporary
     }
 }
