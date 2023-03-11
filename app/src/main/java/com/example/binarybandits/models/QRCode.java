@@ -2,11 +2,43 @@ package com.example.binarybandits.models;
 import android.graphics.Bitmap;
 import android.util.Pair;
 
+import com.example.binarybandits.Geolocation;
+
 import java.util.ArrayList;
 
 public class QRCode {
 
-    public QRCode(String hash, String name, int points, String scannerUID, Pair<Double, Double> coordinates, Bitmap locationImage, ArrayList<String> comments) {
+    /**
+     * Constructor for QRCodes without Geolocation
+     * @param hash
+     * @param name
+     * @param points
+     */
+    public QRCode(String hash, String name, int points) {
+        this.hash = hash;
+        this.name = name;
+        this.points = points;
+        this.numPlayersScannedBy = 1;
+    }
+
+    /**
+     * Constructor for QRCodes with a Geolocation
+     * @param hash
+     * @param name
+     * @param points
+     * @param coordinates
+     */
+    public QRCode(String hash, String name, int points, Geolocation coordinates) {
+        this.hash = hash;
+        this.name = name;
+        this.points = points;
+        this.coordinates = coordinates;
+        this.numPlayersScannedBy = 1;
+    }
+
+
+    public QRCode(String hash, String name, int points, String scannerUID, Geolocation coordinates,
+                  Bitmap locationImage, ArrayList<String> comments, int numPlayersScannedBy) {
         this.hash = hash;
         this.name = name;
         this.points = points;
@@ -14,15 +46,17 @@ public class QRCode {
         this.coordinates = coordinates;
         this.locationImage = locationImage;
         this.comments = comments;
+        this.numPlayersScannedBy = numPlayersScannedBy;
     }
 
     String hash;
     String name;
     int points;
     String scannerUID;
-    Pair<Double, Double> coordinates; //Need to change to Geolocation class
+    Geolocation coordinates; //Need to change to Geolocation class
     Bitmap locationImage;
     ArrayList<String> comments;
+    int numPlayersScannedBy;
 
     public String getHash() {
         return hash;
@@ -56,11 +90,11 @@ public class QRCode {
         this.scannerUID = scannerUID;
     }
 
-    public Pair<Double, Double> getCoordinates() {
+    public Geolocation getCoordinates() {
         return coordinates;
     }
 
-    public void setCoordinates(Pair<Double, Double> coordinates) {
+    public void setCoordinates(Geolocation coordinates) {
         this.coordinates = coordinates;
     }
 
@@ -78,5 +112,17 @@ public class QRCode {
 
     public void setComments(ArrayList<String> comments) {
         this.comments = comments;
+    }
+
+    public int getNumPlayersScannedBy() {
+        return numPlayersScannedBy;
+    }
+
+    public void incrementNumPlayersScannedBy() {
+        this.numPlayersScannedBy = numPlayersScannedBy + 1;
+    }
+
+    public void decrementNumPlayersScannedBy() {
+        this.numPlayersScannedBy = numPlayersScannedBy - 1;
     }
 }

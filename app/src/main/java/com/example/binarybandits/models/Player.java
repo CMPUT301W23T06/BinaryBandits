@@ -7,6 +7,18 @@ import java.util.ArrayList;
 
 public class Player {
 
+    /**
+     * Empty constructor for creating objects through DB
+     */
+    public Player() {}
+    public Player(String username) {
+        this.username = username;
+        this.phone = null;
+        this.totalScore = 0;
+        this.totalQRCodes = 0;
+        this.playerAvatar = null; //temporary
+        this.qrCodesScanned = new ArrayList<QRCode>();
+    }
 
     public Player(String username, String phone) {
         this.username = username;
@@ -78,5 +90,31 @@ public class Player {
 
     public void setQrCodesScanned(ArrayList<QRCode> qrCodesScanned) {
         this.qrCodesScanned = qrCodesScanned;
+    }
+
+    public void incrementTotalQRCodes() {
+        this.totalQRCodes += 1;
+    }
+
+    public void decrementTotalQRCodes() {
+        this.totalQRCodes -= 1;
+    }
+
+    public void addQRCodeScanned(QRCode qrCode) {
+        qrCodesScanned.add(qrCode);
+    }
+
+    public void removeQRCodeScanned(QRCode qrCode) {
+        qrCodesScanned.remove(qrCode);
+    }
+
+    public QRCode getHighestQRCode() {
+
+        return null; //temporary
+    }
+
+    public QRCode getLowestQRCode() {
+
+        return null; //temporary
     }
 }
