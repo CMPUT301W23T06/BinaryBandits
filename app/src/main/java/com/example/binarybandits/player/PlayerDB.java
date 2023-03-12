@@ -36,6 +36,7 @@ import java.util.Objects;
 
 /**
  * Stores, retrieves, adds, and deletes Player data
+ * Outstanding issues: N/A
  */
 public class PlayerDB {
     private final String TAG = "PlayerDB";
@@ -188,6 +189,7 @@ public class PlayerDB {
      * Helper function for getPlayer that get a list of a Player's QRCodes
      * @param qrCodesScanned An ArrayList to hold QRCode objects scanned by the Player
      * @param totalQRCodes Total QR codes to add to qrCodesScanned
+     * @return Return a list of the Player's QR codes
      */
     public ArrayList<QRCode> getPlayerHelper(ArrayList<Map<String, Object>> qrCodesScanned, int totalQRCodes) {
         ArrayList<QRCode> convertedQRCodes = new ArrayList<QRCode>();
@@ -242,8 +244,8 @@ public class PlayerDB {
 
     /**
      * Get players that satisfy an inputted query
-     * @param query
-     * @param callback
+     * @param query Firebase Firestore query containing results to process
+     * @param callback has method containing what to do with queried playerList
      */
     public void getPlayersByQuery(Query query, PlayerListCallback callback) {
         //Referenced: https://stackoverflow.com/questions/72607619/firestore-database-java-add-where-condition-before-get-collection
@@ -279,7 +281,8 @@ public class PlayerDB {
     }
 
     /**
-     *
+     * Get query containing sorted players by score
+     * @return Return the Query containing all players in database sorted by score
      */
     public Query getSortedPlayers() {
         return collectionReference.orderBy("totalScore", Query.Direction.DESCENDING);
@@ -287,7 +290,9 @@ public class PlayerDB {
 
 
     /**
-     *
+     * Find all players with a username containing input
+     * @param input text to search for in Player usernames
+     * @return Query result of searching for a Player with a username matching input
      */
     public Query searchPlayer(String input) {
         //Referenced: https://stackoverflow.com/questions/46568142/google-firestore-query-on-substring-of-a-property-value-text-search
