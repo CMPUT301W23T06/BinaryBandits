@@ -37,19 +37,31 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Represents the search fragment of the leaderboard page
+ */
 public class LeaderboardSearchFragment extends Fragment {
 
+    /**
+     * Required empty public constructor for leaderboard search fragment
+     */
     public LeaderboardSearchFragment() {
         // Required empty public constructor
     }
 
+    /**
+     * Creates the view for the leaderboard search fragment
+     * @param inflater - the layout inflater
+     * @param container - the view group container
+     * @param savedInstanceState -  the saved instance state
+     * @return the view for the leaderboard search fragment
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-
         View search = inflater.inflate(R.layout.fragment_leaderboard_search, container, false);
 
-
+        // Connect to database and get set of players
         DBConnector dbConnector = new DBConnector();
         PlayerDB playerDB = new PlayerDB(dbConnector);
         Set<Player> players = new HashSet<>(); // change ArrayList to Set to avoid duplicate results
@@ -60,15 +72,30 @@ public class LeaderboardSearchFragment extends Fragment {
 
         // Test listening to text changes, and updating the listview when the text changes
         searchInput.addTextChangedListener(new TextWatcher() {
+            /**
+             * This method is called before the text is changed
+             * @param s - the character sequence
+             * @param start - the start index
+             * @param count - the number of characters to be replaced
+             * @param after - the number of characters to replace
+             */
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                // not needed
+                // not needed, but needed for TextWatcher to function
             }
 
+            /**
+             * This method is called when the text is changed, and searches for the player on every change
+             * @param s - the character sequence
+             * @param start - the start index
+             * @param before - the number of characters to be replaced
+             * @param count - the number of characters to replace
+             */
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 players.clear(); // clear Set before adding new players
                 String searchText = s.toString();
+
 
                 // If the search text is not empty, search for the player
                 if (!searchText.isEmpty()) {
@@ -76,9 +103,33 @@ public class LeaderboardSearchFragment extends Fragment {
                         // When the player is found, add it to the listview
                         @Override
                         public void onPlayerCallback(Player searchedPlayer) {
-                            players.add(searchedPlayer); // use Set.add() instead of ArrayList.add()
-                            ArrayAdapter<Player> playerArrayAdapter = new LeaderboardSearchArrayAdapter(getActivity(), new ArrayList<>(players)); // convert Set to ArrayList
-                            searchResults.setAdapter(playerArrayAdapter);
+                            // only adds player if it is not null to avoid blank results on screen when typing fast
+                            if (searchedPlayer!=null){
+                                players.add(searchedPlayer); // use Set.add() instead of ArrayList.add()
+                                ArrayAdapter<Player> playerArrayAdapter = new LeaderboardSearchArrayAdapter(getActivity(), new ArrayList<>(players)); // convert Set to ArrayList
+                                searchResults.setAdapter(playerArrayAdapter); // set the adapter for the listview to display the players
+
+                                // When the user clicks on a player, go to their profile
+                                searchResults.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                    /**
+                                     * This method is called when the user clicks on a player item in the listview, and goes to the player's profile
+                                     * @param adapterView - the adapter view
+                                     * @param view - the view
+                                     * @param i - the position
+                                     * @param l - the id
+                                     */
+                                    @Override
+                                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                                        Intent intent = new Intent(LeaderboardSearchFragment.this.getActivity(), otherProfileActivity.class); // go to other player's profile
+                                        Bundle extras = new Bundle(); // pass the player's username to the other profile activity
+                                        extras.putString("name", searchedPlayer.getUsername());
+                                        extras.putString("list", "search");
+                                        intent.putExtras(extras);
+                                        startActivity(intent); // start the activity
+
+                                    }
+                                });
+                            }
 
                         }
                     });
@@ -86,44 +137,45 @@ public class LeaderboardSearchFragment extends Fragment {
                 // If the search text is empty, clear the listview
                 else {
                     players.clear();
-                    //ArrayAdapter<Player> playerArrayAdapter = new LeaderboardSearchArrayAdapter(getActivity(), new ArrayList<>(players)); // convert Set to ArrayList
-                    //searchResults.setAdapter(playerArrayAdapter);
+                    ArrayAdapter<Player> playerArrayAdapter = new LeaderboardSearchArrayAdapter(getActivity(), new ArrayList<>(players)); // convert Set to ArrayList
+                    searchResults.setAdapter(playerArrayAdapter);
                 }
             }
 
+            /**
+             * This method is called after the text is changed
+             * @param s - the editable
+             */
             @Override
             public void afterTextChanged(Editable s) {
-                // not needed
+                // not needed, but needed for TextWatcher to function
             }
         });
 
         // When the user presses the search button on the keyboard, search for the player
         Button backToLeaderboard = search.findViewById(R.id.back_to_leaderboard);
         backToLeaderboard.setOnClickListener(new View.OnClickListener() {
+            /**
+             * This method is called when the user clicks the back to leaderboard button
+             * @param v - the view
+             */
             @Override
             public void onClick(View v) {
                 backToLeaderboard(v);
             }
         });
 
-        searchResults.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent intent = new Intent(LeaderboardSearchFragment.this.getActivity(), otherProfileActivity.class);
-                startActivity(intent);
-
-            }
-        });
-
-        return search;
+        return search; // return the view for the leaderboard search fragment
 
     }
 
-    // This method is called when the back to leaderboard button is clicked
+    /**
+     * This method is called when the user clicks the back to leaderboard button, and goes back to the leaderboard
+     * @param view - the view
+     */
     public void backToLeaderboard(View view) {
-        //on click back to leaderboard
+        // on click back to leaderboard
         getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new LeaderboardFragment()).commit();
-
     }
 
 

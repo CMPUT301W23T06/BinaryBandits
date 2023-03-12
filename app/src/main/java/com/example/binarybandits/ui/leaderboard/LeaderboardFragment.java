@@ -142,7 +142,8 @@ public class LeaderboardFragment extends Fragment {
         ListView listview = leaderboard.findViewById(R.id.playerList);
 
         /**
-         * listen for search button click and switch fragments
+         * This method is called when the user clicks the search button
+         * @param v - the view that was clicked
          */
         button.setOnClickListener(new View.OnClickListener() {
             @Override

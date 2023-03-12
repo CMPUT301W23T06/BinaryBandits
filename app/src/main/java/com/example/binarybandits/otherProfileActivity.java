@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -47,7 +48,7 @@ public class otherProfileActivity extends Activity {
         TextView lowest = findViewById(R.id.lowest_score_text);
         TextView highest = findViewById(R.id.highest_score_text);
         ImageView otherImage = findViewById(R.id.profileIconImageView);
-        Button back = findViewById(R.id.buttonBack);
+        ImageButton back = findViewById(R.id.buttonBack);
         back.setVisibility(View.VISIBLE);
         LeaderboardFragment leaderboard = new LeaderboardFragment();
         Bundle extras = getIntent().getExtras();
@@ -62,11 +63,11 @@ public class otherProfileActivity extends Activity {
                 // get player from array
                 for(int i =0; i<players.size(); i++){
                     if(Objects.equals(players.get(i).getUsername(), player_name)){
-                        if(Objects.equals(typeOfList, "short")) {
-                            otherPlayer = players.get(i);
+                        if(Objects.equals(typeOfList, "long")) {
+                            otherPlayer = players.get(i+3);
                         }
                         else{
-                            otherPlayer = players.get(i+3);
+                            otherPlayer = players.get(i);
                         }
                     }
                 }
