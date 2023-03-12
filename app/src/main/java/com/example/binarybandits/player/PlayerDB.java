@@ -317,4 +317,12 @@ public class PlayerDB {
                 "qrCodesScanned", player.getQrCodesScanned()
         );
     }
+
+    /**
+     * Deletes a Player with a given username from the database (used in intent testing)
+     * @param username username of Player to delete
+     */
+    public void deletePlayer(String username) {
+        collectionReference.document(username).delete();
+    }
 }
