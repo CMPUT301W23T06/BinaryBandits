@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.example.binarybandits.R;
 import com.example.binarybandits.models.QRCode;
+import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.Text;
 
@@ -34,9 +35,13 @@ public class QRArrayAdapter extends ArrayAdapter<QRCode> {
         }
 
         QRCode qr = getItem(position);
+
         TextView QR_name_text = convertView.findViewById(R.id.QR_name);
         TextView QR_score_text = convertView.findViewById(R.id.QR_score);
         ImageView QR_pic_display = convertView.findViewById(R.id.QR_pic);
+
+        String url = qr.getImageURL();
+        Picasso.get().load(url).into(QR_pic_display);
 
         QR_name_text.setText(qr.getName());
         QR_score_text.setText(Integer.toString(qr.getPoints()));

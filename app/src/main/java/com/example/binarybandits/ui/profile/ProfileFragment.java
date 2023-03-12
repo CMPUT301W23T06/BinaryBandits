@@ -68,6 +68,7 @@ public class ProfileFragment extends Fragment {
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         String username = preferences.getString("login_username", "");
+
         PlayerDB db = new PlayerDB(new DBConnector());
         TextView usernameText = view.findViewById(R.id.text_username);
         usernameText.setText(username);
