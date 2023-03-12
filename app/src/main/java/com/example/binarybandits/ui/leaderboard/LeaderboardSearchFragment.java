@@ -49,7 +49,7 @@ public class LeaderboardSearchFragment extends Fragment {
 
         View search = inflater.inflate(R.layout.fragment_leaderboard_search, container, false);
 
-
+        // Connect to database and get set of players
         DBConnector dbConnector = new DBConnector();
         PlayerDB playerDB = new PlayerDB(dbConnector);
         Set<Player> players = new HashSet<>(); // change ArrayList to Set to avoid duplicate results
