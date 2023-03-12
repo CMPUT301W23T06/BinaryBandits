@@ -5,12 +5,21 @@ import android.graphics.BitmapFactory;
 
 import java.util.ArrayList;
 
+/**
+ * Model class for a Player object.
+ * Outstanding issues: N/A
+ */
 public class Player {
 
     /**
      * Empty constructor for creating objects through DB
      */
     public Player() {}
+
+    /**
+     * Constructor for creating a Player account without a phone number
+     * @param username player's unique username
+     */
     public Player(String username) {
         this.username = username;
         this.phone = null;
@@ -20,6 +29,11 @@ public class Player {
         this.qrCodesScanned = new ArrayList<QRCode>();
     }
 
+    /**
+     * Constructor for creating a Player account with a phone number
+     * @param username player's username
+     * @param phone player's phone number
+     */
     public Player(String username, String phone) {
         this.username = username;
         this.phone = phone;
@@ -28,6 +42,16 @@ public class Player {
         this.playerAvatar = null; //temporary
         this.qrCodesScanned = new ArrayList<QRCode>();
     }
+
+    /**
+     * Constructor used to create Players from documents in the database
+     * @param username player's username
+     * @param phone player's phone number
+     * @param totalScore total score of a player's scanned QR codes
+     * @param totalQRCodes number of QR codes a player has scanned
+     * @param playerAvatar player's avatar picture
+     * @param qrCodesScanned list of QR code objects scanned by the player
+     */
     public Player(String username, String phone, int totalScore, int totalQRCodes, Bitmap playerAvatar, ArrayList<QRCode> qrCodesScanned) {
         this.username = username;
         this.phone = phone;
@@ -44,6 +68,11 @@ public class Player {
     Bitmap playerAvatar;
     ArrayList<QRCode> qrCodesScanned;
 
+
+    /**
+     * Get the player's username
+     * @return Return the player's username
+     */
     public String getUsername() {
         return username;
     }
@@ -106,15 +135,5 @@ public class Player {
 
     public void removeQRCodeScanned(QRCode qrCode) {
         qrCodesScanned.remove(qrCode);
-    }
-
-    public QRCode getHighestQRCode() {
-
-        return null; //temporary
-    }
-
-    public QRCode getLowestQRCode() {
-
-        return null; //temporary
     }
 }

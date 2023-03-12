@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <ImageView
+        android:id="@+id/QR_pic"
+        android:layout_width="98dp"
+        android:layout_height="54dp" />
+
+    <TextView
+        android:id="@+id/QR_name"
+        android:layout_width="177dp"
+        android:layout_height="55dp"
+        android:text="Name"
+        android:textColor="@color/white"
+        android:layout_gravity="left"
+        android:gravity="center_vertical"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/QR_score"
+        android:layout_width="116dp"
+        android:layout_height="55dp"
+        android:gravity="center"
+        android:text="###"
+        android:textColor="@color/red"
+        android:textSize="20sp" />
+
+</LinearLayout>

@@ -3,22 +3,20 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.view.View;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import com.budiyev.android.codescanner.CodeScanner;
 import com.budiyev.android.codescanner.CodeScannerView;
 import com.budiyev.android.codescanner.DecodeCallback;
+import com.example.binarybandits.controllers.AuthController;
 import com.example.binarybandits.controllers.ScannerController;
 import com.example.binarybandits.models.Player;
 import com.example.binarybandits.models.QRCode;
 import com.example.binarybandits.player.PlayerCallback;
 import com.example.binarybandits.player.PlayerDB;
-import com.google.firebase.firestore.FirebaseFirestore;
+import com.example.binarybandits.ui.QRedit.QRCodeEditActivity;
 import com.example.binarybandits.controllers.QRController;
-import com.example.binarybandits.qrcode.QRCodeInfoActivity;
 import com.google.zxing.Result;
 
 public class ScanQRActivity extends AppCompatActivity {
@@ -55,9 +53,10 @@ public class ScanQRActivity extends AppCompatActivity {
                         System.out.println("Points: " + points);
 
                         QRCode qrCode = new QRCode(hash, name, points);
-                        getCurrentPlayer(qrCode);
-                        Intent myIntent = new Intent(ScanQRActivity.this, QRCodeInfoActivity.class);
-                        myIntent.putExtra("hash", hash); // Optional parameters
+//                        getCurrentPlayer(qrCode);
+
+                        Intent myIntent = new Intent(ScanQRActivity.this, QRCodeEditActivity.class);
+                        myIntent.putExtra("hash", hash);
                         ScanQRActivity.this.startActivity(myIntent);
                     }
                 });
@@ -68,8 +67,9 @@ public class ScanQRActivity extends AppCompatActivity {
 
     public void getCurrentPlayer(QRCode qrCode) {
         //I'm still debugging this method. Not ready to use
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(scannerView.getContext());
-        String username = preferences.getString("login_username", "");
+//        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(scannerView.getContext());
+//        String username = preferences.getString("login_username", "");
+        String username = AuthController.getUsername(ScanQRActivity.this);
         PlayerDB db = new PlayerDB(new DBConnector());
 
         db.getPlayer(username, new PlayerCallback() {
