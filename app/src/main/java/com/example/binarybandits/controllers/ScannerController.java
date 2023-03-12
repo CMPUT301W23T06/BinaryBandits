@@ -30,12 +30,13 @@ public class ScannerController {
         PlayerDB playerDB = new PlayerDB(new DBConnector());
         if(!player.getQrCodesScanned().contains(qrCode)) {
             qrCodeDB.addQRCode(qrCode); //Add QRCode to database if it is not there already
-            //Alex: I still need to add the QRCode to the a Player's scanned QR codes in the DB
             player.addQRCodeScanned(qrCode); //Add QRCode to player's profile (locally)
             player.incrementTotalQRCodes();
 
+            //Calculate player's new score with scanned QR code
             int newScore = player.getTotalScore() + qrCode.getPoints();
             player.setTotalScore(newScore);
+            //Update player information in database
             playerDB.updatePlayer(player);
         }
     }

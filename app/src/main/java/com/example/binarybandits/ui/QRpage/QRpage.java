@@ -23,46 +23,6 @@ import com.example.binarybandits.R;
 public class QRpage extends Fragment {
 
     private QRpageViewModel mViewModel;
-    private int REQUEST_IMAGE_CAPTURE = 1;
-
-    public static QRpage newInstance() {
-        return new QRpage();
-    }
-    public void onClickOpenCamera(View view) {
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
-    }
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
-            Bundle extras = data.getExtras();
-            Bitmap capturedImage = (Bitmap) extras.get("data");
-
-            // TODO: Implement the logic to save the captured image to storage, display it in the UI, etc.
-
-            // Example of displaying the captured image in an ImageView
-            ImageView imageView = getView().findViewById(R.id.add_location_button);
-            imageView.setImageBitmap(capturedImage);
-        }
-
-    }
-    public void onCheckboxClicked(View view) {
-        // Is the view now checked?
-        boolean checked = ((CheckBox) view).isChecked();
-
-        // Check which checkbox was clicked
-        switch(view.getId()) {
-            case R.id.checkBox:
-                if (checked) {
-                    // Record the geolocation
-                }
-
-                break;
-
-        }
-    }
 
 
     @Override
