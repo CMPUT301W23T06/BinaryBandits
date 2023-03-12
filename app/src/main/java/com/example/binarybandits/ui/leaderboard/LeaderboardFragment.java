@@ -29,6 +29,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * updates view of leaderboard fragment
+ * responds to click of search button
+ * responds to click of user profile
+ */
 public class LeaderboardFragment extends Fragment {
     LeaderboardViewModel leaderboardViewModel = new LeaderboardViewModel();
     ArrayList<Player> players = leaderboardViewModel.getPlayerList();
@@ -116,6 +121,10 @@ public class LeaderboardFragment extends Fragment {
         // set onclick listener for search button to open search fragment
         Button button = leaderboard.findViewById(R.id.button);
         ListView listview = leaderboard.findViewById(R.id.playerList);
+
+        /**
+         * listen for search button click and switch fragments
+         */
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -128,6 +137,9 @@ public class LeaderboardFragment extends Fragment {
             }
 
         });
+        /**
+         * listen for leaderboard item click and change Activity
+         */
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
