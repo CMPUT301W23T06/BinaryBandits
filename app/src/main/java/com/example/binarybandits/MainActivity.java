@@ -30,6 +30,20 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
         bottomNavigationView = findViewById(R.id.nav_view);
         bottomNavigationView.setOnItemSelectedListener(this);
         bottomNavigationView.setSelectedItemId(R.id.navigation_home);
+
+        // If a player has just deleted a QR code, they come back to the Profile Page Fragment of the
+        // MainActivity with their QRCode list updated
+        Boolean deleted_qr;
+        try{
+            Bundle extras = getIntent().getExtras();
+            deleted_qr = extras.getBoolean("Deleted QR code");
+        } catch(Exception ex){
+            deleted_qr = false;
+        }
+
+        if (deleted_qr){
+            getSupportFragmentManager().beginTransaction().replace(R.id.container, profileFragment).commit();
+        }
     }
 
     @Override
