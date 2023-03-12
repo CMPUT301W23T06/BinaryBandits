@@ -112,7 +112,12 @@ public class Player {
     }
 
     public void setTotalQRCodes(int totalQRCodes) {
-        this.totalQRCodes = totalQRCodes;
+        if (totalQRCodes >= 0) {
+            this.totalQRCodes = totalQRCodes;
+        }
+        else {
+            this.totalQRCodes = 0;
+        }
     }
 
     public ArrayList<QRCode> getQrCodesScanned() {
@@ -128,10 +133,15 @@ public class Player {
     }
 
     public void decrementTotalQRCodes() {
-        this.totalQRCodes -= 1;
+        if (totalQRCodes >= 1) {
+            this.totalQRCodes -= 1;
+        }
     }
 
     public void addQRCodeScanned(QRCode qrCode) {
+        if (findQRCodeScanned(qrCode)) {
+            throw new IllegalArgumentException();
+        }
         qrCodesScanned.add(qrCode);
     }
 
@@ -148,6 +158,8 @@ public class Player {
         //Referenced: https://stackoverflow.com/questions/8520808/how-to-remove-specific-object-from-arraylist-in-java
         //Author: https://stackoverflow.com/users/1899700/tmh
         //License: CC BY-SA 4.0
-        qrCodesScanned.removeIf(qrCode1 -> qrCode.getName().equals(qrCode1.getName()));
+        if(!qrCodesScanned.removeIf(qrCode1 -> qrCode.getName().equals(qrCode1.getName()))) {
+            throw new IllegalArgumentException();
+        }
     }
 }
