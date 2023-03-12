@@ -45,6 +45,7 @@ public class QRCodeInfoActivity extends AppCompatActivity {
 
             String name = extras.getString("name");
             String player_user = extras.getString("username");
+            Boolean current_player = extras.getBoolean("current_user");
             db_qr.getQRCode(name, new QRCodeCallback() {
                 @Override
                 public void onQRCodeCallback(QRCode qrCode) {
@@ -56,11 +57,15 @@ public class QRCodeInfoActivity extends AppCompatActivity {
                     TextView qr_name = findViewById(R.id.qr_code_name);
                     TextView qr_score = findViewById(R.id.qr_code_score);
                     ImageButton delete_button = findViewById(R.id.delete_button);
-                    String url = "https://api.dicebear.com/5.x/shapes/png?seed=" + hash;
+                    String url = qrCode.getImageURL();
 
                     Picasso.get().load(url).into(qr_image);
                     qr_name.setText(name);
                     qr_score.setText(score);
+
+                    if (current_player == false){
+                        delete_button.setVisibility(View.GONE);
+                    }
 
                     delete_button.setOnClickListener(new View.OnClickListener() {
                         @Override
