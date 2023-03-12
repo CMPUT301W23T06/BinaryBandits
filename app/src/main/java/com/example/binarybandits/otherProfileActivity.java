@@ -9,7 +9,11 @@ import android.widget.TextView;
 import com.example.binarybandits.models.Player;
 import com.example.binarybandits.ui.leaderboard.LeaderboardFragment;
 
-
+/**
+ * switch activity to otherProfileActivity
+ * respond to back button press and send back to MainActivity
+ * set fields of player profile of user clicked on
+ */
 public class otherProfileActivity extends Activity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

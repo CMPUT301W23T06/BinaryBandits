@@ -20,6 +20,9 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
+/**
+ * contains players and sorting function for players
+ */
 public class LeaderboardViewModel extends ViewModel {
     private final MutableLiveData<String> mText;
     private final ArrayList<Player> sortedPlayerList;
@@ -64,6 +67,10 @@ public class LeaderboardViewModel extends ViewModel {
         return sortedPlayerList;
     }
 
+    /**
+     * returns mtext
+     * @return
+     */
     public LiveData<String> getText() {
         return mText;
     }
