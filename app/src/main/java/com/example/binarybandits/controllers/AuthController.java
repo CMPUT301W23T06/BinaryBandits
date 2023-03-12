@@ -16,7 +16,8 @@ import com.example.binarybandits.ui.auth.LogInActivity;
 
 /**
  * Controller for authenticating the user's input on Login/Signup page.
- * Outstanding issues: N/A
+ * Outstanding issues:
+ *   -App asks user for full name, but full name is not used anywhere in the app's current state
  */
 public class AuthController {
 

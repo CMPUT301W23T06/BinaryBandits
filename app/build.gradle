@@ -32,6 +32,12 @@ android {
     buildFeatures {
         dataBinding true
     }
+
+    testOptions {
+        unitTests.all {
+            useJUnitPlatform()
+        }
+    }
 }
 
 dependencies {
@@ -57,6 +63,15 @@ dependencies {
 
     //javadocs
     //implementation files("C:\\Users\\alexa\\AppData\\Local\\Android\\Sdk\\platforms\\android-33\\android.jar")
+
+    //testing
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    testImplementation 'org.testng:testng:6.9.6'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+
+    androidTestImplementation "androidx.test:runner:1.5.2"
+    androidTestImplementation "androidx.test:rules:1.5.0"
+    androidTestImplementation "com.jayway.android.robotium:robotium-solo:5.2.1"
 
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.5.1'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1'
