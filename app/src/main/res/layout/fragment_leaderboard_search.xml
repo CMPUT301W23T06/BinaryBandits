@@ -98,7 +98,6 @@
         android:layout_height="wrap_content"
         android:background="@drawable/big_rounded_button"
         android:backgroundTint="@color/red"
-        android:onClick="backToLeaderboard"
         android:text="Back to Leaderboard"
         android:textAllCaps="false"
         android:textColor="#FFFFFF"
