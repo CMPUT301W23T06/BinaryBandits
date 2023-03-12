@@ -2,6 +2,7 @@ package com.example.binarybandits.qrcode;
 
 
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.util.Log;
 import android.util.Pair;
 
@@ -19,8 +20,11 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
-
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -28,20 +32,27 @@ import java.util.Objects;
 
 /**
  * Stores, retrieves, adds, and deletes QR code data
+ * Outstanding issues: N/A
  */
 public class QRCodeDB {
     private final String TAG = "QRCodeDB";
     private FirebaseFirestore db;
+    private FirebaseStorage storage;
     private final CollectionReference collectionReference;
+    private StorageReference storageRef;
+    private StorageReference locationImgsRef;
 
     public QRCodeDB(DBConnector connector) {
         this.db = connector.getDB();
+        this.storage = connector.getStorage();
         this.collectionReference = connector.getCollectionReference("QRCodes");
+        this.storageRef = this.storage.getReference();
+        this.locationImgsRef = this.storageRef.child("locationImgs");
     }
 
     /**
-     *
-     * @param qrCode
+     * Adds a QRCode object as a document in the QR code collection within the database
+     * @param qrCode QRCode to add to database
      */
     public void addQRCode(QRCode qrCode) {
         //Referenced: https://stackoverflow.com/questions/53332471/checking-if-a-document-exists-in-a-firestore-collection
@@ -72,9 +83,9 @@ public class QRCodeDB {
     }
 
     /**
-     *
-     * @param name
-     * @param qrCode
+     * Helper function for addQRCode. Adds the QRCode to database with the name of the QRCode as the key
+     * @param name name of the QRCode
+     * @param qrCode QRCode object to store on database
      */
     public void addOnSuccess(String name, QRCode qrCode) {
         HashMap<String, Object> data = new HashMap<>();
@@ -106,7 +117,9 @@ public class QRCodeDB {
     }
 
     /**
-     *
+     * Gets a QRCode from the database based on name
+     * @param name name of the QR code to find in database
+     * @param callback has method containing what to do with queried QRCode
      */
     public void getQRCode(String name, QRCodeCallback callback) {
         DocumentReference documentReference = collectionReference.document(name);
@@ -141,8 +154,8 @@ public class QRCodeDB {
     }
 
     /**
-     *
-     * @param qrCode
+     * Updates a QRCode's fields in the database
+     * @param qrCode QRCode to update
      */
     public void updateQRCode(QRCode qrCode) {
         //To-do: Implement updateQRCode() -> Alex
@@ -158,20 +171,38 @@ public class QRCodeDB {
     }
 
     /**
-     *
-     * @param qrCode
+     * Updates number of players who have scanned a QRCode when a Player deletes a
+     * QRCode from their account
+     * @param qrCode QRCode to update in database
      */
     public void deleteQRCode(QRCode qrCode) {
-        //To-do: Implement deleteQRCode() -> Alex
-        if(qrCode.getNumPlayersScannedBy() == 1) {
-            //Delete QRCode from DB if no one else has scanned the QRCode
-            collectionReference.document(qrCode.getScannerUID()).delete();
-        }
-        else {
+        if(qrCode.getNumPlayersScannedBy() >= 1) {
             //Decrement numPlayersScannedBy
             qrCode.decrementNumPlayersScannedBy();
             //Update QRCode in database
             updateQRCode(qrCode);
         }
     }
+
+    public void addLocationImageToServer(Bitmap bitmap, String name) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] data = baos.toByteArray();
+
+        StorageReference qrCodeRef = this.locationImgsRef.child(name + ".jpg");
+        UploadTask uploadTask = qrCodeRef.putBytes(data);
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle unsuccessful uploads
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+            }
+        });
+    }
+
+
 }

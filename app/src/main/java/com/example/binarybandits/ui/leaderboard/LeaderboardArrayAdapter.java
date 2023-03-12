@@ -17,10 +17,23 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
+/**
+ * array adapter for leaderboard list
+ * updates view
+ */
 public class LeaderboardArrayAdapter extends ArrayAdapter {
         public LeaderboardArrayAdapter(Context context, ArrayList<Player> players) {
             super(context, 0, players);
         }
+
+    /**
+     * get view for leaderboards items xml
+     * add item to list with fields
+     * @param position
+     * @param convertView
+     * @param parent
+     * @return
+     */
         @NonNull
         @Override
         public View getView(int position, View convertView, @NonNull ViewGroup

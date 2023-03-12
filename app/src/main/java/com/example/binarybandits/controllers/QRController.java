@@ -5,6 +5,10 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Random;
 
+/**
+ * Controller class for QR codes that generates information necessary to create a QR code.
+ * Outstanding issues: N/A
+ */
 public class QRController {
     //All code written in this class has been moved to ScannerController
     String[] animalNames = new String[] {
@@ -59,6 +63,11 @@ public class QRController {
             "Cosmic", "Colossal", "Deluxe", "Epic", "Extreme", "Mighty"
     };
 
+    /**
+     *
+     * @param source
+     * @return
+     */
     public String getHash(String source) {
         byte[] hash = null;
         String hashCode = null;
@@ -89,6 +98,11 @@ public class QRController {
         return hashCode;
     }
 
+    /**
+     *
+     * @param hash
+     * @return
+     */
     public String generateUniqueName(String hash) {
 
         long seed = Long.parseLong(hash.substring(0, 15), 16);
@@ -102,6 +116,11 @@ public class QRController {
 
     }
 
+    /**
+     *
+     * @param hash
+     * @return
+     */
     public int calculatePoints(String hash) {
         int score = 0;
         int counter = 1;
