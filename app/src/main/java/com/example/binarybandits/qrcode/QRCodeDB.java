@@ -117,8 +117,8 @@ public class QRCodeDB {
                     String hash = documentSnapshot.getString("hash");
                     String name = documentSnapshot.getString("name");
                     int points = documentSnapshot.getLong("points").intValue();
-                    Geolocation coordinates = (Geolocation) documentSnapshot.get("coordinates");
-                    Bitmap locationImage = (Bitmap)documentSnapshot.get("locationImage");
+                    ArrayList<Double> coordinates = (ArrayList<Double>) documentSnapshot.get("coordinates");
+                    String locationImage = documentSnapshot.getString("locationImage");
                     ArrayList<String> comments = (ArrayList<String>)documentSnapshot.get("comments");
                     int numPlayersScannedBy = documentSnapshot.getLong("numPlayersScannedBy").intValue();
 

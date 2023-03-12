@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.budiyev.android.codescanner.CodeScanner;
 import com.budiyev.android.codescanner.CodeScannerView;
 import com.budiyev.android.codescanner.DecodeCallback;
+import com.example.binarybandits.controllers.AuthController;
 import com.example.binarybandits.controllers.ScannerController;
 import com.example.binarybandits.models.Player;
 import com.example.binarybandits.models.QRCode;
@@ -52,7 +53,7 @@ public class ScanQRActivity extends AppCompatActivity {
                         System.out.println("Points: " + points);
 
                         QRCode qrCode = new QRCode(hash, name, points);
-                        getCurrentPlayer(qrCode);
+//                        getCurrentPlayer(qrCode);
 
                         Intent myIntent = new Intent(ScanQRActivity.this, QRCodeEditActivity.class);
                         myIntent.putExtra("hash", hash);
@@ -66,8 +67,9 @@ public class ScanQRActivity extends AppCompatActivity {
 
     public void getCurrentPlayer(QRCode qrCode) {
         //I'm still debugging this method. Not ready to use
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(scannerView.getContext());
-        String username = preferences.getString("login_username", "");
+//        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(scannerView.getContext());
+//        String username = preferences.getString("login_username", "");
+        String username = AuthController.getUsername(ScanQRActivity.this);
         PlayerDB db = new PlayerDB(new DBConnector());
 
         db.getPlayer(username, new PlayerCallback() {
