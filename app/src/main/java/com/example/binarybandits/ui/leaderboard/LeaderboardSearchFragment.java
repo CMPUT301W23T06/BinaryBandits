@@ -3,9 +3,11 @@ package com.example.binarybandits.ui.leaderboard;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -29,32 +31,20 @@ import java.util.List;
 
 public class LeaderboardSearchFragment extends Fragment {
 
-    private EditText searchInput;
-    private ListView searchResults;
-    private FirebaseFirestore db;
+    //private EditText searchInput;
+    //private ListView searchResults;
 
     public LeaderboardSearchFragment() {
-        /*DBConnector dbConnector = new DBConnector();
-        PlayerDB playerDB = new PlayerDB(dbConnector);
-        ArrayList<Player> players = new ArrayList<>();
-
-
-        String searchText = searchInput.getText().toString();
-        playerDB.getPlayer(searchText, new PlayerCallback() {
-            @Override
-            public void onPlayerCallback(Player searchedPlayer) {
-                players.add(searchedPlayer);
-            }
-        });*/
-
+        // Required empty public constructor
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+
         View search = inflater.inflate(R.layout.fragment_leaderboard_search, container, false);
 
-        DBConnector dbConnector = new DBConnector();
+        /*DBConnector dbConnector = new DBConnector();
         PlayerDB playerDB = new PlayerDB(dbConnector);
         ArrayList<Player> players = new ArrayList<>();
         //ArrayList<String> usernames = new ArrayList<>();
@@ -68,26 +58,104 @@ public class LeaderboardSearchFragment extends Fragment {
                 @Override
                 public void onPlayerCallback(Player searchedPlayer) {
                     players.add(searchedPlayer);
-                    //usernames.add(searchedPlayer.getUsername());
-                    //scores.add(searchedPlayer.getTotalScore());
 
                 }
             });
+
             // display all players in ListView
-            ListView searchResults = search.findViewById(R.id.search_results);
+            searchResults = search.findViewById(R.id.search_results);
 
             ArrayAdapter<Player> playerArrayAdapter = new LeaderboardSearchArrayAdapter(getActivity(), players);
             searchResults.setAdapter(playerArrayAdapter);
 
 
+        }
+        return search;
+    }
+}*/
 
 
+        /*DBConnector dbConnector = new DBConnector();
+        PlayerDB playerDB = new PlayerDB(dbConnector);
+        ArrayList<Player> players = new ArrayList<>();
 
-            //ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, usernames);
+        EditText searchInput = search.findViewById(R.id.search_bar);
+        ListView searchResults = search.findViewById(R.id.search_results);
+
+        searchInput.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    String searchText = searchInput.getText().toString();
+
+                    if (!searchText.isEmpty()) {
+                        playerDB.getPlayer(searchText, new PlayerCallback() {
+                            @Override
+                            public void onPlayerCallback(Player searchedPlayer) {
+                                players.add(searchedPlayer);
+                                ArrayAdapter<Player> playerArrayAdapter = new LeaderboardSearchArrayAdapter(getActivity(), players);
+                                searchResults.setAdapter(playerArrayAdapter);
+                            }
+                        });
+                    } else {
+                        players.clear();
+                        ArrayAdapter<Player> playerArrayAdapter = new LeaderboardSearchArrayAdapter(getActivity(), players);
+                        searchResults.setAdapter(playerArrayAdapter);
+                    }
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        return search;
+    }*/
+        DBConnector dbConnector = new DBConnector();
+        PlayerDB playerDB = new PlayerDB(dbConnector);
+        ArrayList<Player> players = new ArrayList<>();
+
+        EditText searchInput = search.findViewById(R.id.search_bar);
+        ListView searchResults = search.findViewById(R.id.search_results);
+
+        searchInput.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH || event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
+                    if (event.getAction() == KeyEvent.ACTION_UP) {
+                        String searchText = searchInput.getText().toString();
+
+                        players.clear();
+
+                        if (!searchText.isEmpty()) {
+                            playerDB.getPlayer(searchText, new PlayerCallback() {
+                                @Override
+                                public void onPlayerCallback(Player searchedPlayer) {
+                                    players.add(searchedPlayer);
+                                    ArrayAdapter<Player> playerArrayAdapter = new LeaderboardSearchArrayAdapter(getActivity(), players);
+                                    searchResults.setAdapter(playerArrayAdapter);
+                                }
+                            });
+                        } else {
+                            players.clear();
+                            ArrayAdapter<Player> playerArrayAdapter = new LeaderboardSearchArrayAdapter(getActivity(), players);
+                            searchResults.setAdapter(playerArrayAdapter);
+                        }
+                    }
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        return search;
+    }}
+
+
+        //ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, usernames);
             //searchResults.setAdapter(adapter);
 
 
-        }
+        //}
 
 
 
@@ -96,13 +164,12 @@ public class LeaderboardSearchFragment extends Fragment {
         //listView.setAdapter(playerArrayAdapter);
 
 
-    return search;
+    /*return search;
 
 
-        /*searchInput = rootView.findViewById(R.id.search_bar);
-        searchResults = rootView.findViewById(R.id.search_results);
+        searchInput = search.findViewById(R.id.search_bar);
+        searchResults = search.findViewById(R.id.search_results);
         db = FirebaseFirestore.getInstance();
-
         searchInput.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -118,10 +185,10 @@ public class LeaderboardSearchFragment extends Fragment {
             }
         });
 
-        return rootView;
-    }
+        return search;
+    }*/
 
-    private void search(String query) {
+    /*private void search(String query) {
         CollectionReference collectionRef = db.collection("Players");
         Query searchQuery = collectionRef.whereEqualTo("username", query);
 
@@ -157,5 +224,4 @@ public class LeaderboardSearchFragment extends Fragment {
     }*/
 
 
-        }
-}
+       // }

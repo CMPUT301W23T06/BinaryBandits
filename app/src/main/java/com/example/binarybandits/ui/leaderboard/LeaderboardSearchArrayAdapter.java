@@ -24,7 +24,7 @@ public class LeaderboardSearchArrayAdapter extends ArrayAdapter {
             parent) {
         View view;
         if (convertView == null) {
-            view = LayoutInflater.from(getContext()).inflate(R.layout.fragment_leaderboard_items,
+            view = LayoutInflater.from(getContext()).inflate(R.layout.fragment_leaderboard_search_items,
                     parent, false);
         } else {
             view = convertView;
@@ -35,8 +35,12 @@ public class LeaderboardSearchArrayAdapter extends ArrayAdapter {
         TextView playerName = view.findViewById(R.id.player_name_text);
         TextView score = view.findViewById((R.id.score_Player));
         //TextView rank = view.findViewById(R.id.rank_number);
-        playerName.setText(player.getUsername());
-        score.setText(Integer.toString(player.getTotalScore()));
+        if (player != null) {
+            playerName.setText(player.getUsername());
+            score.setText(Integer.toString(player.getTotalScore()));
+        }
+
+
         //rank.setText("#" + Integer.toString(position+4));
         return view;
     }
