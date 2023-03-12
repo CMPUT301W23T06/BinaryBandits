@@ -68,7 +68,6 @@ public class ProfileFragment extends Fragment {
         TextView usernameText = view.findViewById(R.id.text_username);
         usernameText.setText(username);
 
-
         db.getPlayer(username, new PlayerCallback() {
             @Override
             public void onPlayerCallback(Player player) {
