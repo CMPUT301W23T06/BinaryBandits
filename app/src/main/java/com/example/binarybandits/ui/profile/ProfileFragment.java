@@ -69,28 +69,6 @@ public class ProfileFragment extends Fragment {
         usernameText.setText(username);
 
 
-
-
-//        for (int i = 0; i < 10; i++) {
-//            dataList.add(new QRCode("hash", "name", 50));
-//        }
-
-//        db.getPlayer(username, new PlayerCallback() {
-//            @Override
-//            public void onPlayerCallback(Player player) {
-//                ListView QRlist = view.findViewById(R.id.list_view_player_qr_codes);
-//                ArrayList<QRCode> dataList = new ArrayList<>();
-//                dataList = player.getQrCodesScanned();
-//                ArrayAdapter<QRCode> QRAdapter = new QRArrayAdapter(getActivity(), dataList);
-//                QRlist.setAdapter(QRAdapter);
-//            }
-//
-//
-//        });
-
-
-
-
         db.getPlayer(username, new PlayerCallback() {
             @Override
             public void onPlayerCallback(Player player) {
@@ -147,7 +125,7 @@ public class ProfileFragment extends Fragment {
                             extras.putString("username", String.valueOf(player.getUsername()));
                             myIntent.putExtras(extras);
                             getActivity().startActivity(myIntent);
-                            QRAdapter.notifyDataSetChanged();
+                         //   QRAdapter.notifyDataSetChanged();
                         }
                     });
                 }
