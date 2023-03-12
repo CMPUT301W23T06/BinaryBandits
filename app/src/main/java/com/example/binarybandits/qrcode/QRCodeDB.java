@@ -2,6 +2,7 @@ package com.example.binarybandits.qrcode;
 
 
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.util.Log;
 import android.util.Pair;
 
@@ -19,8 +20,11 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
-
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -33,11 +37,17 @@ import java.util.Objects;
 public class QRCodeDB {
     private final String TAG = "QRCodeDB";
     private FirebaseFirestore db;
+    private FirebaseStorage storage;
     private final CollectionReference collectionReference;
+    private StorageReference storageRef;
+    private StorageReference locationImgsRef;
 
     public QRCodeDB(DBConnector connector) {
         this.db = connector.getDB();
+        this.storage = connector.getStorage();
         this.collectionReference = connector.getCollectionReference("QRCodes");
+        this.storageRef = this.storage.getReference();
+        this.locationImgsRef = this.storageRef.child("locationImgs");
     }
 
     /**
@@ -174,4 +184,26 @@ public class QRCodeDB {
             updateQRCode(qrCode);
         }
     }
+
+    public void addLocationImageToServer(Bitmap bitmap, String name) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] data = baos.toByteArray();
+
+        StorageReference qrCodeRef = this.locationImgsRef.child(name + ".jpg");
+        UploadTask uploadTask = qrCodeRef.putBytes(data);
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle unsuccessful uploads
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+            }
+        });
+    }
+
+
 }

@@ -100,4 +100,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageButton" />
 
+    <TextView
+        android:id="@+id/viewImageText"
+        android:layout_width="wrap_content"
+        android:layout_height="19dp"
+        android:layout_marginTop="10dp"
+        android:visibility="invisible"
+        android:text="View image"
+        android:onClick="showImagePopup"
+        android:textColor="@color/yellow"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageConfirmationText" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
