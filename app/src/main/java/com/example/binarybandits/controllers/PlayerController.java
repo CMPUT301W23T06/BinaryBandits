@@ -24,7 +24,7 @@ public class PlayerController {
         QRCode highestQRCode;
         ArrayList<QRCode> qrCodesScanned = player.getQrCodesScanned();
         qrCodesScanned = sortQRCodes(qrCodesScanned);
-        highestQRCode = qrCodesScanned.get(qrCodesScanned.size()-1);
+        highestQRCode = qrCodesScanned.get(qrCodesScanned.size());
         return highestQRCode;
     }
 
