@@ -18,6 +18,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.binarybandits.DBConnector;
 import com.example.binarybandits.R;
 import com.example.binarybandits.controllers.AuthController;
+import com.example.binarybandits.controllers.PlayerController;
 import com.example.binarybandits.models.Player;
 import com.example.binarybandits.otherProfileActivity;
 import com.example.binarybandits.player.PlayerCallback;
@@ -43,7 +44,6 @@ public class LeaderboardFragment extends Fragment {
 
         // Inflate the layout for this fragment
         View leaderboard = inflater.inflate(R.layout.fragment_leaderboard, container, false);
-
         // instantiate variables for top three players
         ListView playerList = leaderboard.findViewById(R.id.playerList);
         TextView nameOne = leaderboard.findViewById(R.id.player1);
@@ -110,11 +110,30 @@ public class LeaderboardFragment extends Fragment {
 
                 // call ArrayAdapter to add each item in array to ListView
                 if(players.size()>3) {
-                    // remove top three players from players array
-                    removePlayers(players);
-                    ArrayAdapter<Player> playerArrayAdapter = new LeaderboardArrayAdapter(getActivity(), players);
+                    // create copy of array without top 3 players
+                    ArrayList<Player> players_copy = new ArrayList<>();
+                    for(int i =3; i<players.size(); i++){
+                        players_copy.add(players.get(i));
+                    }
+                    ArrayAdapter<Player> playerArrayAdapter = new LeaderboardArrayAdapter(getActivity(), players_copy);
                     playerList.setAdapter(playerArrayAdapter);
                 }
+                // set onclick listener for search button to open search fragment
+                Button button = leaderboard.findViewById(R.id.button);
+                ListView listview = leaderboard.findViewById(R.id.playerList);
+
+                button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        button.setVisibility(View.GONE);
+                        FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+                        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                        transaction.replace(R.id.fragment_container, new LeaderboardSearchFragment());
+                        transaction.addToBackStack(null);
+                        transaction.commit();
+                    }
+
+                });
             }
         });
 
@@ -135,55 +154,58 @@ public class LeaderboardFragment extends Fragment {
                 transaction.addToBackStack(null);
                 transaction.commit();
             }
-
         });
-        /**
-         * listen for leaderboard item click and change Activity
-         */
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent intent = new Intent(LeaderboardFragment.this.getActivity(), otherProfileActivity.class);
-                startActivity(intent);
-            }
-        });
-        ImageView image1 = leaderboard.findViewById(R.id.limage1);
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    Intent intent = new Intent(LeaderboardFragment.this.getActivity(), otherProfileActivity.class);
+                    Bundle extras = new Bundle();
+                    extras.putString("name", String.valueOf(players.get(i).getUsername()));
+                    extras.putString("list", "long");
+                    intent.putExtras(extras);
+                    startActivity(intent);
+                }
+            });
+            ImageView image1 = leaderboard.findViewById(R.id.limage1);
         image1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(LeaderboardFragment.this.getActivity(), otherProfileActivity.class);
-                startActivity(intent);
-            }
-        });
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(LeaderboardFragment.this.getActivity(), otherProfileActivity.class);
+                    Bundle extras = new Bundle();
+                    extras.putString("name", String.valueOf(players.get(0).getUsername()));
+                    extras.putString("list", "short");
+                    intent.putExtras(extras);
+                    startActivity(intent);
+                }
+            });
 
-        ImageView image2 = leaderboard.findViewById(R.id.limage2);
+            ImageView image2 = leaderboard.findViewById(R.id.limage2);
         image2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(LeaderboardFragment.this.getActivity(), otherProfileActivity.class);
-                startActivity(intent);
-            }
-        });
-        ImageView image3 = leaderboard.findViewById(R.id.limage3);
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(LeaderboardFragment.this.getActivity(), otherProfileActivity.class);
+                    Bundle extras = new Bundle();
+                    extras.putString("name", String.valueOf(players.get(1).getUsername()));
+                    extras.putString("list", "short");
+                    intent.putExtras(extras);
+                    startActivity(intent);
+                }
+            });
+            ImageView image3 = leaderboard.findViewById(R.id.limage3);
         image3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(LeaderboardFragment.this.getActivity(), otherProfileActivity.class);
-                startActivity(intent);
-            }
-        });
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(LeaderboardFragment.this.getActivity(), otherProfileActivity.class);
+                    Bundle extras = new Bundle();
+                    extras.putString("name", String.valueOf(players.get(2).getUsername()));
+                    extras.putString("list", "short");
+                    intent.putExtras(extras);
+                    startActivity(intent);
+                }
+            });
+
         return leaderboard;
     }
 
-
-
-    /**
-     * remove top three players from array of players
-     * @param players
-     */
-    public void removePlayers(ArrayList<Player> players){
-        for(int i = 0; i<3; i++)
-            players.remove(0);
-    }
 
 }

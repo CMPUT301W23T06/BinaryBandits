@@ -13,6 +13,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.binarybandits.DBConnector;
+import com.example.binarybandits.MainActivity;
 import com.example.binarybandits.R;
 import com.example.binarybandits.controllers.AuthController;
 import com.example.binarybandits.models.Player;
@@ -36,15 +37,13 @@ public class QRCodeInfoActivity extends AppCompatActivity {
             getSupportActionBar().hide();
         }
 
-        //Bundle extras = getIntent().getExtras();
         Bundle extras = getIntent().getExtras();
 
         if (extras != null) {
-            //String name = extras.getString("name");
-
 
             String name = extras.getString("name");
             String player_user = extras.getString("username");
+            Boolean current_player = extras.getBoolean("current_user");
             db_qr.getQRCode(name, new QRCodeCallback() {
                 @Override
                 public void onQRCodeCallback(QRCode qrCode) {
@@ -56,11 +55,15 @@ public class QRCodeInfoActivity extends AppCompatActivity {
                     TextView qr_name = findViewById(R.id.qr_code_name);
                     TextView qr_score = findViewById(R.id.qr_code_score);
                     ImageButton delete_button = findViewById(R.id.delete_button);
-                    String url = "https://api.dicebear.com/5.x/shapes/png?seed=" + hash;
+                    String url = qrCode.getImageURL();
 
                     Picasso.get().load(url).into(qr_image);
                     qr_name.setText(name);
                     qr_score.setText(score);
+
+                    if (current_player == false){
+                        delete_button.setVisibility(View.GONE);
+                    }
 
                     delete_button.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -93,6 +96,13 @@ public class QRCodeInfoActivity extends AppCompatActivity {
                                             });
 
                                             QRCodeInfoActivity.this.finish();
+
+                                            Intent myIntent = new Intent(QRCodeInfoActivity.this, MainActivity.class);
+
+                                            Bundle extras = new Bundle();
+                                            extras.putBoolean("Deleted QR code", true);
+                                            myIntent.putExtras(extras);
+                                            startActivity(myIntent);
                                         }
                                     })
                                     .setNegativeButton("No", new DialogInterface.OnClickListener() {
