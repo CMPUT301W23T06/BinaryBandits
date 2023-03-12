@@ -52,6 +52,7 @@ public class otherProfileActivity extends Activity {
         LeaderboardFragment leaderboard = new LeaderboardFragment();
         Bundle extras = getIntent().getExtras();
         String player_name = extras.getString("name");
+        String typeOfList = extras.getString("list");
 
         db.getPlayersByQuery(db.getSortedPlayers(), new PlayerListCallback() {
             @Override
@@ -61,7 +62,12 @@ public class otherProfileActivity extends Activity {
                 // get player from array
                 for(int i =0; i<players.size(); i++){
                     if(Objects.equals(players.get(i).getUsername(), player_name)){
-                        otherPlayer = players.get(i);
+                        if(Objects.equals(typeOfList, "short")) {
+                            otherPlayer = players.get(i);
+                        }
+                        else{
+                            otherPlayer = players.get(i+3);
+                        }
                     }
                 }
                 PlayerController controller = new PlayerController(otherPlayer);
