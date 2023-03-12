@@ -2,6 +2,7 @@ package com.example.binarybandits.qrcode;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -47,6 +48,7 @@ public class QRCodeInfoActivity extends AppCompatActivity {
             db_qr.getQRCode(name, new QRCodeCallback() {
                 @Override
                 public void onQRCodeCallback(QRCode qrCode) {
+                    Log.d("QRInfo", qrCode.getName());
                     String hash = qrCode.getHash();
                     String score = Integer.toString(qrCode.getPoints());
 
@@ -71,7 +73,18 @@ public class QRCodeInfoActivity extends AppCompatActivity {
                                             db_player.getPlayer(player_user, new PlayerCallback() {
                                                 @Override
                                                 public void onPlayerCallback(Player player) {
+                                                    Log.d("Loop1", "START");
+                                                    for (QRCode qrCode1 : player.getQrCodesScanned()) {
+                                                        Log.d("Profile", qrCode1.getName());
+                                                    }
                                                     player.removeQRCodeScanned(qrCode);
+                                                    Log.d("Loop2", "START");
+                                                    for (QRCode qrCode1 : player.getQrCodesScanned()) {
+                                                        Log.d("Profile", qrCode1.getName());
+                                                    }
+
+
+                                                    //player.removeQRCodeScanned(qrCode);
                                                     player.decrementTotalQRCodes();
                                                     int newScore = player.getTotalScore() - qrCode.getPoints();
                                                     player.setTotalScore(newScore);

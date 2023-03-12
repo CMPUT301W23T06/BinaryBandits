@@ -4,6 +4,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Model class for a Player object.
@@ -134,6 +136,9 @@ public class Player {
     }
 
     public void removeQRCodeScanned(QRCode qrCode) {
-        qrCodesScanned.remove(qrCode);
+        //Referenced: https://stackoverflow.com/questions/8520808/how-to-remove-specific-object-from-arraylist-in-java
+        //Author: https://stackoverflow.com/users/1899700/tmh
+        //License: CC BY-SA 4.0
+        qrCodesScanned.removeIf(qrCode1 -> qrCode.getName().equals(qrCode1.getName()));
     }
 }

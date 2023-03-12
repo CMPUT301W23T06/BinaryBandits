@@ -128,7 +128,7 @@ public class PlayerDB {
                     int totalQRCodes = Objects.requireNonNull(doc.getLong("totalQRCodes")).intValue();
                     ArrayList<Map<String, Object>> qrCodesScanned = (ArrayList<Map<String, Object>>) doc.get("qrCodesScanned");
 
-                    ArrayList<QRCode> convertedQRCodes = getPlayerHelper(qrCodesScanned, totalQRCodes);
+                    ArrayList<QRCode> convertedQRCodes = getPlayerHelper(qrCodesScanned);
                     Player player = new Player(username, phone, totalScore, totalQRCodes, avatar, convertedQRCodes);
                     playerList.add(player);
                 }
@@ -160,11 +160,10 @@ public class PlayerDB {
                         int totalQRCodes = Objects.requireNonNull(documentSnapshot.getLong("totalQRCodes")).intValue();
                         ArrayList<Map<String, Object>> qrCodesScanned = (ArrayList<Map<String, Object>>) documentSnapshot.get("qrCodesScanned");
 
-                        ArrayList<QRCode> convertedQRCodes = getPlayerHelper(qrCodesScanned, totalQRCodes);
+                        ArrayList<QRCode> convertedQRCodes = getPlayerHelper(qrCodesScanned);
                         player = new Player(username, phone, totalScore, totalQRCodes, avatar, convertedQRCodes);
                         Log.d(TAG, "Player information retrieved from database");
                         Log.d(TAG, "Player Name: " + player.getUsername() + "\n Score: " + player.getTotalScore());
-                        callback.onPlayerCallback(player);
                     } else {
                         player = null;
                         Log.d(TAG, "Player not found in database!");
@@ -188,14 +187,13 @@ public class PlayerDB {
     /**
      * Helper function for getPlayer that get a list of a Player's QRCodes
      * @param qrCodesScanned An ArrayList to hold QRCode objects scanned by the Player
-     * @param totalQRCodes Total QR codes to add to qrCodesScanned
      * @return Return a list of the Player's QR codes
      */
-    public ArrayList<QRCode> getPlayerHelper(ArrayList<Map<String, Object>> qrCodesScanned, int totalQRCodes) {
+    public ArrayList<QRCode> getPlayerHelper(ArrayList<Map<String, Object>> qrCodesScanned) {
         ArrayList<QRCode> convertedQRCodes = new ArrayList<QRCode>();
         if(qrCodesScanned != null) {
             //Create a QRCode based on the map representation generated from reading Firebase DB
-            for (int i = 0; i < totalQRCodes; i++) {
+            for (int i = 0; i < qrCodesScanned.size(); i++) {
                 Map<String, Object> map = qrCodesScanned.get(i);
                 String name = map.get("name").toString();
                 String hash = map.get("hash").toString();
@@ -264,7 +262,7 @@ public class PlayerDB {
                             int totalQRCodes = Objects.requireNonNull(doc.getLong("totalQRCodes")).intValue();
                             ArrayList<Map<String, Object>> qrCodesScanned = (ArrayList<Map<String, Object>>) doc.get("qrCodesScanned");
 
-                            ArrayList<QRCode> convertedQRCodes = getPlayerHelper(qrCodesScanned, totalQRCodes);
+                            ArrayList<QRCode> convertedQRCodes = getPlayerHelper(qrCodesScanned);
                             Player player = new Player(username, phone, totalScore, totalQRCodes, avatar, convertedQRCodes);
                             playerList.add(player);
                             Log.d(TAG, "Player added!");
