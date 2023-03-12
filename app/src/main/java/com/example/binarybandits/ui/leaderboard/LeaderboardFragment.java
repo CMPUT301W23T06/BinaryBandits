@@ -110,9 +110,12 @@ public class LeaderboardFragment extends Fragment {
 
                 // call ArrayAdapter to add each item in array to ListView
                 if(players.size()>3) {
-                    // remove top three players from players array
-                    removePlayers(players);
-                    ArrayAdapter<Player> playerArrayAdapter = new LeaderboardArrayAdapter(getActivity(), players);
+                    // create copy of array without top 3 players
+                    ArrayList<Player> players_copy = new ArrayList<>();
+                    for(int i =3; i<players.size(); i++){
+                        players_copy.add(players.get(i));
+                    }
+                    ArrayAdapter<Player> playerArrayAdapter = new LeaderboardArrayAdapter(getActivity(), players_copy);
                     playerList.setAdapter(playerArrayAdapter);
                 }
                 // set onclick listener for search button to open search fragment
@@ -158,6 +161,7 @@ public class LeaderboardFragment extends Fragment {
                     Intent intent = new Intent(LeaderboardFragment.this.getActivity(), otherProfileActivity.class);
                     Bundle extras = new Bundle();
                     extras.putString("name", String.valueOf(players.get(i).getUsername()));
+                    extras.putString("list", "long");
                     intent.putExtras(extras);
                     startActivity(intent);
                 }
@@ -169,6 +173,7 @@ public class LeaderboardFragment extends Fragment {
                     Intent intent = new Intent(LeaderboardFragment.this.getActivity(), otherProfileActivity.class);
                     Bundle extras = new Bundle();
                     extras.putString("name", String.valueOf(players.get(0).getUsername()));
+                    extras.putString("list", "short");
                     intent.putExtras(extras);
                     startActivity(intent);
                 }
@@ -181,6 +186,7 @@ public class LeaderboardFragment extends Fragment {
                     Intent intent = new Intent(LeaderboardFragment.this.getActivity(), otherProfileActivity.class);
                     Bundle extras = new Bundle();
                     extras.putString("name", String.valueOf(players.get(1).getUsername()));
+                    extras.putString("list", "short");
                     intent.putExtras(extras);
                     startActivity(intent);
                 }
@@ -192,6 +198,7 @@ public class LeaderboardFragment extends Fragment {
                     Intent intent = new Intent(LeaderboardFragment.this.getActivity(), otherProfileActivity.class);
                     Bundle extras = new Bundle();
                     extras.putString("name", String.valueOf(players.get(2).getUsername()));
+                    extras.putString("list", "short");
                     intent.putExtras(extras);
                     startActivity(intent);
                 }
@@ -200,15 +207,5 @@ public class LeaderboardFragment extends Fragment {
         return leaderboard;
     }
 
-
-
-    /**
-     * remove top three players from array of players
-     * @param players
-     */
-    public void removePlayers(ArrayList<Player> players){
-        for(int i = 0; i<3; i++)
-            players.remove(0);
-    }
 
 }
