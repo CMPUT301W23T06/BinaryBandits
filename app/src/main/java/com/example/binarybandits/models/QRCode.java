@@ -206,4 +206,9 @@ public class QRCode {
     public void decrementNumPlayersScannedBy() {
         this.numPlayersScannedBy = numPlayersScannedBy - 1;
     }
+
+    public String getImageURL(){
+        String url = "https://api.dicebear.com/5.x/shapes/png?seed=" + this.hash;
+        return url;
+    }
 }

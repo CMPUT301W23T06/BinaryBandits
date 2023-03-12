@@ -42,6 +42,10 @@ import com.example.binarybandits.qrcode.DownloadImageTask;
 
 import java.util.ArrayList;
 
+/**
+ * ProfileFragment displays the users profile page, including their username, total score,
+ * total number of scans, highest and lowest scoring QR points, and a list of their QR codes
+ */
 public class ProfileFragment extends Fragment {
 
     private ImageView imageView;
@@ -58,12 +62,13 @@ public class ProfileFragment extends Fragment {
     }
 
     /**
-     *
+     * Get the current users information to display their profile.
      */
     public void getCurrentPlayer(View view) {
-        //I'm still debugging this method. Not ready to use
+
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         String username = preferences.getString("login_username", "");
+
         PlayerDB db = new PlayerDB(new DBConnector());
         TextView usernameText = view.findViewById(R.id.text_username);
         usernameText.setText(username);
@@ -72,6 +77,10 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onPlayerCallback(Player player) {
                 if (player != null) {
+
+
+
+
                     playerController = new PlayerController(player);
                     TextView scoreText = view.findViewById(R.id.score_text);
                     scoreText.setText(String.valueOf(player.getTotalScore()));
@@ -105,26 +114,22 @@ public class ProfileFragment extends Fragment {
                     dataList = player.getQrCodesScanned();
                     ArrayAdapter<QRCode> QRAdapter = new QRArrayAdapter(getActivity(), dataList);
                     QRlist.setAdapter(QRAdapter);
-
-
                     ArrayList<QRCode> finalDataList = dataList;
+                    QRAdapter.notifyDataSetChanged();
+
                     QRlist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
 
                             Intent myIntent = new Intent(getActivity(), QRCodeInfoActivity.class);
-                            //myIntent.putExtra("name", String.valueOf(finalDataList.get(position).getName()));
-                            // getActivity().startActivity(myIntent);
-
-
 
                             Bundle extras = new Bundle();
                             extras.putString("name", String.valueOf(finalDataList.get(position).getName()));
                             extras.putString("username", String.valueOf(player.getUsername()));
+                            extras.putBoolean("current_user", true);
                             myIntent.putExtras(extras);
                             getActivity().startActivity(myIntent);
-                         //   QRAdapter.notifyDataSetChanged();
                         }
                     });
                 }
