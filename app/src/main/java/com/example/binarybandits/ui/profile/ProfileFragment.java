@@ -127,6 +127,7 @@ public class ProfileFragment extends Fragment {
                             Bundle extras = new Bundle();
                             extras.putString("name", String.valueOf(finalDataList.get(position).getName()));
                             extras.putString("username", String.valueOf(player.getUsername()));
+                            extras.putBoolean("current_user", true);
                             myIntent.putExtras(extras);
                             getActivity().startActivity(myIntent);
                         }

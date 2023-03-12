@@ -45,6 +45,7 @@ public class QRCodeInfoActivity extends AppCompatActivity {
 
             String name = extras.getString("name");
             String player_user = extras.getString("username");
+            Boolean current_player = extras.getBoolean("current_user");
             db_qr.getQRCode(name, new QRCodeCallback() {
                 @Override
                 public void onQRCodeCallback(QRCode qrCode) {
@@ -61,6 +62,10 @@ public class QRCodeInfoActivity extends AppCompatActivity {
                     Picasso.get().load(url).into(qr_image);
                     qr_name.setText(name);
                     qr_score.setText(score);
+
+                    if (current_player == false){
+                        delete_button.setVisibility(View.GONE);
+                    }
 
                     delete_button.setOnClickListener(new View.OnClickListener() {
                         @Override
