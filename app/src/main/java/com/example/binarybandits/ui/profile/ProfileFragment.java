@@ -65,7 +65,7 @@ public class ProfileFragment extends Fragment {
      * Get the current users information to display their profile.
      */
     public void getCurrentPlayer(View view) {
-        //I'm still debugging this method. Not ready to use
+
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         String username = preferences.getString("login_username", "");
         PlayerDB db = new PlayerDB(new DBConnector());
@@ -76,6 +76,10 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onPlayerCallback(Player player) {
                 if (player != null) {
+
+
+
+
                     playerController = new PlayerController(player);
                     TextView scoreText = view.findViewById(R.id.score_text);
                     scoreText.setText(String.valueOf(player.getTotalScore()));
@@ -109,9 +113,8 @@ public class ProfileFragment extends Fragment {
                     dataList = player.getQrCodesScanned();
                     ArrayAdapter<QRCode> QRAdapter = new QRArrayAdapter(getActivity(), dataList);
                     QRlist.setAdapter(QRAdapter);
-
-
                     ArrayList<QRCode> finalDataList = dataList;
+                    QRAdapter.notifyDataSetChanged();
 
                     QRlist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override

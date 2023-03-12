@@ -56,7 +56,7 @@ public class QRCodeInfoActivity extends AppCompatActivity {
                     TextView qr_name = findViewById(R.id.qr_code_name);
                     TextView qr_score = findViewById(R.id.qr_code_score);
                     ImageButton delete_button = findViewById(R.id.delete_button);
-                    String url = "https://api.dicebear.com/5.x/shapes/png?seed=" + hash;
+                    String url = qrCode.getImageURL();
 
                     Picasso.get().load(url).into(qr_image);
                     qr_name.setText(name);
