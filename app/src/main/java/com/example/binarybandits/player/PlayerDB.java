@@ -207,12 +207,12 @@ public class PlayerDB {
                     scannerUID = map.get("scannerUID").toString();
                 }
 
-                Geolocation coordinates;
+                ArrayList<String> coordinates;
                 if(map.get("coordinates") == null) {
                     coordinates = null;
                 }
                 else {
-                    coordinates = (Geolocation)map.get("coordinates");
+                    coordinates = (ArrayList<String>)map.get("coordinates");
                 }
 
                 Bitmap locationImage;

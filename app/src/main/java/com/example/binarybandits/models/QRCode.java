@@ -20,7 +20,6 @@ public class QRCode {
         this.name = name;
         this.points = points;
         this.numPlayersScannedBy = 1;
-        this.visualRep = visualRep;
     }
 
     /**
@@ -30,7 +29,7 @@ public class QRCode {
      * @param points
      * @param coordinates
      */
-    public QRCode(String hash, String name, int points, Geolocation coordinates) {
+    public QRCode(String hash, String name, int points, ArrayList<String> coordinates) {
         this.hash = hash;
         this.name = name;
         this.points = points;
@@ -39,7 +38,7 @@ public class QRCode {
     }
 
 
-    public QRCode(String hash, String name, int points, String scannerUID, Geolocation coordinates,
+    public QRCode(String hash, String name, int points, String scannerUID, ArrayList<String> coordinates,
                   Bitmap locationImage, ArrayList<String> comments, int numPlayersScannedBy) {
         this.hash = hash;
         this.name = name;
@@ -55,11 +54,10 @@ public class QRCode {
     String name;
     int points;
     String scannerUID;
-    Geolocation coordinates; //Need to change to Geolocation class
+    ArrayList<String> coordinates; //Need to change to Geolocation class
     Bitmap locationImage;
     ArrayList<String> comments;
     int numPlayersScannedBy;
-    Picasso visualRep;
 
     public String getHash() {
         return hash;
@@ -93,11 +91,11 @@ public class QRCode {
         this.scannerUID = scannerUID;
     }
 
-    public Geolocation getCoordinates() {
+    public ArrayList<String> getCoordinates() {
         return coordinates;
     }
 
-    public void setCoordinates(Geolocation coordinates) {
+    public void setCoordinates(ArrayList<String> coordinates) {
         this.coordinates = coordinates;
     }
 
@@ -128,4 +126,6 @@ public class QRCode {
     public void decrementNumPlayersScannedBy() {
         this.numPlayersScannedBy = numPlayersScannedBy - 1;
     }
+
+
 }
