@@ -21,6 +21,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.binarybandits.R;
 import com.example.binarybandits.models.Player;
+import com.example.binarybandits.otherProfileActivity;
 import com.example.binarybandits.player.PlayerCallback;
 import com.example.binarybandits.player.PlayerDB;
 import com.example.binarybandits.DBConnector;
