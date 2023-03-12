@@ -10,16 +10,28 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+/**
+ * Controller for Player that makes changes to Player model class.
+ * Outstanding issues: N/A
+ */
 public class PlayerController {
 
     private PlayerDB playerDB;
     private QRCodeDB qrCodeDB;
     private Player player;
 
+    /**
+     * Constructor for PlayerController
+     * @param player player to make changes to
+     */
     public PlayerController(Player player) {
         this.player = player;
     }
 
+    /**
+     * Gets the highest scoring QR code scanned by a Player
+     * @return Returns the highest scoring QR code scanned by a Player
+     */
     public QRCode getHighestQRCode() {
         QRCode highestQRCode;
         ArrayList<QRCode> qrCodesScanned = player.getQrCodesScanned();
@@ -34,7 +46,8 @@ public class PlayerController {
     }
 
     /**
-     *
+     * Gets the lowest QR code scanned by a Player
+     * @return Returns the lowest scoring QR code scanned by a Player
      */
     public QRCode getLowestQRCode() {
         QRCode lowestQRCode;
@@ -49,6 +62,11 @@ public class PlayerController {
         return lowestQRCode;
     }
 
+    /**
+     * Sorts a list of QRCodes in ascending order
+     * @param qrCodesScanned list of QRCodes to sort
+     * @return Return the sorted list of QRCodes
+     */
     public ArrayList<QRCode> sortQRCodes(ArrayList<QRCode> qrCodesScanned) {
         Collections.sort(qrCodesScanned, new Comparator<QRCode>() {
             @Override

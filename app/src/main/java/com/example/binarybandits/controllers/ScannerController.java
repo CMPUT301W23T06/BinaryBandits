@@ -22,7 +22,8 @@ import java.util.ArrayList;
 import java.util.Random;
 
 /**
- *
+ * Controller for adding a QRCode to a Player's profile
+ * Outstanding issues: N/A
  */
 public class ScannerController {
     public void addQRCode(QRCode qrCode, Player player) {
