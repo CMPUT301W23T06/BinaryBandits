@@ -42,6 +42,10 @@ import com.example.binarybandits.qrcode.DownloadImageTask;
 
 import java.util.ArrayList;
 
+/**
+ * ProfileFragment displays the users profile page, including their username, total score,
+ * total number of scans, highest and lowest scoring QR points, and a list of their QR codes
+ */
 public class ProfileFragment extends Fragment {
 
     private ImageView imageView;
@@ -58,7 +62,7 @@ public class ProfileFragment extends Fragment {
     }
 
     /**
-     *
+     * Get the current users information to display their profile.
      */
     public void getCurrentPlayer(View view) {
         //I'm still debugging this method. Not ready to use
@@ -109,23 +113,19 @@ public class ProfileFragment extends Fragment {
 
 
                     ArrayList<QRCode> finalDataList = dataList;
+
                     QRlist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
 
                             Intent myIntent = new Intent(getActivity(), QRCodeInfoActivity.class);
-                            //myIntent.putExtra("name", String.valueOf(finalDataList.get(position).getName()));
-                            // getActivity().startActivity(myIntent);
-
-
 
                             Bundle extras = new Bundle();
                             extras.putString("name", String.valueOf(finalDataList.get(position).getName()));
                             extras.putString("username", String.valueOf(player.getUsername()));
                             myIntent.putExtras(extras);
                             getActivity().startActivity(myIntent);
-                         //   QRAdapter.notifyDataSetChanged();
                         }
                     });
                 }
