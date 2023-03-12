@@ -176,7 +176,6 @@ public class QRCodeDB {
      * @param qrCode QRCode to update in database
      */
     public void deleteQRCode(QRCode qrCode) {
-        //To-do: Implement deleteQRCode() -> Alex
         if(qrCode.getNumPlayersScannedBy() >= 1) {
             //Decrement numPlayersScannedBy
             qrCode.decrementNumPlayersScannedBy();

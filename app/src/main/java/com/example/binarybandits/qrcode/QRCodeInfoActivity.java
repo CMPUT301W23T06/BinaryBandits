@@ -60,8 +60,6 @@ public class QRCodeInfoActivity extends AppCompatActivity {
                     qr_name.setText(name);
                     qr_score.setText(score);
 
-
-
                     delete_button.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
@@ -75,6 +73,8 @@ public class QRCodeInfoActivity extends AppCompatActivity {
                                                 public void onPlayerCallback(Player player) {
                                                     player.removeQRCodeScanned(qrCode);
                                                     player.decrementTotalQRCodes();
+                                                    int newScore = player.getTotalScore() - qrCode.getPoints();
+                                                    player.setTotalScore(newScore);
                                                     db_player.updatePlayer(player);
                                                 }
                                             });
