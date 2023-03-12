@@ -135,6 +135,15 @@ public class Player {
         qrCodesScanned.add(qrCode);
     }
 
+    public boolean findQRCodeScanned(QRCode qrCode) {
+        for (int i = 0; i < qrCodesScanned.size(); i++) {
+            if (qrCodesScanned.get(i).getName().equals(qrCode.getName())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void removeQRCodeScanned(QRCode qrCode) {
         //Referenced: https://stackoverflow.com/questions/8520808/how-to-remove-specific-object-from-arraylist-in-java
         //Author: https://stackoverflow.com/users/1899700/tmh

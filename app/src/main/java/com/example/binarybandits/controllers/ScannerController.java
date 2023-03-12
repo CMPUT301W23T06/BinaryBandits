@@ -27,6 +27,7 @@ import java.util.Random;
  * Outstanding issues: N/A
  */
 public class ScannerController {
+
     public void addQRCode(QRCode qrCode, Player player) {
         QRCodeDB qrCodeDB = new QRCodeDB(new DBConnector());
         PlayerDB playerDB = new PlayerDB(new DBConnector());
@@ -34,7 +35,7 @@ public class ScannerController {
             @Override
             public void onPlayerCallback(Player updatedPlayer) {
                 Log.d("ScannerController", updatedPlayer.getQrCodesScanned().toString());
-                if(!updatedPlayer.getQrCodesScanned().contains(qrCode)) {
+                if(!updatedPlayer.findQRCodeScanned(qrCode)) {
                     qrCodeDB.addQRCode(qrCode); //Add QRCode to database if it is not there already
                     updatedPlayer.addQRCodeScanned(qrCode); //Add QRCode to player's profile (locally)
                     updatedPlayer.incrementTotalQRCodes();
