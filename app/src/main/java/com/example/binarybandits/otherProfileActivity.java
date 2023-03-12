@@ -3,10 +3,10 @@ package com.example.binarybandits;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.binarybandits.models.Player;
 import com.example.binarybandits.ui.leaderboard.LeaderboardFragment;
 
 /**
@@ -24,12 +24,21 @@ public class otherProfileActivity extends Activity {
         TextView num_scanned = findViewById(R.id.total_qr_scanned_text);
         TextView lowest = findViewById(R.id.lowest_score_text);
         TextView highest = findViewById(R.id.highest_score_text);
+        Button back = findViewById(R.id.buttonBack);
+        back.setVisibility(View.VISIBLE);
         LeaderboardFragment leaderboard = new LeaderboardFragment();
 
         //Player player = leaderboard.getOtherPlayer();
         name.setText("Unfinished");
         lowest.setText("Will to live");
         highest.setText("Suffering");
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                otherProfileActivity.this.finish();
+            }
+        });
 
     }
 }
