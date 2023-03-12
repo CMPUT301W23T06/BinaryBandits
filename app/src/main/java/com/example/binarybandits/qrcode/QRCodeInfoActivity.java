@@ -13,6 +13,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.binarybandits.DBConnector;
+import com.example.binarybandits.MainActivity;
 import com.example.binarybandits.R;
 import com.example.binarybandits.controllers.AuthController;
 import com.example.binarybandits.models.Player;
@@ -36,12 +37,9 @@ public class QRCodeInfoActivity extends AppCompatActivity {
             getSupportActionBar().hide();
         }
 
-        //Bundle extras = getIntent().getExtras();
         Bundle extras = getIntent().getExtras();
 
         if (extras != null) {
-            //String name = extras.getString("name");
-
 
             String name = extras.getString("name");
             String player_user = extras.getString("username");
@@ -98,6 +96,13 @@ public class QRCodeInfoActivity extends AppCompatActivity {
                                             });
 
                                             QRCodeInfoActivity.this.finish();
+
+                                            Intent myIntent = new Intent(QRCodeInfoActivity.this, MainActivity.class);
+
+                                            Bundle extras = new Bundle();
+                                            extras.putBoolean("Deleted QR code", true);
+                                            myIntent.putExtras(extras);
+                                            startActivity(myIntent);
                                         }
                                     })
                                     .setNegativeButton("No", new DialogInterface.OnClickListener() {

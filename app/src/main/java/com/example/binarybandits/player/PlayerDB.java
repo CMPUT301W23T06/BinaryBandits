@@ -36,7 +36,8 @@ import java.util.Objects;
 
 /**
  * Stores, retrieves, adds, and deletes Player data
- * Outstanding issues: N/A
+ * Outstanding issues:
+ *   -It takes a noticeable amount of time to process results (about half a second)
  */
 public class PlayerDB {
     private final String TAG = "PlayerDB";
@@ -169,6 +170,9 @@ public class PlayerDB {
                         Log.d(TAG, "Player not found in database!");
                         ;
                     }
+                    //Referenced: https://stackoverflow.com/questions/48499310/how-to-return-a-documentsnapshot-as-a-result-of-a-method/48500679#48500679
+                    //Author: https://stackoverflow.com/users/5246885/alex-mamo
+                    //License: CC BY-SA 4.0.
                     callback.onPlayerCallback(player);
                 }
             }).addOnFailureListener(new OnFailureListener() {
