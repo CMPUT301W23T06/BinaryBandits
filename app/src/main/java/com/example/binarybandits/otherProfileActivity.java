@@ -5,7 +5,6 @@ import static android.content.ContentValues.TAG;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -15,6 +14,8 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import androidx.annotation.Nullable;
 
 import com.example.binarybandits.controllers.PlayerController;
 import com.example.binarybandits.models.Player;
