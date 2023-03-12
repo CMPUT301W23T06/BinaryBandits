@@ -36,6 +36,7 @@ import java.util.Objects;
 
 /**
  * Stores, retrieves, adds, and deletes Player data
+ * Outstanding issues: N/A
  */
 public class PlayerDB {
     private final String TAG = "PlayerDB";
@@ -188,6 +189,7 @@ public class PlayerDB {
      * Helper function for getPlayer that get a list of a Player's QRCodes
      * @param qrCodesScanned An ArrayList to hold QRCode objects scanned by the Player
      * @param totalQRCodes Total QR codes to add to qrCodesScanned
+     * @return Return a list of the Player's QR codes
      */
     public ArrayList<QRCode> getPlayerHelper(ArrayList<Map<String, Object>> qrCodesScanned, int totalQRCodes) {
         ArrayList<QRCode> convertedQRCodes = new ArrayList<QRCode>();
@@ -241,36 +243,10 @@ public class PlayerDB {
     }
 
     /**
-     *
+     * Get players that satisfy an inputted query
+     * @param query Firebase Firestore query containing results to process
+     * @param callback has method containing what to do with queried playerList
      */
-    public void getPlayersByScore(ArrayList<Player> playerList, PlayerListCallback callback) {
-        //Alex: I am still working on this function!
-        //Referenced: https://firebase.google.com/docs/firestore/query-data/order-limit-data
-        //Referenced:
-        Query sortQuery = collectionReference.orderBy("score", Query.Direction.ASCENDING);
-        sortQuery.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                playerList.clear();
-
-                for(QueryDocumentSnapshot doc: task.getResult()) {
-                    String username = doc.getString("username");
-                    String phone = doc.getString("phone");
-                    Bitmap avatar = (Bitmap)doc.get("avatar");
-                    int totalScore = Objects.requireNonNull(doc.getLong("totalScore")).intValue();
-                    int totalQRCodes = Objects.requireNonNull(doc.getLong("totalQRCodes")).intValue();
-                    ArrayList<Map<String, Object>> qrCodesScanned = (ArrayList<Map<String, Object>>) doc.get("qrCodesScanned");
-
-                    ArrayList<QRCode> convertedQRCodes = getPlayerHelper(qrCodesScanned, totalQRCodes);
-                    Player player = new Player(username, phone, totalScore, totalQRCodes, avatar, convertedQRCodes);
-                    playerList.add(player);
-                }
-                callback.onPlayerListCallback(playerList);
-            }
-        });
-    }
-
-
     public void getPlayersByQuery(Query query, PlayerListCallback callback) {
         //Referenced: https://stackoverflow.com/questions/72607619/firestore-database-java-add-where-condition-before-get-collection
         ArrayList<Player> playerList = new ArrayList<>();
@@ -305,7 +281,8 @@ public class PlayerDB {
     }
 
     /**
-     *
+     * Get query containing sorted players by score
+     * @return Return the Query containing all players in database sorted by score
      */
     public Query getSortedPlayers() {
         return collectionReference.orderBy("totalScore", Query.Direction.DESCENDING);
@@ -313,7 +290,9 @@ public class PlayerDB {
 
 
     /**
-     *
+     * Find all players with a username containing input
+     * @param input text to search for in Player usernames
+     * @return Query result of searching for a Player with a username matching input
      */
     public Query searchPlayer(String input) {
         //Referenced: https://stackoverflow.com/questions/46568142/google-firestore-query-on-substring-of-a-property-value-text-search

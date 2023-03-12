@@ -1,26 +1,32 @@
 package com.example.binarybandits.ui.leaderboard;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.binarybandits.DBConnector;
 import com.example.binarybandits.R;
 import com.example.binarybandits.controllers.AuthController;
 import com.example.binarybandits.models.Player;
+import com.example.binarybandits.otherProfileActivity;
 import com.example.binarybandits.player.PlayerCallback;
 import com.example.binarybandits.player.PlayerDB;
 import com.example.binarybandits.player.PlayerListCallback;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class LeaderboardFragment extends Fragment {
@@ -107,8 +113,32 @@ public class LeaderboardFragment extends Fragment {
             }
         });
 
+        // set onclick listener for search button to open search fragment
+        Button button = leaderboard.findViewById(R.id.button);
+        ListView listview = leaderboard.findViewById(R.id.playerList);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                button.setVisibility(View.GONE);
+                FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                transaction.replace(R.id.fragment_container, new LeaderboardSearchFragment());
+                transaction.addToBackStack(null);
+                transaction.commit();
+            }
+
+        });
+        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent = new Intent(LeaderboardFragment.this.getActivity(), otherProfileActivity.class);
+                startActivity(intent);
+            }
+        });
         return leaderboard;
     }
+
+
 
     /**
      * remove top three players from array of players

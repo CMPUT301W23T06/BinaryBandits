@@ -32,6 +32,7 @@ public class LeaderboardArrayAdapter extends ArrayAdapter {
             } else {
                 view = convertView;
             }
+
             // add items to listview
             Player player = (Player) getItem(position);
             TextView playerName = view.findViewById(R.id.player_name_text);
