@@ -147,6 +147,31 @@ public class LeaderboardFragment extends Fragment {
                 startActivity(intent);
             }
         });
+        ImageView image1 = leaderboard.findViewById(R.id.limage1);
+        image1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LeaderboardFragment.this.getActivity(), otherProfileActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        ImageView image2 = leaderboard.findViewById(R.id.limage2);
+        image2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LeaderboardFragment.this.getActivity(), otherProfileActivity.class);
+                startActivity(intent);
+            }
+        });
+        ImageView image3 = leaderboard.findViewById(R.id.limage3);
+        image3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LeaderboardFragment.this.getActivity(), otherProfileActivity.class);
+                startActivity(intent);
+            }
+        });
         return leaderboard;
     }
 
