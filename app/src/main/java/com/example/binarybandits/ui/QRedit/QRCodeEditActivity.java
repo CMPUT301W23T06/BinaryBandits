@@ -3,15 +3,20 @@ package com.example.binarybandits.ui.QRedit;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.location.Location;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 
 import com.example.binarybandits.DBConnector;
@@ -38,12 +43,17 @@ public class QRCodeEditActivity extends AppCompatActivity {
     private TextView nameTextView;
     private TextView pointsTextView;
     private TextView imageConfirmationTextView;
+    private TextView viewImageTextView;
     private CheckBox locationCheckBox;
     private Button saveBtn;
     private Button addImageBtn;
     private ArrayList<Double> coordinates;
+    private Bitmap photo;
 
     private FusedLocationProviderClient fusedLocationClient;
+
+    private View popupView;
+    private PopupWindow popupWindow;
 
     private static final int CAMERA_REQUEST = 1888;
 
@@ -69,6 +79,7 @@ public class QRCodeEditActivity extends AppCompatActivity {
         nameTextView = findViewById(R.id.qrName);
         pointsTextView = findViewById(R.id.pointsText);
         imageConfirmationTextView = findViewById(R.id.imageConfirmationText);
+        viewImageTextView = findViewById(R.id.viewImageText);
         locationCheckBox = findViewById(R.id.locationCheckBox);
         saveBtn = findViewById(R.id.saveButton);
         addImageBtn = findViewById(R.id.imageButton);
@@ -88,10 +99,14 @@ public class QRCodeEditActivity extends AppCompatActivity {
                 // TODO: add QR Code to database here
                 String uid = AuthController.getUsername(QRCodeEditActivity.this);
 
-                QRCode qrCode = new QRCode(hash, name, points, uid, coordinates, null, new ArrayList<>(), 0);
+                QRCode qrCode = new QRCode(hash, name, points, uid, coordinates, "", new ArrayList<>(), 0);
                 ScannerController scannerController = new ScannerController();
 
                 PlayerDB db = new PlayerDB(new DBConnector());
+                if (photo != null) {
+                    QRCodeDB qrCodeDB = new QRCodeDB(new DBConnector());
+                    qrCodeDB.addLocationImageToServer(photo, name);
+                }
                 db.getPlayer(uid, new PlayerCallback() {
                     @Override
                     public void onPlayerCallback(Player player) {
@@ -107,8 +122,7 @@ public class QRCodeEditActivity extends AppCompatActivity {
         addImageBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v)  {
                 Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-//                startActivityForResult(cameraIntent, CAMERA_REQUEST);
-                changeTextOnImageClick();
+                startActivityForResult(cameraIntent, CAMERA_REQUEST);
             }
         });
     }
@@ -141,6 +155,24 @@ public class QRCodeEditActivity extends AppCompatActivity {
     public void changeTextOnImageClick() {
         imageConfirmationTextView.setText("Image successfully added!");
         addImageBtn.setText("Replace");
+        viewImageTextView.setVisibility(View.VISIBLE);
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(resultCode, resultCode, data);
+
+        if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK) {
+            photo = (Bitmap) data.getExtras().get("data");
+            changeTextOnImageClick();
+        }
+    }
+
+    public void showImagePopup(View view) {
+        new LocationImageFragment(photo).show(getSupportFragmentManager(), "show");
+    }
+
+    public void closePopup(View view) {
+        popupWindow.dismiss();
+    }
 }

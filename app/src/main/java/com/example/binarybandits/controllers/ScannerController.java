@@ -2,6 +2,7 @@ package com.example.binarybandits.controllers;
 
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.util.Pair;
 import android.view.View;
 import android.widget.TextView;
@@ -22,22 +23,30 @@ import java.util.ArrayList;
 import java.util.Random;
 
 /**
- *
+ * Controller for adding a QRCode to a Player's profile
+ * Outstanding issues: N/A
  */
 public class ScannerController {
+
     public void addQRCode(QRCode qrCode, Player player) {
         QRCodeDB qrCodeDB = new QRCodeDB(new DBConnector());
         PlayerDB playerDB = new PlayerDB(new DBConnector());
-        if(!player.getQrCodesScanned().contains(qrCode)) {
-            qrCodeDB.addQRCode(qrCode); //Add QRCode to database if it is not there already
-            player.addQRCodeScanned(qrCode); //Add QRCode to player's profile (locally)
-            player.incrementTotalQRCodes();
+        playerDB.getPlayer(player.getUsername(), new PlayerCallback() {
+            @Override
+            public void onPlayerCallback(Player updatedPlayer) {
+                Log.d("ScannerController", updatedPlayer.getQrCodesScanned().toString());
+                if(!updatedPlayer.findQRCodeScanned(qrCode)) {
+                    qrCodeDB.addQRCode(qrCode); //Add QRCode to database if it is not there already
+                    updatedPlayer.addQRCodeScanned(qrCode); //Add QRCode to player's profile (locally)
+                    updatedPlayer.incrementTotalQRCodes();
 
-            //Calculate player's new score with scanned QR code
-            int newScore = player.getTotalScore() + qrCode.getPoints();
-            player.setTotalScore(newScore);
-            //Update player information in database
-            playerDB.updatePlayer(player);
-        }
+                    //Calculate player's new score with scanned QR code
+                    int newScore = updatedPlayer.getTotalScore() + qrCode.getPoints();
+                    updatedPlayer.setTotalScore(newScore);
+                    //Update player information in database
+                    playerDB.updatePlayer(updatedPlayer);
+                }
+            }
+        });
     }
 }

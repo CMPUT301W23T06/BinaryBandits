@@ -1,9 +1,11 @@
 package com.example.binarybandits.ui.leaderboard;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -17,14 +19,21 @@ import com.example.binarybandits.DBConnector;
 import com.example.binarybandits.R;
 import com.example.binarybandits.controllers.AuthController;
 import com.example.binarybandits.models.Player;
+import com.example.binarybandits.otherProfileActivity;
 import com.example.binarybandits.player.PlayerCallback;
 import com.example.binarybandits.player.PlayerDB;
 import com.example.binarybandits.player.PlayerListCallback;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
+/**
+ * updates view of leaderboard fragment
+ * responds to click of search button
+ * responds to click of user profile
+ */
 public class LeaderboardFragment extends Fragment {
     LeaderboardViewModel leaderboardViewModel = new LeaderboardViewModel();
     ArrayList<Player> players = leaderboardViewModel.getPlayerList();
@@ -111,6 +120,11 @@ public class LeaderboardFragment extends Fragment {
 
         // set onclick listener for search button to open search fragment
         Button button = leaderboard.findViewById(R.id.button);
+        ListView listview = leaderboard.findViewById(R.id.playerList);
+
+        /**
+         * listen for search button click and switch fragments
+         */
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -123,7 +137,16 @@ public class LeaderboardFragment extends Fragment {
             }
 
         });
-
+        /**
+         * listen for leaderboard item click and change Activity
+         */
+        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent = new Intent(LeaderboardFragment.this.getActivity(), otherProfileActivity.class);
+                startActivity(intent);
+            }
+        });
         return leaderboard;
     }
 
