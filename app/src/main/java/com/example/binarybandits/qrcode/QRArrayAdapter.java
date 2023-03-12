@@ -40,6 +40,7 @@ public class QRArrayAdapter extends ArrayAdapter<QRCode> {
 
         QR_name_text.setText(qr.getName());
         QR_score_text.setText(Integer.toString(qr.getPoints()));
+        //QR_pic_display.setImageResource();
         //
 
 

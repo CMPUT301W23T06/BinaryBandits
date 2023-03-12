@@ -24,7 +24,12 @@ public class PlayerController {
         QRCode highestQRCode;
         ArrayList<QRCode> qrCodesScanned = player.getQrCodesScanned();
         qrCodesScanned = sortQRCodes(qrCodesScanned);
-        highestQRCode = qrCodesScanned.get(qrCodesScanned.size());
+        if(qrCodesScanned.size() > 0) {
+            highestQRCode = qrCodesScanned.get(qrCodesScanned.size() - 1);
+        }
+        else {
+            highestQRCode = null;
+        }
         return highestQRCode;
     }
 
@@ -35,7 +40,12 @@ public class PlayerController {
         QRCode lowestQRCode;
         ArrayList<QRCode> qrCodesScanned = player.getQrCodesScanned();
         qrCodesScanned = sortQRCodes(qrCodesScanned);
-        lowestQRCode = qrCodesScanned.get(0);
+        if(qrCodesScanned.size() > 0) {
+            lowestQRCode = qrCodesScanned.get(0);
+        }
+        else {
+            lowestQRCode = null;
+        }
         return lowestQRCode;
     }
 

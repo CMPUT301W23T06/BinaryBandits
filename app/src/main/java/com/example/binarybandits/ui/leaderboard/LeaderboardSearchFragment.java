@@ -18,6 +18,7 @@ import com.example.binarybandits.models.Player;
 import com.example.binarybandits.player.PlayerCallback;
 import com.example.binarybandits.player.PlayerDB;
 import com.example.binarybandits.DBConnector;
+import com.example.binarybandits.player.PlayerListCallback;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -62,6 +63,19 @@ public class LeaderboardSearchFragment extends Fragment {
 
         searchInput = search.findViewById(R.id.search_bar);
         String searchText = searchInput.getText().toString();
+
+        if(searchText.length() != 0) {
+            playerDB.getPlayersByQuery(playerDB.searchPlayer(searchText), new PlayerListCallback() {
+                @Override
+                public void onPlayerListCallback(ArrayList<Player> playerList) {
+                    // display all players in ListView
+                    ListView searchResults = search.findViewById(R.id.search_results);
+
+                    ArrayAdapter<Player> playerArrayAdapter = new LeaderboardSearchArrayAdapter(getActivity(), playerList);
+                    searchResults.setAdapter(playerArrayAdapter);
+                }
+            });
+        }
 
         if ((searchText).length() != 0) {
             playerDB.getPlayer(searchText, new PlayerCallback() {
