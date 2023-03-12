@@ -107,14 +107,4 @@ public class Player {
     public void removeQRCodeScanned(QRCode qrCode) {
         qrCodesScanned.remove(qrCode);
     }
-
-    public QRCode getHighestQRCode() {
-
-        return null; //temporary
-    }
-
-    public QRCode getLowestQRCode() {
-
-        return null; //temporary
-    }
 }

@@ -47,6 +47,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-bom:31.2.3'
     implementation 'com.google.firebase:firebase-firestore:24.4.4'
 
+    // location
+    implementation 'com.google.android.gms:play-services-location:21.0.1'
 
     // image download
     implementation 'com.squareup.picasso:picasso:2.71828'

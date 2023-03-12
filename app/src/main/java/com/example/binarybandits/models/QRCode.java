@@ -20,6 +20,7 @@ public class QRCode {
         this.name = name;
         this.points = points;
         this.numPlayersScannedBy = 1;
+        this.visualRep = visualRep;
     }
 
     /**
@@ -29,7 +30,7 @@ public class QRCode {
      * @param points
      * @param coordinates
      */
-    public QRCode(String hash, String name, int points, Geolocation coordinates) {
+    public QRCode(String hash, String name, int points, ArrayList<Double> coordinates) {
         this.hash = hash;
         this.name = name;
         this.points = points;
@@ -37,9 +38,8 @@ public class QRCode {
         this.numPlayersScannedBy = 1;
     }
 
-
-    public QRCode(String hash, String name, int points, String scannerUID, Geolocation coordinates,
-                  Bitmap locationImage, ArrayList<String> comments, int numPlayersScannedBy) {
+    public QRCode(String hash, String name, int points, String scannerUID, ArrayList<Double> coordinates,
+                  String locationImage, ArrayList<String> comments, int numPlayersScannedBy) {
         this.hash = hash;
         this.name = name;
         this.points = points;
@@ -54,10 +54,11 @@ public class QRCode {
     String name;
     int points;
     String scannerUID;
-    Geolocation coordinates; //Need to change to Geolocation class
-    Bitmap locationImage;
+    ArrayList<Double> coordinates; //Need to change to Geolocation class
+    String locationImage;
     ArrayList<String> comments;
     int numPlayersScannedBy;
+    Picasso visualRep;
 
     public String getHash() {
         return hash;
@@ -91,19 +92,19 @@ public class QRCode {
         this.scannerUID = scannerUID;
     }
 
-    public Geolocation getCoordinates() {
+    public ArrayList<Double> getCoordinates() {
         return coordinates;
     }
 
-    public void setCoordinates(Geolocation coordinates) {
+    public void setCoordinates(ArrayList<Double> coordinates) {
         this.coordinates = coordinates;
     }
 
-    public Bitmap getLocationImage() {
+    public String getLocationImage() {
         return locationImage;
     }
 
-    public void setLocationImage(Bitmap locationImage) {
+    public void setLocationImage(String locationImage) {
         this.locationImage = locationImage;
     }
 
@@ -126,6 +127,4 @@ public class QRCode {
     public void decrementNumPlayersScannedBy() {
         this.numPlayersScannedBy = numPlayersScannedBy - 1;
     }
-
-
 }
