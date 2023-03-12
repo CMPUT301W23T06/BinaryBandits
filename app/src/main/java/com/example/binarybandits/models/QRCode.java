@@ -20,7 +20,6 @@ public class QRCode {
         this.name = name;
         this.points = points;
         this.numPlayersScannedBy = 1;
-        this.visualRep = visualRep;
     }
 
     /**
@@ -38,6 +37,17 @@ public class QRCode {
         this.numPlayersScannedBy = 1;
     }
 
+    /**
+     * Constructor used to create QRCodes from documents in database
+     * @param hash
+     * @param name
+     * @param points
+     * @param scannerUID
+     * @param coordinates
+     * @param locationImage
+     * @param comments
+     * @param numPlayersScannedBy
+     */
     public QRCode(String hash, String name, int points, String scannerUID, ArrayList<Double> coordinates,
                   String locationImage, ArrayList<String> comments, int numPlayersScannedBy) {
         this.hash = hash;
@@ -58,8 +68,11 @@ public class QRCode {
     String locationImage;
     ArrayList<String> comments;
     int numPlayersScannedBy;
-    Picasso visualRep;
 
+    /**
+     * 
+     * @return
+     */
     public String getHash() {
         return hash;
     }
@@ -91,6 +104,7 @@ public class QRCode {
     public void setScannerUID(String scannerUID) {
         this.scannerUID = scannerUID;
     }
+
 
     public ArrayList<Double> getCoordinates() {
         return coordinates;
@@ -127,4 +141,6 @@ public class QRCode {
     public void decrementNumPlayersScannedBy() {
         this.numPlayersScannedBy = numPlayersScannedBy - 1;
     }
+
+
 }

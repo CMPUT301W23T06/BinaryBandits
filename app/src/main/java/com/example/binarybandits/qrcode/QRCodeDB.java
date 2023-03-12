@@ -122,7 +122,6 @@ public class QRCodeDB {
                     String locationImage = documentSnapshot.getString("locationImage");
                     ArrayList<String> comments = (ArrayList<String>)documentSnapshot.get("comments");
                     int numPlayersScannedBy = documentSnapshot.getLong("numPlayersScannedBy").intValue();
-
                     QRCode qrCode = new QRCode(hash, name, points, scannerUID, coordinates,
                             locationImage, comments, numPlayersScannedBy);
                     Log.d(TAG, "QR code information retrieved from database");
