@@ -63,7 +63,7 @@ dependencies {
     implementation 'com.squareup.picasso:picasso:2.71828'
 
     //javadocs
-    implementation files("C:\\Users\\alexa\\AppData\\Local\\Android\\Sdk\\platforms\\android-33\\android.jar")
+    //implementation files("C:\\Users\\alexa\\AppData\\Local\\Android\\Sdk\\platforms\\android-33\\android.jar")
 
     //testing
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
