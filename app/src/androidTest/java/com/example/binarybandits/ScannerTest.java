@@ -45,7 +45,7 @@ public class ScannerTest {
     }
 
     /**
-     *
+     * Tests adding a QRCode functionality
      */
     @Test
     public void testAddQRCode() {
