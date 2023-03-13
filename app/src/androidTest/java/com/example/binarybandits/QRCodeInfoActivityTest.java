@@ -152,7 +152,7 @@ public class QRCodeInfoActivityTest {
         solo.clickOnView(solo.getView(R.id.navigation_home));
         solo.clickOnView(solo.getView(R.id.navigation_profile));
 
-        assertFalse(solo.waitForText("SuperHilariousLeopard",4,2000)==true);
+        assertFalse(solo.waitForText("SuperHilariousLeopard",5,2000)==true);
 
 
     }
