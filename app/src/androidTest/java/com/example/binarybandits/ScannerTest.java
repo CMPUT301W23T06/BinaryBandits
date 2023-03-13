@@ -15,6 +15,9 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
+/**
+ * Tests scanning functionality of application. This test class is currently unfinished
+ */
 public class ScannerTest {
     private Solo solo;
     private QRCode mockQRCode = new QRCode("cdf07521489cd151da290b3315207a61935357af5fe5614df7668b30a1d6f672", "SuperAmazingFerret", 47);
@@ -50,6 +53,5 @@ public class ScannerTest {
         solo.enterText((EditText) solo.getView(R.id.editUsername), "PieceOfPi");
         solo.clickOnView(solo.getView(R.id.loginBtn));
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
-
     }
 }
