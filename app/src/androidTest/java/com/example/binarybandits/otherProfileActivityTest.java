@@ -19,6 +19,9 @@ import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
+/**  test otherProfileActivity
+ *
+ */
 public class otherProfileActivityTest{
     private Solo solo;
 
@@ -44,6 +47,10 @@ public class otherProfileActivityTest{
         Activity activity = rule.getActivity();
     }
 
+    /**
+     * check for clickability in leaderboard list
+     * @throws Exception
+     */
     @Test
     public void playerList() throws Exception{
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
@@ -54,6 +61,10 @@ public class otherProfileActivityTest{
         solo.clickOnView(solo.getView(R.id.QR_name));
     }
 
+    /**
+     * check for clickability for back button
+     * @throws Exception
+     */
     @Test
     public void testBack() throws Exception{
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
