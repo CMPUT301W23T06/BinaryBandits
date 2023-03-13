@@ -78,18 +78,8 @@ public class QRCodeInfoActivity extends AppCompatActivity {
                                             db_player.getPlayer(player_user, new PlayerCallback() {
                                                 @Override
                                                 public void onPlayerCallback(Player player) {
-                                                    Log.d("Loop1", "START");
-                                                    for (QRCode qrCode1 : player.getQrCodesScanned()) {
-                                                        Log.d("Profile", qrCode1.getName());
-                                                    }
                                                     player.removeQRCodeScanned(qrCode);
-                                                    Log.d("Loop2", "START");
-                                                    for (QRCode qrCode1 : player.getQrCodesScanned()) {
-                                                        Log.d("Profile", qrCode1.getName());
-                                                    }
-
-
-                                                    //player.removeQRCodeScanned(qrCode);
+                                                    db_qr.deleteQRCode(qrCode);
                                                     player.decrementTotalQRCodes();
                                                     int newScore = player.getTotalScore() - qrCode.getPoints();
                                                     player.setTotalScore(newScore);

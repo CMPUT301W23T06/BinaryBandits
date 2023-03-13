@@ -36,7 +36,8 @@ import java.util.Objects;
  * set fields of player profile of user clicked on
  */
 public class otherProfileActivity extends Activity {
-    ArrayList<Player> players;
+    private ArrayList<Player> players;
+    private PlayerController controller;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -72,7 +73,7 @@ public class otherProfileActivity extends Activity {
                         }
                     }
                 }
-                PlayerController controller = new PlayerController(otherPlayer);
+                controller = new PlayerController(otherPlayer);
                 name.setText(otherPlayer.getUsername());
                 score.setText(Integer.toString(otherPlayer.getTotalScore()));
                 num_scanned.setText(Integer.toString(otherPlayer.getTotalQRCodes()));
