@@ -18,6 +18,7 @@ import org.junit.Test;
 
 /**
  * Test class for MainActivity. All the UI tests are written here. Robotium test framework is used
+ * Checks bottom navigation takes you to the correct fragment
  */
 public class MainActivityTest {
     private Solo solo;
@@ -45,23 +46,6 @@ public class MainActivityTest {
     public void start() throws Exception {
         Activity activity = rule.getActivity();
     }
-//
-//    /**
-//     * Add a city to the listview and check the city name using assertTrue
-//     * Clear all the cities from the listview and check again with assertFalse
-//     */
-//    @Test
-//    public void checkBottomNavBar(){
-//        // Asserts that the current activity is the MainActivity. Otherwise, show “Wrong Activity”
-//        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
-//
-//        Activity current = solo.getCurrentActivity();
-//        Fragment mainFragment = current.getFragmentManager().findFragmentById(R.id.main_fragment);
-////        Fragment mainFragment = current.getFragmentManager().findFragmentById(R.id.main_fragment);
-//        BottomNavigationView navBar = (BottomNavigationView) solo.getView(R.id.nav_view);
-//
-//
-//    }
 
     /**
      * Checks functionality of scan button
@@ -88,7 +72,7 @@ public class MainActivityTest {
     }
 
     /**
-     * Check if profile page is displayed
+     * Check if leaderboard page is displayed
      */
     @Test
     public void checkLeaderboardPage(){
@@ -99,6 +83,9 @@ public class MainActivityTest {
 
     }
 
+    /**
+     * Check if maps page is displayed
+     */
     @Test
     public void checkMapsPage(){
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
