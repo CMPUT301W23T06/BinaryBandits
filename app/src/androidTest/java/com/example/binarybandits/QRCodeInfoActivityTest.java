@@ -18,6 +18,8 @@ import com.example.binarybandits.models.Player;
 import com.example.binarybandits.models.QRCode;
 import com.example.binarybandits.player.PlayerCallback;
 import com.example.binarybandits.player.PlayerDB;
+import com.example.binarybandits.qrcode.QRCodeCallback;
+import com.example.binarybandits.qrcode.QRCodeDB;
 import com.example.binarybandits.qrcode.QRCodeInfoActivity;
 import com.example.binarybandits.ui.auth.LogInActivity;
 import com.robotium.solo.Solo;
@@ -152,8 +154,23 @@ public class QRCodeInfoActivityTest {
         solo.clickOnView(solo.getView(R.id.navigation_home));
         solo.clickOnView(solo.getView(R.id.navigation_profile));
 
-        assertFalse(solo.waitForText("SuperHilariousLeopard",5,2000)==true);
 
+
+        PlayerDB db_p = new PlayerDB(new DBConnector());
+        QRCodeDB db_q = new QRCodeDB(new DBConnector());
+        db_q.getQRCode("SuperHilariousLeopard", new QRCodeCallback() {
+            @Override
+            public void onQRCodeCallback(QRCode qrCode) {
+                db_p.getPlayer("test", new PlayerCallback() {
+                    @Override
+                    public void onPlayerCallback(Player player) {
+                        assertFalse(player.findQRCodeScanned(qrCode));
+                    }
+                });
+            }
+
+
+        });
 
     }
 
