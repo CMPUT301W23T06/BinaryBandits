@@ -184,6 +184,11 @@ public class QRCodeDB {
         }
     }
 
+    /**
+     * Adds a location image to the database
+     * @param bitmap location image to add to database
+     * @param name name of image
+     */
     public void addLocationImageToServer(Bitmap bitmap, String name) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
