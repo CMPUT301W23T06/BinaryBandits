@@ -6,19 +6,15 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.location.Location;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
-
 import com.example.binarybandits.DBConnector;
 import com.example.binarybandits.MainActivity;
 import com.example.binarybandits.R;
@@ -127,6 +123,10 @@ public class QRCodeEditActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Function to get last known location of users
+     * @return A Location object containing the coordinates of the last known user location
+     */
     public Location getCurrentLocation() {
         if (PermissionsController.locationPermissionGranted) {
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -152,6 +152,9 @@ public class QRCodeEditActivity extends AppCompatActivity {
         return null;
     }
 
+    /**
+     * Function to change text for "Click image" button, and display confirmation text
+     */
     public void changeTextOnImageClick() {
         imageConfirmationTextView.setText("Image successfully added!");
         addImageBtn.setText("Replace");
@@ -168,11 +171,11 @@ public class QRCodeEditActivity extends AppCompatActivity {
         }
     }
 
+     /**
+     * Function to show a pop-up window containing the image clicked by user
+     * @param view A reference of the view that was just clicked
+     */
     public void showImagePopup(View view) {
         new LocationImageFragment(photo).show(getSupportFragmentManager(), "show");
-    }
-
-    public void closePopup(View view) {
-        popupWindow.dismiss();
     }
 }

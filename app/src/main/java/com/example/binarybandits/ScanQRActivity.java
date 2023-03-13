@@ -51,7 +51,6 @@ public class ScanQRActivity extends AppCompatActivity {
                         System.out.println("Hash: " + hash);
                         System.out.println("Unique Name: " + name);
                         System.out.println("Points: " + points);
-
                         QRCode qrCode = new QRCode(hash, name, points);
 
                         Intent myIntent = new Intent(ScanQRActivity.this, QRCodeEditActivity.class);

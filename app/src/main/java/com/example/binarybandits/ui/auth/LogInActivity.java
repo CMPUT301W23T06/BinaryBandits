@@ -13,6 +13,9 @@ import com.example.binarybandits.MainActivity;
 import com.example.binarybandits.R;
 import com.example.binarybandits.controllers.AuthController;
 
+/**
+ * An activity got the Log-In Page
+ */
 public class LogInActivity extends AppCompatActivity {
 
     private EditText editUsernameField;

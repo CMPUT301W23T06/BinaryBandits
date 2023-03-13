@@ -186,6 +186,9 @@ public class Player {
         if (totalQRCodes >= 1) {
             this.totalQRCodes -= 1;
         }
+        else {
+            this.totalQRCodes = 0;
+        }
     }
 
     /**

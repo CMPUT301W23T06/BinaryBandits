@@ -2,7 +2,6 @@ package com.example.binarybandits.qrcode;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -129,8 +128,12 @@ public class QRCodeInfoActivity extends AppCompatActivity {
                                                 @Override
                                                 public void onPlayerCallback(Player player) {
 
+
                                                     //remove QR code from players in database and locally
                                                     player.removeQRCodeScanned(qrCode);
+
+                                                    db_qr.deleteQRCode(qrCode);
+
                                                     player.decrementTotalQRCodes();
                                                     int newScore = player.getTotalScore() - qrCode.getPoints();
                                                     player.setTotalScore(newScore);

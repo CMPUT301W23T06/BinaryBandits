@@ -48,7 +48,7 @@ public class QRCode {
      * @param points points QRCode is worth
      * @param scannerUID name of user who first scanned the QR code
      * @param coordinates pair containing latitude and longitude where QRCode was scanned
-     * @param locationImage image of location where QR code was scanned
+     * @param locationImage url of image of location where QR code was scanned
      * @param comments list of comments associated with QR code
      * @param numPlayersScannedBy number of player who have scanned the QR code
      */
@@ -154,16 +154,16 @@ public class QRCode {
     }
 
     /**
-     * Get the image of the location where QR code was taken
-     * @return Return the image of location where QRCode was taken
+     * Get the url of image of the location where QR code was taken
+     * @return Return the url of image of location where QRCode was taken
      */
     public String getLocationImage() {
         return locationImage;
     }
 
     /**
-     * Set the image of the location where QR code was taken
-     * @param locationImage image of location where QRCode was taken
+     * Set the url of image of the location where QR code was taken
+     * @param locationImage url of image of location where QRCode was taken
      */
     public void setLocationImage(String locationImage) {
         this.locationImage = locationImage;
@@ -201,10 +201,16 @@ public class QRCode {
     }
 
     /**
-     * Decreases number of players who have scanned a QR code by 1
+     * Decreases number of players who have scanned a QR code by 1. Number of players
+     * who scanned a QR code must be positive (can be 0).
      */
     public void decrementNumPlayersScannedBy() {
-        this.numPlayersScannedBy = numPlayersScannedBy - 1;
+        if(this.numPlayersScannedBy >= 1) {
+            this.numPlayersScannedBy = numPlayersScannedBy - 1;
+        }
+        else {
+            this.numPlayersScannedBy = 0;
+        }
     }
 
     public String getImageURL(){
