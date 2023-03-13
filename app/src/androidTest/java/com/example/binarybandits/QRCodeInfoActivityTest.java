@@ -6,6 +6,8 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.widget.EditText;
 import android.widget.ListView;
 
@@ -27,7 +29,8 @@ import org.junit.Test;
 
 /**
  * Assumptions: There is a player with the username "test" in the database that has two QR
- * codes scanned, one "testQR" worth 100 points and one "toDelete" worth 50 points.
+ * codes scanned, one "UltraUniqueGiraffe" worth 58 points and one "SuperHilariousLeopard"
+ * worth 68 points. (Where SuperHilariousLeopard is the QR code for the wikipedia page of QR codes)
  * QRCodeInfoActivityTest tests functionalities in QRCodeInfoActivity
  */
 public class QRCodeInfoActivityTest {
@@ -56,8 +59,9 @@ public class QRCodeInfoActivityTest {
         solo.clickOnView(solo.getView(R.id.navigation_profile));
 
         //assert users QR codes are showing, click on testQR
-        solo.waitForText("testQR", 1, 2000);
-        solo.clickOnText("testQR");
+        solo.waitForText("UltraUniqueGiraffe", 1, 2000);
+        solo.clickOnText("UltraUniqueGiraffe");
+
     }
 
 
@@ -84,23 +88,23 @@ public class QRCodeInfoActivityTest {
     }
 
     /**
-     * Check if QR code name displayed is "testQR"
+     * Check if QR code name displayed is "UltraUniqueGiraffe"
      */
     @Test
     public void checkQRName(){
         solo.assertCurrentActivity("Wrong Activity", QRCodeInfoActivity.class);
 
-        assertTrue(solo.waitForText("testQR", 1, 2000));
+        assertTrue(solo.waitForText("UltraUniqueGiraffe", 1, 2000));
 
     }
 
     /**
-     * Check if QR score displayed is "100"
+     * Check if QR score displayed is "58"
      */
     @Test
     public void checkQRScore(){
         solo.assertCurrentActivity("Wrong Activity", QRCodeInfoActivity.class);
-        assertTrue(solo.waitForText("100", 1, 2000));
+        assertTrue(solo.waitForText("58", 1, 2000));
 
     }
 
@@ -121,32 +125,37 @@ public class QRCodeInfoActivityTest {
     }
 
 
-//    /**
-//     * Check if delete button works as intended (deletes QR code from users profile
-//     *  and takes you back to an updated profile page)
-//     */
-//    @Test
-//    public void checkDelete(){
-//        solo.assertCurrentActivity("Wrong Activity", QRCodeInfoActivity.class);
-//
-//        solo.clickOnView(solo.getView(R.id.back_button));
-//
-//        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
-//
-//        solo.waitForText("toDelete", 1, 2000);
-//        solo.clickOnText("toDelete");
-//
-//        solo.assertCurrentActivity("Wrong Activity", QRCodeInfoActivity.class);
-//
-//        solo.clickOnView(solo.getView(R.id.delete_button));
-//        solo.waitForText("Yes", 1, 2000);
-//        solo.clickOnText("Yes");
-//        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
-//
-//        assertFalse(solo.waitForText("toDelete", 1, 2000));
-//
-//
-//    }
+    /**
+     * Check if delete button works as intended (deletes QR code from users profile
+     *  and takes you back to an updated profile page)
+     */
+    @Test
+    public void checkDelete(){
+        solo.assertCurrentActivity("Wrong Activity", QRCodeInfoActivity.class);
+
+        solo.clickOnView(solo.getView(R.id.back_button));
+
+        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
+
+        solo.waitForText("SuperHilariousLeopard", 1, 2000);
+        solo.clickOnText("SuperHilariousLeopard");
+
+        solo.assertCurrentActivity("Wrong Activity", QRCodeInfoActivity.class);
+
+        solo.clickOnView(solo.getView(R.id.delete_button));
+
+        solo.waitForText("Yes", 1, 2000);
+        solo.clickOnText("Yes");
+
+
+        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
+        solo.clickOnView(solo.getView(R.id.navigation_home));
+        solo.clickOnView(solo.getView(R.id.navigation_profile));
+
+        assertFalse(solo.waitForText("SuperHilariousLeopard",4,2000)==true);
+
+
+    }
 
 
 
