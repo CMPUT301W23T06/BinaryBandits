@@ -8,6 +8,9 @@ import androidx.fragment.app.Fragment;
 
 import com.example.binarybandits.R;
 
+/**
+ * A Fragment displaying the Maps Page, to be displayed in MainActivity above bottom navigation bar
+ */
 public class MapFragment extends Fragment {
 
     @Override

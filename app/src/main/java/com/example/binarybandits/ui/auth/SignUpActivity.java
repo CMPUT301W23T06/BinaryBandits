@@ -11,6 +11,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.binarybandits.R;
 import com.example.binarybandits.controllers.AuthController;
 
+/**
+ * An activity got the Sign-Up Page
+ */
 public class SignUpActivity extends AppCompatActivity {
 
     private EditText editUsernameField;
@@ -57,6 +60,10 @@ public class SignUpActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Function to redirect to LogInActivity on click
+     * @param v A refernce to the view that was just clicked
+     */
     public void onClickLogInBtn(View v) {
         Intent myIntent = new Intent(SignUpActivity.this, LogInActivity.class);
         SignUpActivity.this.startActivity(myIntent);

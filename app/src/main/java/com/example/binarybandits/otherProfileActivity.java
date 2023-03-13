@@ -5,15 +5,17 @@ import static android.content.ContentValues.TAG;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import androidx.annotation.Nullable;
 
 import com.example.binarybandits.controllers.PlayerController;
 import com.example.binarybandits.models.Player;
@@ -34,7 +36,8 @@ import java.util.Objects;
  * set fields of player profile of user clicked on
  */
 public class otherProfileActivity extends Activity {
-    ArrayList<Player> players;
+    private ArrayList<Player> players;
+    private PlayerController controller;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -47,7 +50,7 @@ public class otherProfileActivity extends Activity {
         TextView lowest = findViewById(R.id.lowest_score_text);
         TextView highest = findViewById(R.id.highest_score_text);
         ImageView otherImage = findViewById(R.id.profileIconImageView);
-        Button back = findViewById(R.id.buttonBack);
+        ImageButton back = findViewById(R.id.buttonBack);
         back.setVisibility(View.VISIBLE);
         LeaderboardFragment leaderboard = new LeaderboardFragment();
         Bundle extras = getIntent().getExtras();
@@ -70,7 +73,7 @@ public class otherProfileActivity extends Activity {
                         }
                     }
                 }
-                PlayerController controller = new PlayerController(otherPlayer);
+                controller = new PlayerController(otherPlayer);
                 name.setText(otherPlayer.getUsername());
                 score.setText(Integer.toString(otherPlayer.getTotalScore()));
                 num_scanned.setText(Integer.toString(otherPlayer.getTotalQRCodes()));

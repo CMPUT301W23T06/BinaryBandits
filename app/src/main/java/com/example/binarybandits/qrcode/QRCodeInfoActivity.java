@@ -3,12 +3,14 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -76,18 +78,8 @@ public class QRCodeInfoActivity extends AppCompatActivity {
                                             db_player.getPlayer(player_user, new PlayerCallback() {
                                                 @Override
                                                 public void onPlayerCallback(Player player) {
-                                                    Log.d("Loop1", "START");
-                                                    for (QRCode qrCode1 : player.getQrCodesScanned()) {
-                                                        Log.d("Profile", qrCode1.getName());
-                                                    }
                                                     player.removeQRCodeScanned(qrCode);
-                                                    Log.d("Loop2", "START");
-                                                    for (QRCode qrCode1 : player.getQrCodesScanned()) {
-                                                        Log.d("Profile", qrCode1.getName());
-                                                    }
-
-
-                                                    //player.removeQRCodeScanned(qrCode);
+                                                    db_qr.deleteQRCode(qrCode);
                                                     player.decrementTotalQRCodes();
                                                     int newScore = player.getTotalScore() - qrCode.getPoints();
                                                     player.setTotalScore(newScore);
@@ -127,7 +119,7 @@ public class QRCodeInfoActivity extends AppCompatActivity {
 
 
 
-        Button back_button = findViewById(R.id.back_button);
+        ImageButton back_button = findViewById(R.id.back_button);
         back_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -135,6 +127,7 @@ public class QRCodeInfoActivity extends AppCompatActivity {
                 QRCodeInfoActivity.this.finish();
             }
         });
+
 
 
 
