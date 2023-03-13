@@ -41,6 +41,10 @@ public class LeaderboardFragmentTest{
         Activity activity = rule.getActivity();
     }
 
+    /**
+     * check to make sure search button functions
+     * @throws Exception
+     */
     @Test
     public void checkSearch() throws Exception{
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
@@ -48,6 +52,10 @@ public class LeaderboardFragmentTest{
         solo.clickOnView(solo.getView(R.id.button));//Click search Button
     }
 
+    /**
+     * test to make sure top player button functions
+     * @throws Exception
+     */
     @Test
     public void player1() throws Exception{
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
@@ -57,6 +65,10 @@ public class LeaderboardFragmentTest{
         solo.assertCurrentActivity("Wrong Activity", otherProfileActivity.class);
     }
 
+    /**
+     * test to make sure player 2 button functions
+     * @throws Exception
+     */
     @Test
     public void player2() throws Exception{
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
@@ -66,6 +78,10 @@ public class LeaderboardFragmentTest{
         solo.assertCurrentActivity("Wrong Activity", otherProfileActivity.class);
     }
 
+    /**
+     * test to make sure player 3 button functions
+     * @throws Exception
+     */
     @Test
     public void player3() throws Exception{
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
@@ -75,6 +91,10 @@ public class LeaderboardFragmentTest{
         solo.assertCurrentActivity("Wrong Activity", otherProfileActivity.class);
     }
 
+    /**
+     * test to make sure the player sends to new activity otherProfileActivity
+     * @throws Exception
+     */
     @Test
     public void playerList() throws Exception{
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
