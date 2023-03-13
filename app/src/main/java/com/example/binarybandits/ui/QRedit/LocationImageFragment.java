@@ -6,12 +6,14 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import com.example.binarybandits.R;
 
+/**
+ * A Fragment displaying a pop-up window with an image view inside
+ */
 public class LocationImageFragment extends DialogFragment {
 
     public LocationImageFragment(Bitmap bitmap) {
