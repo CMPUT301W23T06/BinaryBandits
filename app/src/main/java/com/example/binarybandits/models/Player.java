@@ -81,7 +81,7 @@ public class Player {
 
     /**
      * Sets the player's username
-     * @param username
+     * @param username player's username
      */
     public void setUsername(String username) {
         this.username = username;
@@ -218,7 +218,7 @@ public class Player {
 
     /**
      * Removes a QRCode from the list of scanned QR codes if the QR code is in the list
-     * @param qrCode
+     * @param qrCode QRCode to remove in list of scanned QR codes
      */
     public void removeQRCodeScanned(QRCode qrCode) {
         //Referenced: https://stackoverflow.com/questions/8520808/how-to-remove-specific-object-from-arraylist-in-java
