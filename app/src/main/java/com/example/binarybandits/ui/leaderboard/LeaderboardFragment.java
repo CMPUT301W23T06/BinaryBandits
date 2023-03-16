@@ -8,11 +8,13 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.binarybandits.DBConnector;
@@ -24,6 +26,8 @@ import com.example.binarybandits.otherProfileActivity;
 import com.example.binarybandits.player.PlayerCallback;
 import com.example.binarybandits.player.PlayerDB;
 import com.example.binarybandits.player.PlayerListCallback;
+import com.example.binarybandits.ui.profile.ProfileFragment;
+import com.google.android.material.appbar.MaterialToolbar;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -204,6 +208,13 @@ public class LeaderboardFragment extends Fragment {
                     startActivity(intent);
                 }
             });
+        MaterialToolbar toolbar = leaderboard.findViewById(R.id.materialToolbar);
+        toolbar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getFragmentManager().beginTransaction().replace(R.id.container, new ProfileFragment()).commit();
+            }
+        });
 
         return leaderboard;
     }

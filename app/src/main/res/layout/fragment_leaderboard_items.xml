@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal">
@@ -14,10 +15,26 @@
         android:textColor="#FFB800"
         android:textSize="15sp" />
 
-    <ImageView
-        android:id="@+id/leaderboard_image_list"
-        android:layout_width="72dp"
-        android:layout_height="match_parent"></ImageView>
+    <androidx.cardview.widget.CardView
+        android:id="@+id/profileCardView3"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginStart="20dp"
+
+        app:cardCornerRadius="250dp"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout4">
+
+        <ImageView
+            android:id="@+id/leaderboard_image_list"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_profile"
+            app:shapeAppearanceOverlay="@style/roundedImageView"/>
+    </androidx.cardview.widget.CardView>
+
 
     <TextView
         android:id="@+id/player_name_text"
