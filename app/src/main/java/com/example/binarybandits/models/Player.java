@@ -29,6 +29,7 @@ public class Player {
         this.totalQRCodes = 0;
         this.playerAvatar = null; //temporary
         this.qrCodesScanned = new ArrayList<QRCode>();
+        this.highestScore = 0;
     }
 
     /**
@@ -43,6 +44,7 @@ public class Player {
         this.totalQRCodes = 0;
         this.playerAvatar = null; //temporary
         this.qrCodesScanned = new ArrayList<QRCode>();
+        this.highestScore = 0;
     }
 
     /**
@@ -54,13 +56,14 @@ public class Player {
      * @param playerAvatar player's avatar picture
      * @param qrCodesScanned list of QR code objects scanned by the player
      */
-    public Player(String username, String phone, int totalScore, int totalQRCodes, Bitmap playerAvatar, ArrayList<QRCode> qrCodesScanned) {
+    public Player(String username, String phone, int totalScore, int totalQRCodes, Bitmap playerAvatar, ArrayList<QRCode> qrCodesScanned, int highestScore) {
         this.username = username;
         this.phone = phone;
         this.totalScore = totalScore;
         this.totalQRCodes = totalQRCodes;
         this.playerAvatar = playerAvatar;
         this.qrCodesScanned = qrCodesScanned;
+        this.highestScore = highestScore;
     }
 
     String username;
@@ -69,6 +72,7 @@ public class Player {
     int totalQRCodes;
     Bitmap playerAvatar;
     ArrayList<QRCode> qrCodesScanned;
+    int highestScore;
 
 
     /**
@@ -154,6 +158,22 @@ public class Player {
         else {
             this.totalQRCodes = 0;
         }
+    }
+
+    /**
+     * Get the points value of a Player's highest scoring QR code
+     * @return Return the points value of the Player's highest scoring QR code
+     */
+    public int getHighestScore() {
+        return highestScore;
+    }
+
+    /**
+     * Set the points value of a Player's highest scoring QR code
+     * @param highestScore Points value of the Player's highest scoring QR code
+     */
+    public void setHighestScore(int highestScore) {
+        this.highestScore = highestScore;
     }
 
     /**
