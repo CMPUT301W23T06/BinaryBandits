@@ -9,6 +9,7 @@ import androidx.annotation.Nullable;
 import com.example.binarybandits.DBConnector;
 import com.example.binarybandits.Geolocation;
 import com.example.binarybandits.controllers.PlayerController;
+import com.example.binarybandits.models.Comment;
 import com.example.binarybandits.models.Player;
 import com.example.binarybandits.models.QRCode;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -201,12 +202,12 @@ public class PlayerDB {
                     locationImage = (String)map.get("locationImage");
                 }
 
-                ArrayList<String> comments;
+                ArrayList<Comment> comments;
                 if(map.get("comments") == null) {
                     comments = null;
                 }
                 else {
-                    comments = (ArrayList<String>)map.get("comments");
+                    comments = (ArrayList<Comment>) map.get("comments");
                 }
                 int numPlayersScannedBy = Integer.parseInt(map.get("numPlayersScannedBy").toString());
 
