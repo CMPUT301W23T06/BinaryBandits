@@ -24,20 +24,19 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.011" />
 
+
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/QRImageView"
         android:layout_width="220dp"
         android:layout_height="221dp"
-        android:layout_marginBottom="452dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/scroll_comment"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/QR_header"
-        app:layout_constraintVertical_bias="0.933"
+        app:layout_constraintVertical_bias="0.132"
         app:strokeColor="@color/white"
         app:strokeWidth="2dp" />
-
 
     <TextView
         android:id="@+id/qr_code_name"
@@ -47,11 +46,11 @@
         android:text="QRcodeName"
         android:textColor="#FF426F"
         android:textSize="30sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/scroll_comment"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/QRImageView"
-        app:layout_constraintVertical_bias="0.344" />
+        app:layout_constraintVertical_bias="0.816" />
 
     <TextView
         android:id="@+id/qr_code_score"
@@ -65,20 +64,19 @@
         android:textSize="23sp"
         app:layout_constraintBottom_toTopOf="@+id/scroll_comment"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.444"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/qr_code_name"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="1.0" />
 
     <ScrollView
         android:id="@+id/scroll_comment"
         android:layout_width="409dp"
         android:layout_height="149dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/comment_box"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.627">
+        app:layout_constraintVertical_bias="0.956">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -106,7 +104,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.737"
+        app:layout_constraintVertical_bias="0.802"
         app:srcCompat="@drawable/big_rounded_button"
         app:tint="#333333" />
 
@@ -117,24 +115,29 @@
         android:layout_marginStart="2dp"
         android:layout_marginEnd="3dp"
         android:autofillHints=""
-        android:inputType="text"
         android:hint="Add a comment..."
+        android:inputType="text"
         android:textColor="#8A8A8E"
         android:textColorHint="#8A8A8E"
         android:textSize="13sp"
         app:layout_constraintBottom_toBottomOf="@+id/comment_box"
         app:layout_constraintEnd_toEndOf="@+id/comment_box"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/comment_box"
-        app:layout_constraintTop_toTopOf="@+id/comment_box" />
+        app:layout_constraintTop_toTopOf="@+id/comment_box"
+        app:layout_constraintVertical_bias="1.0" />
 
     <LinearLayout
-        android:layout_width="380dp"
-        android:layout_height="51dp"
+        android:id="@+id/linearLayout4"
+        android:layout_width="382dp"
+        android:layout_height="60dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/delete_button"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.482"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/comment_box">
+        app:layout_constraintTop_toBottomOf="@+id/comment_box"
+        app:layout_constraintVertical_bias="0.78">
 
         <Button
             android:id="@+id/other_players_button"
@@ -172,19 +175,21 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.91" />
+        app:layout_constraintTop_toBottomOf="@+id/comment_box"
+        app:layout_constraintVertical_bias="0.841" />
 
-    <Button
+    <ImageButton
         android:id="@+id/back_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="14dp"
-        android:text="Back"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="51dp"
+        android:layout_height="39dp"
+        android:layout_marginTop="20dp"
+        android:background="@android:color/transparent"
+        android:scaleType="fitXY"
+        android:src="@drawable/back_arrow"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.027"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/delete_button" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
