@@ -1,4 +1,6 @@
 package com.example.binarybandits.ui.leaderboard;
+import static android.content.ContentValues.TAG;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -163,24 +165,42 @@ public class LeaderboardFragment extends Fragment {
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    Intent intent = new Intent(LeaderboardFragment.this.getActivity(), otherProfileActivity.class);
-                    Bundle extras = new Bundle();
-                    extras.putString("name", String.valueOf(players.get(i).getUsername()));
-                    extras.putString("list", "long");
-                    intent.putExtras(extras);
-                    startActivity(intent);
+                    TextView name = leaderboard.findViewById(R.id.current_username);
+                    String nameOfPlayer = (String) name.getText();
+                    // If user clicks on themselves in leaderboard send them to their profile page
+                    if(Objects.equals(players.get(i+3).getUsername(), nameOfPlayer)){
+                        getFragmentManager().beginTransaction().replace(R.id.container, new ProfileFragment()).commit();
+                    }
+                    // else send them to other players profile
+                    else{
+                        Intent intent = new Intent(LeaderboardFragment.this.getActivity(), otherProfileActivity.class);
+                        Bundle extras = new Bundle();
+                        extras.putString("name", String.valueOf(players.get(i).getUsername()));
+                        extras.putString("list", "long");
+                        intent.putExtras(extras);
+                        startActivity(intent);
+                         }
                 }
             });
             ImageView image1 = leaderboard.findViewById(R.id.limage1);
         image1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(LeaderboardFragment.this.getActivity(), otherProfileActivity.class);
-                    Bundle extras = new Bundle();
-                    extras.putString("name", String.valueOf(players.get(0).getUsername()));
-                    extras.putString("list", "short");
-                    intent.putExtras(extras);
-                    startActivity(intent);
+                    TextView name = leaderboard.findViewById(R.id.current_username);
+                    String nameOfPlayer = (String) name.getText();
+                    // If user clicks on themselves in leaderboard send them to their profile page
+                    if(Objects.equals(players.get(0).getUsername(), nameOfPlayer)){
+                        getFragmentManager().beginTransaction().replace(R.id.container, new ProfileFragment()).commit();
+                    }
+                    // else send them to other players profile
+                    else {
+                        Intent intent = new Intent(LeaderboardFragment.this.getActivity(), otherProfileActivity.class);
+                        Bundle extras = new Bundle();
+                        extras.putString("name", String.valueOf(players.get(0).getUsername()));
+                        extras.putString("list", "short");
+                        intent.putExtras(extras);
+                        startActivity(intent);
+                    }
                 }
             });
 
@@ -188,24 +208,42 @@ public class LeaderboardFragment extends Fragment {
         image2.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(LeaderboardFragment.this.getActivity(), otherProfileActivity.class);
-                    Bundle extras = new Bundle();
-                    extras.putString("name", String.valueOf(players.get(1).getUsername()));
-                    extras.putString("list", "short");
-                    intent.putExtras(extras);
-                    startActivity(intent);
+                    TextView name = leaderboard.findViewById(R.id.current_username);
+                    String nameOfPlayer = (String) name.getText();
+                    // If user clicks on themselves in leaderboard send them to their profile page
+                    if(Objects.equals(players.get(1).getUsername(), nameOfPlayer)){
+                        getFragmentManager().beginTransaction().replace(R.id.container, new ProfileFragment()).commit();
+                    }
+                    // else send them to other players profile
+                    else {
+                        Intent intent = new Intent(LeaderboardFragment.this.getActivity(), otherProfileActivity.class);
+                        Bundle extras = new Bundle();
+                        extras.putString("name", String.valueOf(players.get(1).getUsername()));
+                        extras.putString("list", "short");
+                        intent.putExtras(extras);
+                        startActivity(intent);
+                    }
                 }
             });
             ImageView image3 = leaderboard.findViewById(R.id.limage3);
         image3.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(LeaderboardFragment.this.getActivity(), otherProfileActivity.class);
-                    Bundle extras = new Bundle();
-                    extras.putString("name", String.valueOf(players.get(2).getUsername()));
-                    extras.putString("list", "short");
-                    intent.putExtras(extras);
-                    startActivity(intent);
+                    TextView name = leaderboard.findViewById(R.id.current_username);
+                    String nameOfPlayer = (String) name.getText();
+                    // If user clicks on themselves in leaderboard send them to their profile page
+                    if(Objects.equals(players.get(2).getUsername(), nameOfPlayer)){
+                        getFragmentManager().beginTransaction().replace(R.id.container, new ProfileFragment()).commit();
+                    }
+                    // else send them to other players profile
+                    else {
+                        Intent intent = new Intent(LeaderboardFragment.this.getActivity(), otherProfileActivity.class);
+                        Bundle extras = new Bundle();
+                        extras.putString("name", String.valueOf(players.get(2).getUsername()));
+                        extras.putString("list", "short");
+                        intent.putExtras(extras);
+                        startActivity(intent);
+                    }
                 }
             });
         MaterialToolbar toolbar = leaderboard.findViewById(R.id.materialToolbar);
