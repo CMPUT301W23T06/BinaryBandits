@@ -53,7 +53,7 @@ public class QRCode {
      * @param numPlayersScannedBy number of player who have scanned the QR code
      */
     public QRCode(String hash, String name, int points, String scannerUID, ArrayList<Double> coordinates,
-                  String locationImage, ArrayList<String> comments, int numPlayersScannedBy) {
+                  String locationImage, ArrayList<Comment> comments, int numPlayersScannedBy) {
         this.hash = hash;
         this.name = name;
         this.points = points;
@@ -70,7 +70,7 @@ public class QRCode {
     String scannerUID;
     ArrayList<Double> coordinates; //Need to change to Geolocation class
     String locationImage;
-    ArrayList<String> comments;
+    ArrayList<Comment> comments;
     int numPlayersScannedBy;
 
     /**
@@ -173,7 +173,7 @@ public class QRCode {
      * Get the list of comments associated with a QR code
      * @return Return the list of comments of a QR code
      */
-    public ArrayList<String> getComments() {
+    public ArrayList<Comment> getComments() {
         return comments;
     }
 
@@ -181,7 +181,7 @@ public class QRCode {
      * Sets the list of comments of a QRCode
      * @param comments list of comments of QRCode
      */
-    public void setComments(ArrayList<String> comments) {
+    public void setComments(ArrayList<Comment> comments) {
         this.comments = comments;
     }
 

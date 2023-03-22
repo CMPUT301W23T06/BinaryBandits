@@ -1,6 +1,9 @@
 package com.example.binarybandits;
 
+import com.example.binarybandits.models.Comment;
+import com.example.binarybandits.models.Player;
 import com.example.binarybandits.models.QRCode;
+import com.google.type.DateTime;
 
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -128,10 +131,11 @@ public class QRCodeTest {
         //A QRCode should initially have no comments
         assertNull(mockQRCode.getComments());
 
-        ArrayList<String> comments = new ArrayList<String>();
-        comments.add("Nice QR code!");
-        comments.add("I also have that one!");
-        mockQRCode.setComments(comments);
+        ArrayList<Comment> comments = new ArrayList<Comment>();
+        //TODO: Need to add comments to ArrayList in test
+
+
+
         assertEquals(mockQRCode.getComments(), comments);
     }
 
