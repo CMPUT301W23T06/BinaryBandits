@@ -22,8 +22,10 @@ import java.util.ArrayList;
  * updates view
  */
 public class LeaderboardArrayAdapter extends ArrayAdapter {
-        public LeaderboardArrayAdapter(Context context, ArrayList<Player> players) {
+        private boolean scoreLeaderboard;
+        public LeaderboardArrayAdapter(Context context, ArrayList<Player> players, boolean scoreLeaderboard) {
             super(context, 0, players);
+            this.scoreLeaderboard = scoreLeaderboard;
         }
 
     /**
@@ -53,7 +55,12 @@ public class LeaderboardArrayAdapter extends ArrayAdapter {
             TextView rank = view.findViewById(R.id.rank_number);
             ImageView image1 = view.findViewById(R.id.leaderboard_image_list);
             playerName.setText(player.getUsername());
-            score.setText(Integer.toString(player.getTotalScore()));
+            if (scoreLeaderboard) {
+                score.setText(Integer.toString(player.getTotalScore()));
+            }
+            else {
+                score.setText(Integer.toString(player.getHighestScore()));
+            }
             rank.setText("#" + Integer.toString(position+4));
             String url1 = "https://api.dicebear.com/5.x/avataaars-neutral/png?seed=" + player.getUsername();
             Picasso.get().load(url1).into(image1);

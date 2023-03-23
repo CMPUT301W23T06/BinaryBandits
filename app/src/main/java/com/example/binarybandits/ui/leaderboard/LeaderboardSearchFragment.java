@@ -25,6 +25,7 @@ import com.example.binarybandits.otherProfileActivity;
 import com.example.binarybandits.player.PlayerCallback;
 import com.example.binarybandits.player.PlayerDB;
 import com.example.binarybandits.DBConnector;
+import com.example.binarybandits.player.PlayerListCallback;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -96,9 +97,8 @@ public class LeaderboardSearchFragment extends Fragment {
                 players.clear(); // clear Set before adding new players
                 String searchText = s.toString();
 
-
                 // If the search text is not empty, search for the player
-                if (!searchText.isEmpty()) {
+                /*if (!searchText.isEmpty()) {
                     playerDB.getPlayer(searchText, new PlayerCallback() {
                         // When the player is found, add it to the listview
                         @Override
@@ -111,13 +111,6 @@ public class LeaderboardSearchFragment extends Fragment {
 
                                 // When the user clicks on a player, go to their profile
                                 searchResults.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                    /**
-                                     * This method is called when the user clicks on a player item in the listview, and goes to the player's profile
-                                     * @param adapterView - the adapter view
-                                     * @param view - the view
-                                     * @param i - the position
-                                     * @param l - the id
-                                     */
                                     @Override
                                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                                         Intent intent = new Intent(LeaderboardSearchFragment.this.getActivity(), otherProfileActivity.class); // go to other player's profile
@@ -139,7 +132,50 @@ public class LeaderboardSearchFragment extends Fragment {
                     players.clear();
                     ArrayAdapter<Player> playerArrayAdapter = new LeaderboardSearchArrayAdapter(getActivity(), new ArrayList<>(players)); // convert Set to ArrayList
                     searchResults.setAdapter(playerArrayAdapter);
+                }*/
+
+                //START OF NEW LEADERBOARD SEARCH (REMOVE THIS COMMENT LATER)
+
+                // If the search text is not empty, search for players containing the input
+                if(!searchText.isEmpty()) {
+                    playerDB.getPlayersByQuery(playerDB.searchPlayer(searchText), new PlayerListCallback() {
+                        @Override
+                        public void onPlayerListCallback(ArrayList<Player> playerList) {
+                            if(playerList != null) {
+                                ArrayAdapter<Player> playerArrayAdapter = new LeaderboardSearchArrayAdapter(getActivity(), playerList); // convert Set to ArrayList
+                                searchResults.setAdapter(playerArrayAdapter); // set the adapter for the listview to display the players
+
+                                // When the user clicks on a player, go to their profile
+                                searchResults.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                    /**
+                                     * This method is called when the user clicks on a player item in the listview, and goes to the player's profile
+                                     * @param adapterView - the adapter view
+                                     * @param view - the view
+                                     * @param i - the position
+                                     * @param l - the id
+                                     */
+                                    @Override
+                                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                                        Intent intent = new Intent(LeaderboardSearchFragment.this.getActivity(), otherProfileActivity.class); // go to other player's profile
+                                        Bundle extras = new Bundle(); // pass the player's username to the other profile activity
+                                        extras.putString("name", playerList.get(i).getUsername());
+                                        extras.putString("list", "search");
+                                        intent.putExtras(extras);
+                                        startActivity(intent); // start the activity
+
+                                    }
+                                });
+                            }
+                        }
+                    });
                 }
+                // If the search text is empty, clear the listview
+                else {
+                    ArrayAdapter<Player> playerArrayAdapter = new LeaderboardSearchArrayAdapter(getActivity(), new ArrayList<>()); // convert Set to ArrayList
+                    searchResults.setAdapter(playerArrayAdapter);
+                }
+
+                //END OF NEW LEADERBOARD SEARCH (REMOVE THIS COMMENT LATER)
             }
 
             /**

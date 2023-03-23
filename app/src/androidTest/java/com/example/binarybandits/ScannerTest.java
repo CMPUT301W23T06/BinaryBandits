@@ -45,13 +45,15 @@ public class ScannerTest {
     }
 
     /**
-     *
+     * Tests adding a QRCode functionality
      */
     @Test
     public void testAddQRCode() {
         solo.assertCurrentActivity("Wrong activity", LogInActivity.class);
-        solo.enterText((EditText) solo.getView(R.id.editUsername), "PieceOfPi");
+        solo.enterText((EditText) solo.getView(R.id.editUsername), "test");
         solo.clickOnView(solo.getView(R.id.loginBtn));
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
+        solo.clickOnView(solo.getView(R.id.scan_button));
+        solo.assertCurrentActivity("Wrong Activity", ScanQRActivity.class);
     }
 }

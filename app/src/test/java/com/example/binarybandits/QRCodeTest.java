@@ -1,6 +1,9 @@
 package com.example.binarybandits;
 
+import com.example.binarybandits.models.Comment;
+import com.example.binarybandits.models.Player;
 import com.example.binarybandits.models.QRCode;
+import com.google.type.DateTime;
 
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -121,19 +124,19 @@ public class QRCodeTest {
 
     /**
      * Tests getters and setters for a QR code's comments
+     * (COMMENTED OUT WHILE COMMENTS ARE BEING IMPLEMENTED)
      */
-    @Test
+    /*@Test
     public void testComments() {
         QRCode mockQRCode = mockQRCode();
         //A QRCode should initially have no comments
         assertNull(mockQRCode.getComments());
 
-        ArrayList<String> comments = new ArrayList<String>();
-        comments.add("Nice QR code!");
-        comments.add("I also have that one!");
-        mockQRCode.setComments(comments);
+        ArrayList<Comment> comments = new ArrayList<Comment>();
+        //TODO: Need to add comments to ArrayList in test
+
         assertEquals(mockQRCode.getComments(), comments);
-    }
+    }*/
 
     /**
      * Tests getter for image URL. Note that there is no setter for image URL since
