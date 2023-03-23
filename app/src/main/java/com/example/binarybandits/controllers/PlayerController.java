@@ -38,9 +38,11 @@ public class PlayerController {
         qrCodesScanned = sortQRCodes(qrCodesScanned);
         if(qrCodesScanned.size() > 0) {
             highestQRCode = qrCodesScanned.get(qrCodesScanned.size() - 1);
+            player.setHighestScore(highestQRCode.getPoints());
         }
         else {
             highestQRCode = null;
+            player.setHighestScore(0);
         }
         return highestQRCode;
     }

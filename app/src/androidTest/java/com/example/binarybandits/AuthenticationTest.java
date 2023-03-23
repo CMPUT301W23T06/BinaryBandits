@@ -9,6 +9,7 @@ import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 import androidx.test.rule.ActivityTestRule$$ExternalSyntheticLambda0;
 
+import com.example.binarybandits.controllers.AuthController;
 import com.example.binarybandits.player.PlayerDB;
 import com.example.binarybandits.ui.auth.LogInActivity;
 import com.example.binarybandits.ui.auth.SignUpActivity;
@@ -43,6 +44,10 @@ public class AuthenticationTest {
     @Before
     public void setUp() throws Exception {
         solo = new Solo(InstrumentationRegistry.getInstrumentation(), rule.getActivity());
+        AuthController.setUserLoggedInStatus(solo.getCurrentActivity().getApplicationContext(), false);
+        PlayerDB db = new PlayerDB(new DBConnector());
+        db.deletePlayer("BostonBoy");
+        db.deletePlayer("Josh123");
     }
 
     /**
@@ -94,6 +99,8 @@ public class AuthenticationTest {
         solo.enterText((EditText) solo.getView(R.id.editPhoneSignUp), "6178230249");
         solo.clickOnView(solo.getView(R.id.createAccountBtnSignUp));
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
+        PlayerDB db = new PlayerDB(new DBConnector());
+        db.deletePlayer("BostonBoy");
     }
 
     /**
@@ -109,6 +116,8 @@ public class AuthenticationTest {
         solo.enterText((EditText) solo.getView(R.id.editUsernameSignUp), "Josh123");
         solo.clickOnView(solo.getView(R.id.createAccountBtnSignUp));
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
+        PlayerDB db = new PlayerDB(new DBConnector());
+        db.deletePlayer("Josh123");
     }
 
     /**

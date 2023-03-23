@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 
 import com.example.binarybandits.DBConnector;
 import com.example.binarybandits.Geolocation;
+import com.example.binarybandits.models.Comment;
 import com.example.binarybandits.models.Player;
 import com.example.binarybandits.models.QRCode;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -23,6 +24,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.google.type.DateTime;
 import com.squareup.picasso.Picasso;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -133,10 +135,13 @@ public class QRCodeDB {
                     int points = documentSnapshot.getLong("points").intValue();
                     ArrayList<Double> coordinates = (ArrayList<Double>) documentSnapshot.get("coordinates");
                     String locationImage = documentSnapshot.getString("locationImage");
-                    ArrayList<String> comments = (ArrayList<String>)documentSnapshot.get("comments");
+                    ArrayList<Map<String, Object>> comments = (ArrayList<Map<String, Object>>) documentSnapshot.get("comments");
+
+                    ArrayList<Comment> convertedComments = getQRCodeHelper(comments);
+
                     int numPlayersScannedBy = documentSnapshot.getLong("numPlayersScannedBy").intValue();
                     QRCode qrCode = new QRCode(hash, name, points, scannerUID, coordinates,
-                            locationImage, comments, numPlayersScannedBy);
+                            locationImage, convertedComments, numPlayersScannedBy);
                     Log.d(TAG, "QR code information retrieved from database");
                     Log.d(TAG, "Name: " + name + "\nPoints: " + points);
                     callback.onQRCodeCallback(qrCode);
@@ -151,6 +156,26 @@ public class QRCodeDB {
                 Log.d(TAG, "Could not retrieve document reference!" + e.toString());
             }
         });
+    }
+
+    /**
+     * Helper function for getQRCode that get a list of a QR code's comments
+     * @param comments An ArrayList to hold comments of a QR code
+     * @return Return a list of a QR code's comments
+     */
+    public ArrayList<Comment> getQRCodeHelper(ArrayList<Map<String, Object>> comments) {
+        ArrayList<Comment> convertedComments = new ArrayList<Comment>();
+        if(comments != null) {
+            //Create a QRCode based on the map representation generated from reading Firebase DB
+            for (int i = 0; i < comments.size(); i++) {
+                Map<String, Object> map = comments.get(i);
+                String content = map.get("content").toString();
+                String author = map.get("author").toString();
+                Comment comment = new Comment(content, author);
+                convertedComments.add(comment);
+            }
+        }
+        return convertedComments;
     }
 
     /**
