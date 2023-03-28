@@ -183,7 +183,6 @@ public class QRCodeDB {
      * @param qrCode QRCode to update
      */
     public void updateQRCode(QRCode qrCode) {
-        //To-do: Implement updateQRCode() -> Alex
         collectionReference.document(qrCode.getName())
                 .update("name", qrCode.getName(),
                         "scannerUID", qrCode.getScannerUID(),

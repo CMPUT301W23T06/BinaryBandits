@@ -22,6 +22,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.binarybandits.DBConnector;
 import com.example.binarybandits.R;
 import com.example.binarybandits.controllers.AuthController;
+import com.example.binarybandits.controllers.LeaderboardController;
 import com.example.binarybandits.controllers.PlayerController;
 import com.example.binarybandits.models.Player;
 import com.example.binarybandits.otherProfileActivity;
@@ -33,6 +34,7 @@ import com.google.android.material.appbar.MaterialToolbar;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -58,6 +60,30 @@ public class LeaderboardFragment extends Fragment {
             public void onPlayerListCallback(ArrayList<Player> playerResultsList) {
                 Log.d("Leaderboard", playerResultsList.toString());
                 displayLeaderboard(leaderboard, playerResultsList, true);
+            }
+        });
+
+        //Get list of scores for all players in the game
+        ArrayList<Integer> scores = new ArrayList<>();
+        db.getPlayersByQuery(db.getAllPlayers(), new PlayerListCallback() {
+            @Override
+            public void onPlayerListCallback(ArrayList<Player> playerList) {
+                if (playerList != null) {
+                    String user = AuthController.getUsername(getActivity());
+                    int userScore = 0;
+                    for (int i = 0; i < playerList.size(); i++) {
+                        int score = playerList.get(i).getTotalScore();
+                        scores.add(score);
+                        if (user.equals(playerList.get(i).getUsername())) {
+                            userScore = playerList.get(i).getTotalScore();
+                        }
+                    }
+                    Collections.sort(scores);
+                    Log.d("Leaderboard", scores.toString());
+                    LeaderboardController leaderboardController = new LeaderboardController();
+                    int percentile = leaderboardController.getPercentile(scores, userScore);
+                    Log.d("LeaderboardController", String.valueOf(percentile));
+                }
             }
         });
 

@@ -213,6 +213,10 @@ public class QRCode {
         }
     }
 
+    /**
+     * Get the URL of the QR code's visual representation
+     * @return URL of the QR code's visual representation
+     */
     public String getImageURL(){
         String url = "https://api.dicebear.com/5.x/shapes/png?seed=" + this.hash;
         return url;
