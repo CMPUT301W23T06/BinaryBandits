@@ -25,14 +25,19 @@ import com.example.binarybandits.controllers.AuthController;
 import com.example.binarybandits.controllers.LeaderboardController;
 import com.example.binarybandits.controllers.PlayerController;
 import com.example.binarybandits.models.Player;
+import com.example.binarybandits.models.QRCode;
 import com.example.binarybandits.otherProfileActivity;
 import com.example.binarybandits.player.PlayerCallback;
 import com.example.binarybandits.player.PlayerDB;
 import com.example.binarybandits.player.PlayerListCallback;
+import com.example.binarybandits.qrcode.QRCodeCallback;
+import com.example.binarybandits.qrcode.QRCodeDB;
+import com.example.binarybandits.qrcode.QRCodeListCallback;
 import com.example.binarybandits.ui.profile.ProfileFragment;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.squareup.picasso.Picasso;
 
+import org.checkerframework.checker.units.qual.A;
 import org.w3c.dom.Text;
 
 import java.lang.reflect.Array;
@@ -57,12 +62,50 @@ public class LeaderboardFragment extends Fragment {
         View leaderboard = inflater.inflate(R.layout.fragment_leaderboard, container, false);
 
         PlayerDB db = new PlayerDB(new DBConnector());
+        QRCodeDB qrCodeDB = new QRCodeDB(new DBConnector());
+
+        qrCodeDB.getAllQRCodes(new QRCodeListCallback() {
+            @Override
+            public void onQRCodeListCallback(ArrayList<QRCode> qrCodes) {
+                for(int i = 0; i < qrCodes.size(); i++) {
+                    qrCodes.get(i).setPlayersScannedBy(new ArrayList<>());
+                    qrCodeDB.updateQRCode(qrCodes.get(i));
+                }
+            }
+        });
 
         //Get list of players sorted by score
         db.getPlayersByQuery(db.getSortedPlayers(), new PlayerListCallback() {
             @Override
             public void onPlayerListCallback(ArrayList<Player> playerResultsList) {
                 Log.d("Leaderboard", playerResultsList.toString());
+                //Remove Later!!!
+
+                Log.d("Size", String.valueOf(playerResultsList.size()));
+                for(int i = 0; i < playerResultsList.size(); i++) {
+                    ArrayList<QRCode> qrCodes = playerResultsList.get(i).getQrCodesScanned();
+                    ArrayList<String> names = new ArrayList<>();
+                    for(int j = 0; j < qrCodes.size(); j++) {
+                        names.add(qrCodes.get(j).getName());
+                    }
+                    Log.d("OuterLoop", names.toString());
+                    Log.d("Username", playerResultsList.get(i).getUsername());
+                    if(qrCodes != null) {
+                        for(int j = 0; j < qrCodes.size(); j++) {
+                            int finalJ = j;
+                            db.findPlayersWithQRCode(qrCodes.get(j), new PlayerListCallback() {
+                                @Override
+                                public void onPlayerListCallback(ArrayList<Player> playerList) {
+                                    for(int k = 0; k < playerList.size(); k++) {
+                                        qrCodes.get(finalJ).addPlayerScannedBy(playerList.get(k).getUsername());
+                                    }
+                                    qrCodeDB.updateQRCode(qrCodes.get(finalJ));
+                                }
+                            });
+                        }
+                    }
+                }
+
                 displayLeaderboard(leaderboard, playerResultsList, true);
             }
         });

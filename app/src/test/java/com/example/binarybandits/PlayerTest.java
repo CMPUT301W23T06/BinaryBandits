@@ -134,6 +134,7 @@ public class PlayerTest {
         assertEquals(0, mockPlayer.getTotalQRCodes());
     }
 
+
     /**
      * Tests adding a QR code to a player's list of QR codes scanned
      */
