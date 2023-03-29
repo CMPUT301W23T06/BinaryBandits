@@ -56,7 +56,7 @@ public class QRCodeDB {
      * Adds a QRCode object as a document in the QR code collection within the database
      * @param qrCode QRCode to add to database
      */
-    public void addQRCode(QRCode qrCode) {
+    public void addQRCode(QRCode qrCode, String username) {
         //Referenced: https://stackoverflow.com/questions/53332471/checking-if-a-document-exists-in-a-firestore-collection
         String name = qrCode.getName();
         DocumentReference documentReference = collectionReference.document(name);
@@ -73,9 +73,19 @@ public class QRCodeDB {
                         Log.d(TAG, "QRCode already in database!");
                         getQRCode(name, new QRCodeCallback() {
                             @Override
-                            public void onQRCodeCallback(QRCode qrCode) {
-                                qrCode.incrementNumPlayersScannedBy();
-                                updateQRCode(qrCode);
+                            public void onQRCodeCallback(QRCode qrCodeInDB) {
+                                if(qrCodeInDB.getPlayersScannedBy() == null) {
+                                    Log.d("QRCodeDB", "NULL!");
+                                    ArrayList<String> playersScannedBy = new ArrayList<>();
+                                    playersScannedBy.add(username);
+                                    qrCodeInDB.setPlayersScannedBy(playersScannedBy);
+                                    Log.d("QRCodeDB", "Player scanned added");
+                                }
+                                else {
+                                    qrCodeInDB.addPlayerScannedBy(username);
+                                }
+                                qrCodeInDB.incrementNumPlayersScannedBy();
+                                updateQRCode(qrCodeInDB);
                             }
                         });
                     }
@@ -99,6 +109,7 @@ public class QRCodeDB {
         data.put("locationImage", qrCode.getLocationImage());
         data.put("comments", qrCode.getComments());
         data.put("numPlayersScannedBy", qrCode.getNumPlayersScannedBy());
+        data.put("playersScannedBy", qrCode.getPlayersScannedBy());
 
         collectionReference
                 .document(name)
@@ -139,9 +150,10 @@ public class QRCodeDB {
 
                     ArrayList<Comment> convertedComments = getQRCodeHelper(comments);
 
+                    ArrayList<String> playersScannedBy = (ArrayList<String>) documentSnapshot.get("playersScannedBy");
                     int numPlayersScannedBy = documentSnapshot.getLong("numPlayersScannedBy").intValue();
                     QRCode qrCode = new QRCode(hash, name, points, scannerUID, coordinates,
-                            locationImage, convertedComments, numPlayersScannedBy);
+                            locationImage, convertedComments, numPlayersScannedBy, playersScannedBy);
                     Log.d(TAG, "QR code information retrieved from database");
                     Log.d(TAG, "Name: " + name + "\nPoints: " + points);
                     callback.onQRCodeCallback(qrCode);
@@ -191,7 +203,8 @@ public class QRCodeDB {
                         "coordinates", qrCode.getCoordinates(),
                         "locationImage", qrCode.getLocationImage(),
                         "comments", qrCode.getComments(),
-                        "numPlayersScannedBy", qrCode.getNumPlayersScannedBy());
+                        "numPlayersScannedBy", qrCode.getNumPlayersScannedBy(),
+                        "playersScannedBy", qrCode.getPlayersScannedBy());
     }
 
     /**
@@ -233,5 +246,7 @@ public class QRCodeDB {
         });
     }
 
-
+    /*public CollectionReference getCollectionReference() {
+        return collectionReference;
+    }*/
 }

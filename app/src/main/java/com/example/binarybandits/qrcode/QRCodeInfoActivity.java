@@ -179,9 +179,18 @@ public class QRCodeInfoActivity extends AppCompatActivity {
                 }
             });
 
+            Button playersScannedByButton = findViewById(R.id.other_players_button);
+            playersScannedByButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent myIntent = new Intent(QRCodeInfoActivity.this, QRCodeScannedByActivity.class);
 
-
-
+                    Bundle extras = new Bundle();
+                    extras.putString("name", name);
+                    myIntent.putExtras(extras);
+                    startActivity(myIntent);
+                }
+            });
         } else {
             System.out.println("error");
         }
@@ -200,9 +209,5 @@ public class QRCodeInfoActivity extends AppCompatActivity {
                 QRCodeInfoActivity.this.finish();
             }
         });
-
-
-
-
     }
 }

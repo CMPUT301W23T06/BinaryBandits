@@ -211,8 +211,16 @@ public class PlayerDB {
                 }
                 int numPlayersScannedBy = Integer.parseInt(map.get("numPlayersScannedBy").toString());
 
+                ArrayList<String> playersScannedBy;
+                if(map.get("playersScannedBy") == null) {
+                    playersScannedBy = null;
+                }
+                else {
+                    playersScannedBy = (ArrayList<String>) map.get("playersScannedBy");
+                }
+
                 QRCode qrCode = new QRCode(hash, name, points, scannerUID, coordinates,
-                        locationImage, comments, numPlayersScannedBy);
+                        locationImage, comments, numPlayersScannedBy, playersScannedBy);
                 convertedQRCodes.add(qrCode);
             }
         }
@@ -311,6 +319,15 @@ public class PlayerDB {
     public Query searchPlayer(String input) {
         //Referenced: https://stackoverflow.com/questions/46568142/google-firestore-query-on-substring-of-a-property-value-text-search
         return collectionReference.orderBy("username").startAt(input).endAt(input + '~');
+    }
+
+    /**
+     * Searches the database for all players in the given list of usernames
+     * @param usernames list of player usernames to search for in the database
+     * @return Query result of searching for players in the list of usernames
+     */
+    public Query searchListOfPlayers(ArrayList<String> usernames) {
+        return collectionReference.whereIn("username", usernames);
     }
 
 

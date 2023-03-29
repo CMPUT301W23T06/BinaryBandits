@@ -53,7 +53,7 @@ public class QRCode {
      * @param numPlayersScannedBy number of player who have scanned the QR code
      */
     public QRCode(String hash, String name, int points, String scannerUID, ArrayList<Double> coordinates,
-                  String locationImage, ArrayList<Comment> comments, int numPlayersScannedBy) {
+                  String locationImage, ArrayList<Comment> comments, int numPlayersScannedBy, ArrayList<String> playersScannedBy) {
         this.hash = hash;
         this.name = name;
         this.points = points;
@@ -62,6 +62,7 @@ public class QRCode {
         this.locationImage = locationImage;
         this.comments = comments;
         this.numPlayersScannedBy = numPlayersScannedBy;
+        this.playersScannedBy = playersScannedBy;
     }
 
     String hash;
@@ -72,6 +73,7 @@ public class QRCode {
     String locationImage;
     ArrayList<Comment> comments;
     int numPlayersScannedBy;
+    ArrayList<String> playersScannedBy;
 
     /**
      * Gets the hash of a QR code
@@ -220,5 +222,26 @@ public class QRCode {
     public String getImageURL(){
         String url = "https://api.dicebear.com/5.x/shapes/png?seed=" + this.hash;
         return url;
+    }
+
+    /**
+     * Gets the list of usernames of players that have scanned the QR code
+     * @return list of usernames of players that have scanned the QR code
+     */
+    public ArrayList<String> getPlayersScannedBy() {
+        return playersScannedBy;
+    }
+
+
+    public void setPlayersScannedBy(ArrayList<String> playersScannedBy) {
+        this.playersScannedBy = playersScannedBy;
+    }
+
+    /**
+     * Sets the list of usernames of players that have scanned the QR code
+     * @param username
+     */
+    public void addPlayerScannedBy(String username) {
+        playersScannedBy.add(username);
     }
 }

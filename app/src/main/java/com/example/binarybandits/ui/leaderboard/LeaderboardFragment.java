@@ -33,6 +33,9 @@ import com.example.binarybandits.ui.profile.ProfileFragment;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.squareup.picasso.Picasso;
 
+import org.w3c.dom.Text;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -55,35 +58,12 @@ public class LeaderboardFragment extends Fragment {
 
         PlayerDB db = new PlayerDB(new DBConnector());
 
+        //Get list of players sorted by score
         db.getPlayersByQuery(db.getSortedPlayers(), new PlayerListCallback() {
             @Override
             public void onPlayerListCallback(ArrayList<Player> playerResultsList) {
                 Log.d("Leaderboard", playerResultsList.toString());
                 displayLeaderboard(leaderboard, playerResultsList, true);
-            }
-        });
-
-        //Get list of scores for all players in the game
-        ArrayList<Integer> scores = new ArrayList<>();
-        db.getPlayersByQuery(db.getAllPlayers(), new PlayerListCallback() {
-            @Override
-            public void onPlayerListCallback(ArrayList<Player> playerList) {
-                if (playerList != null) {
-                    String user = AuthController.getUsername(getActivity());
-                    int userScore = 0;
-                    for (int i = 0; i < playerList.size(); i++) {
-                        int score = playerList.get(i).getTotalScore();
-                        scores.add(score);
-                        if (user.equals(playerList.get(i).getUsername())) {
-                            userScore = playerList.get(i).getTotalScore();
-                        }
-                    }
-                    Collections.sort(scores);
-                    Log.d("Leaderboard", scores.toString());
-                    LeaderboardController leaderboardController = new LeaderboardController();
-                    int percentile = leaderboardController.getPercentile(scores, userScore);
-                    Log.d("LeaderboardController", String.valueOf(percentile));
-                }
             }
         });
 
@@ -258,12 +238,14 @@ public class LeaderboardFragment extends Fragment {
 
         players = playerResultsList;
 
+        ArrayList<Integer> scores = new ArrayList<>();
         // get current player profile
         int user_rank = 0;
         Player current_user = players.get(0);
         for(int i=0; i<players.size(); i++)
             if(Objects.equals(players.get(i).getUsername(), user)){
                 current_user = players.get(i);
+                scores.add(players.get(i).getHighestScore());
                 user_rank = i+1;
             }
 
@@ -274,6 +256,7 @@ public class LeaderboardFragment extends Fragment {
             user_score.setText(Integer.toString(current_user.getTotalScore()));
         }
         else {
+            //TODO: Get user's percentile and print at the bottom of the leaderboard
             user_score.setText(Integer.toString(current_user.getHighestScore()));
         }
         users_rank.setText("#"+Integer.toString(user_rank));
