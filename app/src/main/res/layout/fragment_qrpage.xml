@@ -29,12 +29,10 @@
         android:id="@+id/QRImageView"
         android:layout_width="220dp"
         android:layout_height="221dp"
-        app:layout_constraintBottom_toTopOf="@+id/scroll_comment"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/QR_header"
-        app:layout_constraintVertical_bias="0.132"
         app:strokeColor="@color/white"
         app:strokeWidth="2dp" />
 
@@ -46,60 +44,29 @@
         android:text="QRcodeName"
         android:textColor="#FF426F"
         android:textSize="30sp"
-        app:layout_constraintBottom_toTopOf="@+id/scroll_comment"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/QRImageView"
-        app:layout_constraintVertical_bias="0.816" />
+        app:layout_constraintVertical_bias="0.372" />
 
     <TextView
         android:id="@+id/qr_code_score"
         android:layout_width="393dp"
         android:layout_height="32dp"
         android:layout_marginTop="7dp"
-        android:layout_marginBottom="13dp"
         android:gravity="center"
         android:text="###"
         android:textColor="@color/yellow"
         android:textSize="23sp"
-        app:layout_constraintBottom_toTopOf="@+id/scroll_comment"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/qr_code_name"
-        app:layout_constraintVertical_bias="1.0" />
-
-    <ScrollView
-        android:id="@+id/scroll_comment"
-        android:layout_width="409dp"
-        android:layout_height="149dp"
-        app:layout_constraintBottom_toTopOf="@+id/comment_box"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.956">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-
-            <TextView
-                android:id="@+id/comment_placeholder"
-                android:layout_width="match_parent"
-                android:layout_height="43dp"
-                android:gravity="center_vertical"
-                android:text="No comments yet"
-                android:textColor="@color/white"
-                android:textSize="15sp" />
-        </LinearLayout>
-
-    </ScrollView>
+        app:layout_constraintTop_toBottomOf="@+id/qr_code_name" />
 
     <ImageView
         android:id="@+id/comment_box"
-        android:layout_width="395dp"
-        android:layout_height="34dp"
+        android:layout_width="398dp"
+        android:layout_height="47dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -110,8 +77,8 @@
 
     <EditText
         android:id="@+id/user_comment"
-        android:layout_width="390dp"
-        android:layout_height="34dp"
+        android:layout_width="283dp"
+        android:layout_height="46dp"
         android:layout_marginStart="2dp"
         android:layout_marginEnd="3dp"
         android:autofillHints=""
@@ -190,6 +157,33 @@
         app:layout_constraintHorizontal_bias="0.027"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ListView
+        android:id="@+id/commentsList"
+        android:layout_width="390dp"
+        android:layout_height="161dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.444"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.653">
+
+    </ListView>
+
+    <Button
+        android:id="@+id/addCommentBtn"
+        android:layout_width="77dp"
+        android:layout_height="42dp"
+        android:background="@color/red"
+        android:text="Comment"
+        android:textColor="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.898"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.798" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

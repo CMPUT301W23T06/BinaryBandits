@@ -1,13 +1,18 @@
 package com.example.binarybandits.qrcode;
+import static android.content.ContentValues.TAG;
+
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.ActionBar;
@@ -22,7 +27,11 @@ import com.example.binarybandits.models.Player;
 import com.example.binarybandits.models.QRCode;
 import com.example.binarybandits.player.PlayerCallback;
 import com.example.binarybandits.player.PlayerDB;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
 
 /**
  * QRCodeInfoActivity gets the name of a QR code to display and displays the QR codes score,
@@ -48,6 +57,16 @@ public class QRCodeInfoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_qrpage);
 
+        // initialize variables for adding comments
+        ListView commentsView = findViewById(R.id.commentsList);
+        ArrayList commentsList = new ArrayList<>();
+        ArrayAdapter commentsAdapter = new ArrayAdapter<>(this, R.layout.comment, commentsList);
+        commentsView.setAdapter(commentsAdapter);
+        FirebaseFirestore db;
+        CollectionReference collectionReference;
+        DBConnector connector = new DBConnector();
+        db = connector.getDB();
+        collectionReference = connector.getCollectionReference("QRCodes");
 
         QRCodeDB db_qr = new QRCodeDB(new DBConnector());
         PlayerDB db_player = new PlayerDB(new DBConnector());
@@ -64,7 +83,7 @@ public class QRCodeInfoActivity extends AppCompatActivity {
             String player_user = extras.getString("username");
             Boolean current_player = extras.getBoolean("current_user");
             /**
-             * getQR code will allow databse access to the QR code, while using a Callback
+             * getQR code will allow dataBase access to the QR code, while using a Callback
              */
             db_qr.getQRCode(name, new QRCodeCallback() {
                 /**
@@ -80,6 +99,8 @@ public class QRCodeInfoActivity extends AppCompatActivity {
                     TextView qr_name = findViewById(R.id.qr_code_name);
                     TextView qr_score = findViewById(R.id.qr_code_score);
                     ImageButton delete_button = findViewById(R.id.delete_button);
+                    Button commentButton = findViewById(R.id.addCommentBtn);
+                    EditText textBox = findViewById(R.id.user_comment);
 
                     // get score and picture of QR code
                     String score = Integer.toString(qrCode.getPoints());
@@ -89,6 +110,8 @@ public class QRCodeInfoActivity extends AppCompatActivity {
                     Picasso.get().load(url).into(qr_image);
                     qr_name.setText(name);
                     qr_score.setText(score);
+                    ArrayList comments = qrCode.getComments();
+                    Integer commSize = comments.size();
 
 
                     // if we are viewing another persons profile, ensure that user cannot delete
@@ -96,7 +119,20 @@ public class QRCodeInfoActivity extends AppCompatActivity {
                     if (current_player == false){
                         delete_button.setVisibility(View.GONE);
                     }
-
+                    /**
+                     * add comment upon user pressing button
+                     * add comment to fireStore database
+                     */
+                    commentButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            String commentText = String.valueOf(textBox.getText());
+                            commentsList.add(commentText);
+                            commentsAdapter.notifyDataSetChanged();
+                            textBox.setText("");
+                            collectionReference.document(name).update("comments", commentsList);
+                        }
+                    });
 
                     /**
                      * If current user clicks delete button, confirm message is prompted. If confirmed,
