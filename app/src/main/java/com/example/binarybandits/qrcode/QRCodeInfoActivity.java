@@ -110,8 +110,14 @@ public class QRCodeInfoActivity extends AppCompatActivity {
                     Picasso.get().load(url).into(qr_image);
                     qr_name.setText(name);
                     qr_score.setText(score);
+
+                    // get all comments on QR code from dataBase
                     ArrayList comments = qrCode.getComments();
                     Integer commSize = comments.size();
+                    for(int i =0; i<commSize; i++){
+                        commentsList.add(comments.get(i));
+                    }
+                    commentsAdapter.notifyDataSetChanged();
 
 
                     // if we are viewing another persons profile, ensure that user cannot delete
