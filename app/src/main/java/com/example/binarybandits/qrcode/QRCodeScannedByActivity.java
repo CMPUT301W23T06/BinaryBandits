@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.binarybandits.DBConnector;
 import com.example.binarybandits.R;
+import com.example.binarybandits.controllers.AuthController;
 import com.example.binarybandits.models.Player;
 import com.example.binarybandits.models.QRCode;
 import com.example.binarybandits.otherProfileActivity;
@@ -26,6 +27,11 @@ import org.checkerframework.checker.units.qual.A;
 
 import java.util.ArrayList;
 
+/**
+ * Displays other players that have scanned a QR code. The QR code is provided by
+ * QRInfoActivity where the player clicks "See other players" to navigate to this
+ * activity.
+ */
 public class QRCodeScannedByActivity extends AppCompatActivity {
 
     /**
@@ -75,7 +81,7 @@ public class QRCodeScannedByActivity extends AppCompatActivity {
     }
 
     /**
-     * Given a QRCode, display all players that have scanned the QRCode
+     * Given a QRCode, display all players that have scanned the QRCode (except the current user)
      * @param qrCode QR code to find players that have scanned
      */
     public void displayPlayersScannedBy(QRCode qrCode) {
@@ -88,6 +94,14 @@ public class QRCodeScannedByActivity extends AppCompatActivity {
             playerDB.getPlayersByQuery(playerDB.searchListOfPlayers(playersScannedBy), new PlayerListCallback() {
                 @Override
                 public void onPlayerListCallback(ArrayList<Player> playerList) {
+                    //Get the current user's username
+                    String currentUser = AuthController.getUsername(QRCodeScannedByActivity.this);
+                    //Remove the current player from the list of players to display
+                    for (int i = 0; i < playerList.size(); i++) {
+                        if(playerList.get(i).getUsername().equals(currentUser)) {
+                            playerList.remove(playerList.get(i));
+                        }
+                    }
                     LeaderboardSearchArrayAdapter arrayAdapter = new LeaderboardSearchArrayAdapter(QRCodeScannedByActivity.this, playerList);
                     results.setAdapter(arrayAdapter);
                     results.setOnItemClickListener(new AdapterView.OnItemClickListener() {

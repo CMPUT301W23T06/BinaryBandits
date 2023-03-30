@@ -64,9 +64,9 @@ public class QRController {
     };
 
     /**
-     *
-     * @param source
-     * @return
+     * Calculate the hash of a QR code using the SHA-256 algorithm
+     * @param source contents of QR code
+     * @return Return the hash of a QR code
      */
     public String getHash(String source) {
         byte[] hash = null;
@@ -99,9 +99,9 @@ public class QRController {
     }
 
     /**
-     *
-     * @param hash
-     * @return
+     * Generate a unique name based on a unique hash
+     * @param hash unique hash of QR code
+     * @return Return the generated name of a QR code based on its hash
      */
     public String generateUniqueName(String hash) {
 
@@ -117,9 +117,9 @@ public class QRController {
     }
 
     /**
-     *
-     * @param hash
-     * @return
+     * Calculate how many points a QR code is worth based on its hash
+     * @param hash unique hash of QR code
+     * @return Return the number of points a QR code is worth
      */
     public int calculatePoints(String hash) {
         int score = 0;
