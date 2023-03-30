@@ -27,10 +27,11 @@ public class CommentTest {
      */
     @Test
     public void testContents() {
-        assertEquals("That QR code is sick!", mockComment().getContent());
+        Comment mockComment = mockComment();
+        assertEquals("That QR code is sick!", mockComment.getContent());
 
-        mockComment().setContent("I also have that one!");
-        assertEquals("I also have that one!", mockComment().getContent());
+        mockComment.setContent("I also have that one!");
+        assertEquals("I also have that one!", mockComment.getContent());
     }
 
     /**
@@ -38,9 +39,10 @@ public class CommentTest {
      */
     @Test
     public void testAuthor() {
-        assertEquals("Josh123", mockComment().getAuthor());
+        Comment mockComment = mockComment();
+        assertEquals("Josh123", mockComment.getAuthor());
 
-        mockComment().setAuthor("PieceOfPi");
-        assertEquals("PieceOfPi", mockComment().getAuthor());
+        mockComment.setAuthor("PieceOfPi");
+        assertEquals("PieceOfPi", mockComment.getAuthor());
     }
 }
