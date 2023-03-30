@@ -233,15 +233,27 @@ public class QRCode {
     }
 
 
+    /**
+     * Sets the list of usernames of players that have scanned the QR code
+     * @param playersScannedBy list of players that have scanned the QR code
+     */
     public void setPlayersScannedBy(ArrayList<String> playersScannedBy) {
         this.playersScannedBy = playersScannedBy;
     }
 
     /**
-     * Sets the list of usernames of players that have scanned the QR code
-     * @param username
+     * Adds a username to the list of players that have scanned the QR code
+     * @param username player username to add to list of players
      */
     public void addPlayerScannedBy(String username) {
         playersScannedBy.add(username);
+    }
+
+    /**
+     * Removes a username from the list of players that have scanned the QR code
+     * @param username player username to remove from list of players
+     */
+    public void removePlayerScannedBy(String username) {
+        playersScannedBy.remove(username);
     }
 }

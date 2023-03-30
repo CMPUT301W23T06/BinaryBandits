@@ -64,6 +64,7 @@ public class LeaderboardFragment extends Fragment {
         PlayerDB db = new PlayerDB(new DBConnector());
         QRCodeDB qrCodeDB = new QRCodeDB(new DBConnector());
 
+        /*
         qrCodeDB.getAllQRCodes(new QRCodeListCallback() {
             @Override
             public void onQRCodeListCallback(ArrayList<QRCode> qrCodes) {
@@ -73,14 +74,14 @@ public class LeaderboardFragment extends Fragment {
                 }
             }
         });
-
+        */
         //Get list of players sorted by score
         db.getPlayersByQuery(db.getSortedPlayers(), new PlayerListCallback() {
             @Override
             public void onPlayerListCallback(ArrayList<Player> playerResultsList) {
                 Log.d("Leaderboard", playerResultsList.toString());
                 //Remove Later!!!
-
+                /*
                 Log.d("Size", String.valueOf(playerResultsList.size()));
                 for(int i = 0; i < playerResultsList.size(); i++) {
                     ArrayList<QRCode> qrCodes = playerResultsList.get(i).getQrCodesScanned();
@@ -105,7 +106,7 @@ public class LeaderboardFragment extends Fragment {
                         }
                     }
                 }
-
+                */
                 displayLeaderboard(leaderboard, playerResultsList, true);
             }
         });

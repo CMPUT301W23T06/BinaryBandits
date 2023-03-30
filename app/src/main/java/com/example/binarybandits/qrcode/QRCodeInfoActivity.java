@@ -145,7 +145,7 @@ public class QRCodeInfoActivity extends AppCompatActivity {
                                                         //Set highest score to second highest scoring QR code after deleting the highest scoring QR code
                                                         player.setHighestScore(newHighestScore);
                                                     }
-                                                    db_qr.deleteQRCode(qrCode);
+                                                    db_qr.deleteQRCode(qrCode, player_user);
 
                                                     player.decrementTotalQRCodes();
                                                     int newScore = player.getTotalScore() - qrCode.getPoints();

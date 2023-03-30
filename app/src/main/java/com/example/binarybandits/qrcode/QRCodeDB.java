@@ -62,6 +62,7 @@ public class QRCodeDB {
     /**
      * Adds a QRCode object as a document in the QR code collection within the database
      * @param qrCode QRCode to add to database
+     * @param username username of Player who scanned QR code
      */
     public void addQRCode(QRCode qrCode, String username) {
         //Referenced: https://stackoverflow.com/questions/53332471/checking-if-a-document-exists-in-a-firestore-collection
@@ -74,6 +75,7 @@ public class QRCodeDB {
                     DocumentSnapshot document = task.getResult();
                     if(!document.exists()) {
                         Log.d(TAG, "New QRCode!");
+                        qrCode.addPlayerScannedBy(username);
                         addOnSuccess(name, qrCode);
                     }
                     else {
@@ -86,10 +88,14 @@ public class QRCodeDB {
                                     ArrayList<String> playersScannedBy = new ArrayList<>();
                                     playersScannedBy.add(username);
                                     qrCodeInDB.setPlayersScannedBy(playersScannedBy);
-                                    Log.d("QRCodeDB", "Player scanned added");
                                 }
                                 else {
                                     qrCodeInDB.addPlayerScannedBy(username);
+                                }
+
+                                //Coordinates is set to most recent location of QRCode
+                                if(qrCodeInDB.getCoordinates() != null) {
+                                    qrCodeInDB.setCoordinates(qrCode.getCoordinates());
                                 }
                                 qrCodeInDB.incrementNumPlayersScannedBy();
                                 updateQRCode(qrCodeInDB);
@@ -297,10 +303,11 @@ public class QRCodeDB {
      * QRCode from their account
      * @param qrCode QRCode to update in database
      */
-    public void deleteQRCode(QRCode qrCode) {
-        if(qrCode.getNumPlayersScannedBy() >= 1) {
+    public void deleteQRCode(QRCode qrCode, String username) {
+        if(!qrCode.getPlayersScannedBy().isEmpty()) {
             //Decrement numPlayersScannedBy
             qrCode.decrementNumPlayersScannedBy();
+            qrCode.removePlayerScannedBy(username);
             //Update QRCode in database
             updateQRCode(qrCode);
         }
