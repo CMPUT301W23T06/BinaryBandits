@@ -38,6 +38,7 @@
     <string name="image">image</string>
     <string name="search">Search</string>
     <string name="qr_code">QR Code</string>
+    <string name="comment_placeholder">Comment</string>
     <string name="_1000">1000</string>
 
 </resources>

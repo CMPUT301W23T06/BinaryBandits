@@ -46,10 +46,10 @@ public class QRCodeTest {
     @Test
     public void testQRCodeName() {
         QRCode mockQRCode = mockQRCode();
-        assertEquals(mockQRCode.getName(), "SuperAmazingFerret");
+        assertEquals("SuperAmazingFerret", mockQRCode.getName());
 
         mockQRCode.setName("AwesomeSquirrel");
-        assertEquals(mockQRCode.getName(), "AwesomeSquirrel");
+        assertEquals("AwesomeSquirrel", mockQRCode.getName());
     }
 
     /**
@@ -58,10 +58,10 @@ public class QRCodeTest {
     @Test
     public void testQRCodeHash() {
         QRCode mockQRCode = mockQRCode();
-        assertEquals(mockQRCode.getHash(), "cdf07521489cd151da290b3315207a61935357af5fe5614df7668b30a1d6f672");
+        assertEquals("cdf07521489cd151da290b3315207a61935357af5fe5614df7668b30a1d6f672", mockQRCode.getHash());
 
         mockQRCode.setHash("bf0d42b5f0e81e7268ca4af3aa1794e14bb434ffbb739e0a89af0a6272a4682d");
-        assertEquals(mockQRCode.getHash(), "bf0d42b5f0e81e7268ca4af3aa1794e14bb434ffbb739e0a89af0a6272a4682d");
+        assertEquals("bf0d42b5f0e81e7268ca4af3aa1794e14bb434ffbb739e0a89af0a6272a4682d", mockQRCode.getHash());
     }
 
     /**
@@ -70,10 +70,10 @@ public class QRCodeTest {
     @Test
     public void testQRCodePoints() {
         QRCode mockQRCode = mockQRCode();
-        assertEquals(mockQRCode.getPoints(), 47);
+        assertEquals(47, mockQRCode.getPoints());
 
         mockQRCode.setPoints(3);
-        assertEquals(mockQRCode.getPoints(), 3);
+        assertEquals(3, mockQRCode.getPoints());
     }
 
     /**
@@ -85,9 +85,18 @@ public class QRCodeTest {
         ArrayList<Double> coordinates = new ArrayList<Double>();
         coordinates.add(53.5282595);
         coordinates.add(-113.5301112);
-        assertEquals(mockQRCode.getCoordinates(), coordinates);
+        assertEquals(coordinates, mockQRCode.getCoordinates());
+
+        ArrayList<Double> newCoordinates = new ArrayList<Double>();
+        coordinates.add(59.3282595);
+        coordinates.add(-114.5401112);
+        mockQRCode.setCoordinates(newCoordinates);
+        assertEquals(newCoordinates, mockQRCode.getCoordinates());
    }
 
+    /**
+     *
+     */
    @Test
    public void testLocationImage() {
         QRCode mockQRCode = mockQRCode();
@@ -105,20 +114,20 @@ public class QRCodeTest {
     public void testNumPlayersScannedBy() {
         QRCode mockQRCode = mockQRCode();
         //Checks that numPlayersScannedBy() is initially 1
-        assertEquals(mockQRCode.getNumPlayersScannedBy(), 1);
+        assertEquals(1, mockQRCode.getNumPlayersScannedBy());
 
         //Checks that numPlayersScannedBy() increases by 1 when incrementNumPlayersScannedBy() is called
         mockQRCode.incrementNumPlayersScannedBy();
-        assertEquals(mockQRCode.getNumPlayersScannedBy(), 2);
+        assertEquals(2, mockQRCode.getNumPlayersScannedBy());
 
         //Checks that numPlayersScannedBy() decreases by 1 when decrementNumPlayersScannedBy() is called
         mockQRCode.decrementNumPlayersScannedBy();
-        assertEquals(mockQRCode.getNumPlayersScannedBy(), 1);
+        assertEquals(1, mockQRCode.getNumPlayersScannedBy());
 
         //Checks that numPlayersScannedBy() is never negative
         mockQRCode.decrementNumPlayersScannedBy();
         mockQRCode.decrementNumPlayersScannedBy();
-        assertEquals(mockQRCode.getNumPlayersScannedBy(), 0);
+        assertEquals(0, mockQRCode.getNumPlayersScannedBy());
     }
 
 
@@ -146,7 +155,7 @@ public class QRCodeTest {
     public void testImageURL() {
         QRCode mockQRCode = mockQRCode();
         String imageURL = "https://api.dicebear.com/5.x/shapes/png?seed=" + mockQRCode.getHash();
-        assertEquals(mockQRCode.getImageURL(), imageURL);
+        assertEquals(imageURL, mockQRCode.getImageURL());
     }
 
     /**
@@ -156,6 +165,6 @@ public class QRCodeTest {
     public void testScannerUID() {
         QRCode mockQRCode = mockQRCode();
         mockQRCode.setScannerUID("toast");
-        assertEquals(mockQRCode.getScannerUID(), "toast");
+        assertEquals("toast", mockQRCode.getScannerUID());
     }
 }
