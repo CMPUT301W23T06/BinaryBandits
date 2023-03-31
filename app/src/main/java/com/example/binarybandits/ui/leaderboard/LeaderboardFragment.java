@@ -76,6 +76,7 @@ public class LeaderboardFragment extends Fragment {
             }
         });
         */
+
         //Get list of players sorted by score
         db.getPlayersByQuery(db.getSortedPlayers(), new PlayerListCallback() {
             @Override

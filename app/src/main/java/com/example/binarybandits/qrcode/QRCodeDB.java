@@ -51,6 +51,10 @@ public class QRCodeDB {
     private StorageReference storageRef;
     private StorageReference locationImgsRef;
 
+    /**
+     * Constructor for QRCodeDB
+     * @param connector connection to the FirebaseFirestore database
+     */
     public QRCodeDB(DBConnector connector) {
         this.db = connector.getDB();
         this.storage = connector.getStorage();
@@ -142,7 +146,13 @@ public class QRCodeDB {
                 });
     }
 
-    public void getAllQRCodes(QRCodeListCallback callback) {
+    /**
+     * Get all QRCodes within a given radius of a location. Location can be inputted by the user or the user's current location
+     * @param location location to search for nearby QRCodes
+     * @param radius radius of search
+     * @param callback method containing how the queried QR codes will be used
+     */
+    public void getQRCodesWithinRadius(ArrayList<Double> location, int radius, QRCodeListCallback callback) {
         ArrayList<QRCode> qrCodeList = new ArrayList<>();
         collectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -165,7 +175,10 @@ public class QRCodeDB {
                             int numPlayersScannedBy = doc.getLong("numPlayersScannedBy").intValue();
                             QRCode qrCode = new QRCode(hash, name, points, scannerUID, coordinates,
                                     locationImage, convertedComments, numPlayersScannedBy, playersScannedBy);
-                            qrCodeList.add(qrCode);
+                            if(qrCode.getCoordinates() != null && qrCode.getCoordinates().get(0) >= location.get(0) - radius &&
+                                qrCode.getCoordinates().get(1) <= location.get(0) + radius) {
+                                    qrCodeList.add(qrCode);
+                            }
                         }
                     }
                     Log.d(TAG, qrCodeList.toString());

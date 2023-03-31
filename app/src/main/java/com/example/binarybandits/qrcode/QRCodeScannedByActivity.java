@@ -123,10 +123,7 @@ public class QRCodeScannedByActivity extends AppCompatActivity {
         }
 
         else {
-            //Referenced: https://stackoverflow.com/questions/10017088/android-displaying-text-when-listview-is-empty
-            //Only show back button if there are no results
-            TextView header = findViewById(R.id.scanned_by_header);
-            header.setVisibility(TextView.INVISIBLE);
+            //Show message when no results are found
             Toast message = Toast.makeText(QRCodeScannedByActivity.this, "No other players found!", Toast.LENGTH_LONG);
             message.show();
         }
