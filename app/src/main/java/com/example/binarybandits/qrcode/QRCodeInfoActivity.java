@@ -227,8 +227,8 @@ public class QRCodeInfoActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     Intent myIntent = new Intent(QRCodeInfoActivity.this, QRCodeScannedByActivity.class);
-
-
+                }
+            });
 
         } else {
             System.out.println("error");
