@@ -135,13 +135,13 @@ public class QRCodeDB {
                     int points = documentSnapshot.getLong("points").intValue();
                     ArrayList<Double> coordinates = (ArrayList<Double>) documentSnapshot.get("coordinates");
                     String locationImage = documentSnapshot.getString("locationImage");
-                    ArrayList<Comment> comments = (ArrayList<Comment>) documentSnapshot.get("comments");
-
-                    //ArrayList<Comment> convertedComments = getQRCodeHelper(comments);
+                    //ArrayList<Comment> comments = (ArrayList<Comment>) documentSnapshot.get("comments");
+                    ArrayList<Map<String, Object>> comments = (ArrayList<Map<String, Object>>) documentSnapshot.get("comments");
+                    ArrayList<Comment> convertedComments = getQRCodeHelper(comments);
 
                     int numPlayersScannedBy = documentSnapshot.getLong("numPlayersScannedBy").intValue();
                     QRCode qrCode = new QRCode(hash, name, points, scannerUID, coordinates,
-                            locationImage, comments, numPlayersScannedBy);
+                            locationImage, convertedComments, numPlayersScannedBy, null);
                     Log.d(TAG, "QR code information retrieved from database");
                     Log.d(TAG, "Name: " + name + "\nPoints: " + points);
                     callback.onQRCodeCallback(qrCode);

@@ -23,6 +23,7 @@ import com.example.binarybandits.DBConnector;
 import com.example.binarybandits.MainActivity;
 import com.example.binarybandits.R;
 import com.example.binarybandits.controllers.AuthController;
+import com.example.binarybandits.models.Comment;
 import com.example.binarybandits.models.Player;
 import com.example.binarybandits.models.QRCode;
 import com.example.binarybandits.player.PlayerCallback;
@@ -59,8 +60,9 @@ public class QRCodeInfoActivity extends AppCompatActivity {
 
         // initialize variables for adding comments
         ListView commentsView = findViewById(R.id.commentsList);
-        ArrayList commentsList = new ArrayList<>();
-        ArrayAdapter commentsAdapter = new ArrayAdapter<>(this, R.layout.comment, commentsList);
+        ArrayList<Comment> commentsList = new ArrayList<>();
+        ArrayList<String> commentsStringList = new ArrayList<>();
+        ArrayAdapter commentsAdapter = new ArrayAdapter<>(this, R.layout.comment, commentsStringList);
         commentsView.setAdapter(commentsAdapter);
         FirebaseFirestore db;
         CollectionReference collectionReference;
@@ -112,10 +114,11 @@ public class QRCodeInfoActivity extends AppCompatActivity {
                     qr_score.setText(score);
 
                     // get all comments on QR code from dataBase
-                    ArrayList comments = qrCode.getComments();
+                    ArrayList<Comment> comments = qrCode.getComments();
                     Integer commSize = comments.size();
                     for(int i =0; i<commSize; i++){
                         commentsList.add(comments.get(i));
+                        commentsStringList.add(commentsList.get(i).getAuthor()+": "+commentsList.get(i).getContent());
                     }
                     commentsAdapter.notifyDataSetChanged();
 
@@ -133,9 +136,11 @@ public class QRCodeInfoActivity extends AppCompatActivity {
                         @Override
                         public void onClick(View v) {
                             String commentText = String.valueOf(textBox.getText());
-                            commentsList.add(commentText);
                             commentsAdapter.notifyDataSetChanged();
                             textBox.setText("");
+                            Comment newComment = new Comment(commentText, "user");
+                            commentsList.add(newComment);
+                            commentsStringList.add("user"+": "+commentText);
                             collectionReference.document(name).update("comments", commentsList);
                         }
                     });
