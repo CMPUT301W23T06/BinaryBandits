@@ -87,6 +87,7 @@ public class QRCodeDB {
                         getQRCode(name, new QRCodeCallback() {
                             @Override
                             public void onQRCodeCallback(QRCode qrCodeInDB) {
+                                //Add user to list of players that have scanned a QR code
                                 if(qrCodeInDB.getPlayersScannedBy() == null) {
                                     Log.d("QRCodeDB", "NULL!");
                                     ArrayList<String> playersScannedBy = new ArrayList<>();
