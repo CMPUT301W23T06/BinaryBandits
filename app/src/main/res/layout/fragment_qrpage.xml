@@ -112,7 +112,7 @@
             android:layout_height="52dp"
             android:background="@drawable/big_rounded_button"
             android:backgroundTint="@color/red"
-            android:text="See other players who have scanned this code"
+            android:text="See other players"
             android:textAllCaps="false"
             android:textColor="#FFFFFF"
             android:textSize="20sp" />

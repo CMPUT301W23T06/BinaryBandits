@@ -92,7 +92,6 @@ public class QRCodeEditActivity extends AppCompatActivity {
 
         saveBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v)  {
-                // TODO: add QR Code to database here
                 String uid = AuthController.getUsername(QRCodeEditActivity.this);
 
                 ScannerController scannerController = new ScannerController();
