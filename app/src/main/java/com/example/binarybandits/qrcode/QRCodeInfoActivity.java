@@ -180,7 +180,7 @@ public class QRCodeInfoActivity extends AppCompatActivity {
                                                     //remove QR code from players in database and locally
                                                     player.removeQRCodeScanned(qrCode);
 
-                                                    db_qr.deleteQRCode(qrCode);
+                                                    db_qr.deleteQRCode(qrCode, player_user);
 
                                                     player.decrementTotalQRCodes();
                                                     int newScore = player.getTotalScore() - qrCode.getPoints();
@@ -221,14 +221,15 @@ public class QRCodeInfoActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     Intent myIntent = new Intent(QRCodeInfoActivity.this, QRCodeScannedByActivity.class);
-
-
-
+                    Bundle extras = new Bundle();
+                    extras.putString("name", name);
+                    myIntent.putExtras(extras);
+                    startActivity(myIntent);
+                }
+            });
         } else {
             System.out.println("error");
         }
-
-
 
         ImageButton back_button = findViewById(R.id.back_button);
         /**
@@ -241,9 +242,5 @@ public class QRCodeInfoActivity extends AppCompatActivity {
                 QRCodeInfoActivity.this.finish();
             }
         });
-
-
-
-
     }
 }
