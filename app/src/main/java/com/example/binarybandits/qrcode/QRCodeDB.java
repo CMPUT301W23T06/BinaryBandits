@@ -51,6 +51,10 @@ public class QRCodeDB {
     private StorageReference storageRef;
     private StorageReference locationImgsRef;
 
+    /**
+     * Constructor for QRCodeDB
+     * @param connector connection to the FirebaseFirestore database
+     */
     public QRCodeDB(DBConnector connector) {
         this.db = connector.getDB();
         this.storage = connector.getStorage();
@@ -83,6 +87,7 @@ public class QRCodeDB {
                         getQRCode(name, new QRCodeCallback() {
                             @Override
                             public void onQRCodeCallback(QRCode qrCodeInDB) {
+                                //Add user to list of players that have scanned a QR code
                                 if(qrCodeInDB.getPlayersScannedBy() == null) {
                                     Log.d("QRCodeDB", "NULL!");
                                     ArrayList<String> playersScannedBy = new ArrayList<>();
@@ -183,14 +188,54 @@ public class QRCodeDB {
         });
     }
 
-    /**
-     * Get all QR codes that satisfy a given query
-     * @param query Firebase Firestore query containing results to process
-     * @param callback has method containing what to do with queried qrCodeList
-     */
     public void getQRCodesByQuery(Query query, QRCodeListCallback callback) {
         ArrayList<QRCode> qrCodeList = new ArrayList<>();
         query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for(QueryDocumentSnapshot doc: task.getResult()) {
+                        Log.d(TAG, doc.getString("name"));
+                        if (doc != null) {
+                            String scannerUID = doc.getString("scannerUID");
+                            String hash = doc.getString("hash");
+                            String name = doc.getString("name");
+                            int points = doc.getLong("points").intValue();
+                            ArrayList<Double> coordinates = (ArrayList<Double>) doc.get("coordinates");
+                            String locationImage = doc.getString("locationImage");
+                            ArrayList<Map<String, Object>> comments = (ArrayList<Map<String, Object>>) doc.get("comments");
+
+                            ArrayList<Comment> convertedComments = getQRCodeHelper(comments);
+
+                            ArrayList<String> playersScannedBy = (ArrayList<String>) doc.get("playersScannedBy");
+                            int numPlayersScannedBy = doc.getLong("numPlayersScannedBy").intValue();
+                            QRCode qrCode = new QRCode(hash, name, points, scannerUID, coordinates,
+                                    locationImage, convertedComments, numPlayersScannedBy, playersScannedBy);
+                            qrCodeList.add(qrCode);
+                        }
+                    }
+                    Log.d(TAG, qrCodeList.toString());
+                    callback.onQRCodeListCallback(qrCodeList);
+                }
+                else {
+                    Log.d(TAG, task.getException().getMessage());
+                }
+            }
+        });
+    }
+
+    public Query getQRCodesWithCoordinates() {
+        return collectionReference.whereNotEqualTo("coordinates", null);
+    }
+
+    /**
+     *
+     * @param qrCodeNames
+     * @param callback
+     */
+    public void getQRCodesFromList(ArrayList<String> qrCodeNames, QRCodeListCallback callback) {
+        ArrayList<QRCode> qrCodeList = new ArrayList<>();
+        collectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
@@ -243,98 +288,6 @@ public class QRCodeDB {
         }
         return convertedComments;
     }
-
-
-    /**
-     * Query that gets all QR codes that have coordinates that are not null
-     * @return Return the query that retrieves all QR codes that have coordinates that are not null
-     */
-    public Query getQRCodesWithCoordinates() {
-        return collectionReference.whereNotEqualTo("coordinates", null);
-    }
-
-    /**
-     *
-     * @param qrCodeNames
-     * @param callback
-     */
-    public void getQRCodesFromList(ArrayList<String> qrCodeNames, QRCodeListCallback callback) {
-        ArrayList<QRCode> qrCodeList = new ArrayList<>();
-        Query query = collectionReference.whereIn("name", qrCodeNames);
-        collectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    for(QueryDocumentSnapshot doc: task.getResult()) {
-                        Log.d(TAG, doc.getString("name"));
-                        if (doc != null) {
-                            String scannerUID = doc.getString("scannerUID");
-                            String hash = doc.getString("hash");
-                            String name = doc.getString("name");
-                            int points = doc.getLong("points").intValue();
-                            ArrayList<Double> coordinates = (ArrayList<Double>) doc.get("coordinates");
-                            String locationImage = doc.getString("locationImage");
-                            ArrayList<Map<String, Object>> comments = (ArrayList<Map<String, Object>>) doc.get("comments");
-
-                            ArrayList<Comment> convertedComments = getQRCodeHelper(comments);
-
-                            ArrayList<String> playersScannedBy = (ArrayList<String>) doc.get("playersScannedBy");
-                            int numPlayersScannedBy = doc.getLong("numPlayersScannedBy").intValue();
-                            QRCode qrCode = new QRCode(hash, name, points, scannerUID, coordinates,
-                                    locationImage, convertedComments, numPlayersScannedBy, playersScannedBy);
-                            qrCodeList.add(qrCode);
-                        }
-                    }
-                    Log.d(TAG, qrCodeList.toString());
-                    callback.onQRCodeListCallback(qrCodeList);
-                }
-                else {
-                    Log.d(TAG, task.getException().getMessage());
-                }
-            }
-        });
-    }
-
-    /*public void getQRCodesWithinRadius(ArrayList<Double> coordinatesTest, double radius, QRCodeListCallback callback) {
-        ArrayList<QRCode> qrCodeList = new ArrayList<>();
-        collectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    for(QueryDocumentSnapshot doc: task.getResult()) {
-                        Log.d(TAG, doc.getString("name"));
-                        if (doc != null) {
-                            String scannerUID = doc.getString("scannerUID");
-                            String hash = doc.getString("hash");
-                            String name = doc.getString("name");
-                            int points = doc.getLong("points").intValue();
-                            ArrayList<Double> coordinates = (ArrayList<Double>) doc.get("coordinates");
-                            String locationImage = doc.getString("locationImage");
-                            ArrayList<Map<String, Object>> comments = (ArrayList<Map<String, Object>>) doc.get("comments");
-
-                            ArrayList<Comment> convertedComments = getQRCodeHelper(comments);
-
-                            ArrayList<String> playersScannedBy = (ArrayList<String>) doc.get("playersScannedBy");
-                            int numPlayersScannedBy = doc.getLong("numPlayersScannedBy").intValue();
-                            QRCode qrCode = new QRCode(hash, name, points, scannerUID, coordinates,
-                                    locationImage, convertedComments, numPlayersScannedBy, playersScannedBy);
-
-                            if(qrCode.getCoordinates() != null && qrCode.getCoordinates().get(0) >= coordinatesTest.get(0) - radius && qrCode.getCoordinates().get(0) <= coordinatesTest.get(0) + radius) {
-                                Log.d("QRDBCoordinates", String.valueOf(qrCode.getCoordinates().get(0)));
-                                Log.d("QRDBCoordinates", String.valueOf(coordinatesTest.get(0) - radius));
-                                qrCodeList.add(qrCode);
-                            }
-                        }
-                    }
-                    Log.d(TAG, qrCodeList.toString());
-                    callback.onQRCodeListCallback(qrCodeList);
-                }
-                else {
-                    Log.d(TAG, task.getException().getMessage());
-                }
-            }
-        });
-    }*/
 
     /**
      * Updates a QRCode's fields in the database
