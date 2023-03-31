@@ -8,6 +8,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -90,18 +91,20 @@ public class QRCodeScannedByActivity extends AppCompatActivity {
 
         ListView results = findViewById(R.id.scanned_by_results);
 
+        if (playersScannedBy != null) {
+            //Get the current user's username
+            String currentUser = AuthController.getUsername(QRCodeScannedByActivity.this);
+            //Remove the current player from the list of players to display
+            for (int i = 0; i < playersScannedBy.size(); i++) {
+                if (playersScannedBy.get(i).equals(currentUser)) {
+                    playersScannedBy.remove(playersScannedBy.get(i));
+                }
+            }
+        }
         if(playersScannedBy != null && !playersScannedBy.isEmpty()) {
             playerDB.getPlayersByQuery(playerDB.searchListOfPlayers(playersScannedBy), new PlayerListCallback() {
                 @Override
                 public void onPlayerListCallback(ArrayList<Player> playerList) {
-                    //Get the current user's username
-                    String currentUser = AuthController.getUsername(QRCodeScannedByActivity.this);
-                    //Remove the current player from the list of players to display
-                    for (int i = 0; i < playerList.size(); i++) {
-                        if(playerList.get(i).getUsername().equals(currentUser)) {
-                            playerList.remove(playerList.get(i));
-                        }
-                    }
                     LeaderboardSearchArrayAdapter arrayAdapter = new LeaderboardSearchArrayAdapter(QRCodeScannedByActivity.this, playerList);
                     results.setAdapter(arrayAdapter);
                     results.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -120,11 +123,9 @@ public class QRCodeScannedByActivity extends AppCompatActivity {
         }
 
         else {
-            //Referenced: https://stackoverflow.com/questions/10017088/android-displaying-text-when-listview-is-empty
-            //Only show back button if there are no results
-            TextView header = findViewById(R.id.scanned_by_header);
-            header.setVisibility(TextView.INVISIBLE);
-            Log.d("QRCodesScanned", "Success");
+            //Show message when no results are found
+            Toast message = Toast.makeText(QRCodeScannedByActivity.this, "No other players found!", Toast.LENGTH_LONG);
+            message.show();
         }
     }
 }

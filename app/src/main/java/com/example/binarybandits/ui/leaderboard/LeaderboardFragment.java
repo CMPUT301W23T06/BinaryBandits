@@ -44,6 +44,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 /**
@@ -75,6 +76,7 @@ public class LeaderboardFragment extends Fragment {
             }
         });
         */
+
         //Get list of players sorted by score
         db.getPlayersByQuery(db.getSortedPlayers(), new PlayerListCallback() {
             @Override
@@ -278,34 +280,50 @@ public class LeaderboardFragment extends Fragment {
         TextView user_name = leaderboard.findViewById(R.id.current_username);
         TextView user_score = leaderboard.findViewById(R.id.current_user_score);
         TextView users_rank = leaderboard.findViewById(R.id.user_rank);
+        TextView percentileLabel = leaderboard.findViewById(R.id.percentile_label);
         String user = AuthController.getUsername(getActivity());
 
+        LeaderboardController leaderboardController = new LeaderboardController();
         players = playerResultsList;
 
         ArrayList<Integer> scores = new ArrayList<>();
         // get current player profile
         int user_rank = 0;
         Player current_user = players.get(0);
-        for(int i=0; i<players.size(); i++)
-            if(Objects.equals(players.get(i).getUsername(), user)){
+        for(int i=0; i<players.size(); i++) {
+            if (Objects.equals(players.get(i).getUsername(), user)) {
                 current_user = players.get(i);
-                scores.add(players.get(i).getHighestScore());
-                user_rank = i+1;
+                user_rank = i + 1;
             }
-
+            scores.add(players.get(i).getHighestScore());
+        }
         // set users info at bottom of leaderboard
         user_name.setText(current_user.getUsername());
 
         if(scoreLeaderboard) {
             user_score.setText(Integer.toString(current_user.getTotalScore()));
+            users_rank.setText("#"+Integer.toString(user_rank));
+            String url_user = "https://api.dicebear.com/5.x/avataaars-neutral/png?seed=" + current_user.getUsername();
+            Picasso.get().load(url_user).into(user_image);
+            user_name.setVisibility(View.VISIBLE);
+            user_score.setVisibility(View.VISIBLE);
+            users_rank.setVisibility(View.VISIBLE);
+            user_image.setVisibility(View.VISIBLE);
+            percentileLabel.setVisibility(View.INVISIBLE);
         }
         else {
-            //TODO: Get user's percentile and print at the bottom of the leaderboard
-            user_score.setText(Integer.toString(current_user.getHighestScore()));
+            Log.d("LeaderboardControllerCalc", scores.toString());
+            Log.d("LeaderboardControllerCalc", String.valueOf(current_user.getHighestScore()));
+            user_name.setVisibility(View.INVISIBLE);
+            user_score.setVisibility(View.INVISIBLE);
+            users_rank.setVisibility(View.INVISIBLE);
+            user_image.setVisibility(View.INVISIBLE);
+            percentileLabel.setVisibility(View.VISIBLE);
+
+            int percentile = leaderboardController.getPercentile(scores, current_user.getHighestScore());
+            String newPercentileLabel = String.format(Locale.CANADA, "You are in the top %d%% of players", percentile);
+            percentileLabel.setText(newPercentileLabel);
         }
-        users_rank.setText("#"+Integer.toString(user_rank));
-        String url_user = "https://api.dicebear.com/5.x/avataaars-neutral/png?seed=" + current_user.getUsername();
-        Picasso.get().load(url_user).into(user_image);
 
         // set values of top three players
         if(players.size()>0) {

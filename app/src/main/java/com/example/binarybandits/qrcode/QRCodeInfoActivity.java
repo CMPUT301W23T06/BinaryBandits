@@ -14,6 +14,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
@@ -188,11 +189,12 @@ public class QRCodeInfoActivity extends AppCompatActivity {
                                                 }
                                             });
 
-                                            //QRCodeInfoActivity.this.finish();
+                                            QRCodeInfoActivity.this.finish();
                                             // Send back to profile page with updated QR code list
                                             // BUG: back to profile page shows home screen selected on bottom navigation
+                                            Toast message = Toast.makeText(QRCodeInfoActivity.this, "QRCode has been deleted!", Toast.LENGTH_LONG);
+                                            message.show();
                                             Intent myIntent = new Intent(QRCodeInfoActivity.this, MainActivity.class);
-
                                             Bundle extras = new Bundle();
                                             extras.putBoolean("Deleted QR code", true);
                                             myIntent.putExtras(extras);
@@ -213,6 +215,12 @@ public class QRCodeInfoActivity extends AppCompatActivity {
                 }
             });
 
+            //Get other players that have scanned a QRCode
+            Button playersScannedByButton = findViewById(R.id.other_players_button);
+            playersScannedByButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent myIntent = new Intent(QRCodeInfoActivity.this, QRCodeScannedByActivity.class);
 
 
 

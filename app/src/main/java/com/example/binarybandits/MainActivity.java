@@ -2,7 +2,9 @@ package com.example.binarybandits;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
+
 import com.example.binarybandits.ui.home.HomeFragment;
 import com.example.binarybandits.ui.leaderboard.LeaderboardFragment;
 import com.example.binarybandits.ui.maps.MapFragment;
@@ -42,6 +44,8 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
         }
 
         if (deleted_qr){
+            Log.d("MainActivity", "QRCode deleted");
+            bottomNavigationView.setSelectedItemId(R.id.navigation_profile);
             getSupportFragmentManager().beginTransaction().replace(R.id.container, profileFragment).commit();
         }
     }
