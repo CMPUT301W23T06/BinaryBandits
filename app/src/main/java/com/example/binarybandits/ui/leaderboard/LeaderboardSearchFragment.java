@@ -97,45 +97,6 @@ public class LeaderboardSearchFragment extends Fragment {
                 players.clear(); // clear Set before adding new players
                 String searchText = s.toString();
 
-                // If the search text is not empty, search for the player
-                /*if (!searchText.isEmpty()) {
-                    playerDB.getPlayer(searchText, new PlayerCallback() {
-                        // When the player is found, add it to the listview
-                        @Override
-                        public void onPlayerCallback(Player searchedPlayer) {
-                            // only adds player if it is not null to avoid blank results on screen when typing fast
-                            if (searchedPlayer!=null){
-                                players.add(searchedPlayer); // use Set.add() instead of ArrayList.add()
-                                ArrayAdapter<Player> playerArrayAdapter = new LeaderboardSearchArrayAdapter(getActivity(), new ArrayList<>(players)); // convert Set to ArrayList
-                                searchResults.setAdapter(playerArrayAdapter); // set the adapter for the listview to display the players
-
-                                // When the user clicks on a player, go to their profile
-                                searchResults.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                    @Override
-                                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                                        Intent intent = new Intent(LeaderboardSearchFragment.this.getActivity(), otherProfileActivity.class); // go to other player's profile
-                                        Bundle extras = new Bundle(); // pass the player's username to the other profile activity
-                                        extras.putString("name", searchedPlayer.getUsername());
-                                        extras.putString("list", "search");
-                                        intent.putExtras(extras);
-                                        startActivity(intent); // start the activity
-
-                                    }
-                                });
-                            }
-
-                        }
-                    });
-                }
-                // If the search text is empty, clear the listview
-                else {
-                    players.clear();
-                    ArrayAdapter<Player> playerArrayAdapter = new LeaderboardSearchArrayAdapter(getActivity(), new ArrayList<>(players)); // convert Set to ArrayList
-                    searchResults.setAdapter(playerArrayAdapter);
-                }*/
-
-                //START OF NEW LEADERBOARD SEARCH (REMOVE THIS COMMENT LATER)
-
                 // If the search text is not empty, search for players containing the input
                 if(!searchText.isEmpty()) {
                     playerDB.getPlayersByQuery(playerDB.searchPlayer(searchText), new PlayerListCallback() {

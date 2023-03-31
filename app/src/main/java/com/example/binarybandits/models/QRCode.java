@@ -53,7 +53,7 @@ public class QRCode {
      * @param numPlayersScannedBy number of player who have scanned the QR code
      */
     public QRCode(String hash, String name, int points, String scannerUID, ArrayList<Double> coordinates,
-                  String locationImage, ArrayList<Comment> comments, int numPlayersScannedBy) {
+                  String locationImage, ArrayList<Comment> comments, int numPlayersScannedBy, ArrayList<String> playersScannedBy) {
         this.hash = hash;
         this.name = name;
         this.points = points;
@@ -62,6 +62,7 @@ public class QRCode {
         this.locationImage = locationImage;
         this.comments = comments;
         this.numPlayersScannedBy = numPlayersScannedBy;
+        this.playersScannedBy = playersScannedBy;
     }
 
     String hash;
@@ -72,6 +73,7 @@ public class QRCode {
     String locationImage;
     ArrayList<Comment> comments;
     int numPlayersScannedBy;
+    ArrayList<String> playersScannedBy;
 
     /**
      * Gets the hash of a QR code
@@ -213,8 +215,45 @@ public class QRCode {
         }
     }
 
+    /**
+     * Get the URL of the QR code's visual representation
+     * @return URL of the QR code's visual representation
+     */
     public String getImageURL(){
         String url = "https://api.dicebear.com/5.x/shapes/png?seed=" + this.hash;
         return url;
+    }
+
+    /**
+     * Gets the list of usernames of players that have scanned the QR code
+     * @return list of usernames of players that have scanned the QR code
+     */
+    public ArrayList<String> getPlayersScannedBy() {
+        return playersScannedBy;
+    }
+
+
+    /**
+     * Sets the list of usernames of players that have scanned the QR code
+     * @param playersScannedBy list of players that have scanned the QR code
+     */
+    public void setPlayersScannedBy(ArrayList<String> playersScannedBy) {
+        this.playersScannedBy = playersScannedBy;
+    }
+
+    /**
+     * Adds a username to the list of players that have scanned the QR code
+     * @param username player username to add to list of players
+     */
+    public void addPlayerScannedBy(String username) {
+        playersScannedBy.add(username);
+    }
+
+    /**
+     * Removes a username from the list of players that have scanned the QR code
+     * @param username player username to remove from list of players
+     */
+    public void removePlayerScannedBy(String username) {
+        playersScannedBy.remove(username);
     }
 }

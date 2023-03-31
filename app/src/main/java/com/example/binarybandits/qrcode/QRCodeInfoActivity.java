@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.ActionBar;
@@ -18,6 +19,7 @@ import com.example.binarybandits.DBConnector;
 import com.example.binarybandits.MainActivity;
 import com.example.binarybandits.R;
 import com.example.binarybandits.controllers.AuthController;
+import com.example.binarybandits.controllers.PlayerController;
 import com.example.binarybandits.models.Player;
 import com.example.binarybandits.models.QRCode;
 import com.example.binarybandits.player.PlayerCallback;
@@ -63,8 +65,8 @@ public class QRCodeInfoActivity extends AppCompatActivity {
             String name = extras.getString("name");
             String player_user = extras.getString("username");
             Boolean current_player = extras.getBoolean("current_user");
-            /**
-             * getQR code will allow databse access to the QR code, while using a Callback
+            /*
+             * getQR code will allow database access to the QR code, while using a Callback
              */
             db_qr.getQRCode(name, new QRCodeCallback() {
                 /**
@@ -93,12 +95,12 @@ public class QRCodeInfoActivity extends AppCompatActivity {
 
                     // if we are viewing another persons profile, ensure that user cannot delete
                     // another users QR code
-                    if (current_player == false){
+                    if (!current_player){
                         delete_button.setVisibility(View.GONE);
                     }
 
 
-                    /**
+                    /*
                      * If current user clicks delete button, confirm message is prompted. If confirmed,
                      * QR code will be deleted from database and user profile page. After deletion,
                      * user is taken back to their profile page with updated list
@@ -127,12 +129,23 @@ public class QRCodeInfoActivity extends AppCompatActivity {
                                             db_player.getPlayer(player_user, new PlayerCallback() {
                                                 @Override
                                                 public void onPlayerCallback(Player player) {
-
+                                                    //Update highest score if QR code to delete is the highest scoring QR code
+                                                    int highestScore = player.getHighestScore();
 
                                                     //remove QR code from players in database and locally
                                                     player.removeQRCodeScanned(qrCode);
-
-                                                    db_qr.deleteQRCode(qrCode);
+                                                    if(qrCode.getPoints() == highestScore) {
+                                                        //Find second highest score
+                                                        PlayerController playerController = new PlayerController(player);
+                                                        QRCode newHighestQRCode = playerController.getHighestQRCode();
+                                                        int newHighestScore = 0;
+                                                        if(newHighestQRCode != null) {
+                                                            newHighestScore = newHighestQRCode.getPoints();
+                                                        }
+                                                        //Set highest score to second highest scoring QR code after deleting the highest scoring QR code
+                                                        player.setHighestScore(newHighestScore);
+                                                    }
+                                                    db_qr.deleteQRCode(qrCode, player_user);
 
                                                     player.decrementTotalQRCodes();
                                                     int newScore = player.getTotalScore() - qrCode.getPoints();
@@ -166,17 +179,27 @@ public class QRCodeInfoActivity extends AppCompatActivity {
                 }
             });
 
+            Button playersScannedByButton = findViewById(R.id.other_players_button);
+            playersScannedByButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent myIntent = new Intent(QRCodeInfoActivity.this, QRCodeScannedByActivity.class);
 
-
-
+                    Bundle extras = new Bundle();
+                    extras.putString("name", name);
+                    myIntent.putExtras(extras);
+                    startActivity(myIntent);
+                }
+            });
         } else {
             System.out.println("error");
         }
 
+        ScrollView scrollView = findViewById(R.id.scroll_comment);
 
 
         ImageButton back_button = findViewById(R.id.back_button);
-        /**
+        /*
          * A click on back button will take you back to the previous fragment (ie profile page)
          */
         back_button.setOnClickListener(new View.OnClickListener() {
@@ -186,9 +209,5 @@ public class QRCodeInfoActivity extends AppCompatActivity {
                 QRCodeInfoActivity.this.finish();
             }
         });
-
-
-
-
     }
 }

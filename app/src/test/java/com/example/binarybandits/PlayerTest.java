@@ -41,19 +41,19 @@ public class PlayerTest {
         Player mockPlayer = mockPlayerWithPhone();
 
         //Check that getUsername gets the correct username
-        assertEquals(mockPlayer.getUsername(), "BestScannerNA");
+        assertEquals("BestScannerNA", mockPlayer.getUsername());
 
         //Check that setUsername changes the username
         mockPlayer.setUsername("BestScannerEU");
-        assertEquals(mockPlayer.getUsername(), "BestScannerEU");
+        assertEquals("BestScannerEU", mockPlayer.getUsername());
 
         //Check that setUsername works with all uppercase input
         mockPlayer.setUsername("JAMES");
-        assertEquals(mockPlayer.getUsername(), "JAMES");
+        assertEquals("JAMES", mockPlayer.getUsername());
 
         //Check that setUsername works with numbers
         mockPlayer.setUsername("ConnorMcDavid97");
-        assertEquals(mockPlayer.getUsername(), "ConnorMcDavid97");
+        assertEquals("ConnorMcDavid97", mockPlayer.getUsername());
     }
 
     /**
@@ -63,11 +63,11 @@ public class PlayerTest {
     public void testPhone() {
         //Check that getPhone get the correct phone number
         Player mockPlayerWithPhone = mockPlayerWithPhone();
-        assertEquals(mockPlayerWithPhone.getPhone(), "5879831023");
+        assertEquals("5879831023", mockPlayerWithPhone.getPhone());
 
         //Check that setPhone changes the phone number
         mockPlayerWithPhone.setPhone("7804172312");
-        assertEquals(mockPlayerWithPhone.getPhone(), "7804172312");
+        assertEquals("7804172312", mockPlayerWithPhone.getPhone());
 
         //Check that getPhone() returns null for a Player with no phone number
         Player mockPlayerNoPhone = mockPlayerNoPhone();
@@ -82,24 +82,24 @@ public class PlayerTest {
         Player mockPlayer = mockPlayerWithPhone();
 
         //Check that total score is initially 0
-        assertEquals(mockPlayer.getTotalScore(), 0);
+        assertEquals(0, mockPlayer.getTotalScore());
 
         //Check that total score changes when a QRCode is added
         int qrCodeScore = 13; //Simulated QRCode score
         int totalScore = mockPlayer.getTotalScore() + qrCodeScore;
         mockPlayer.setTotalScore(totalScore);
-        assertEquals(mockPlayer.getTotalScore(), 13);
+        assertEquals(13, mockPlayer.getTotalScore());
 
         qrCodeScore = 17; //Another simulated QRCode score
         totalScore = mockPlayer.getTotalScore() + qrCodeScore;
         mockPlayer.setTotalScore(totalScore);
-        assertEquals(mockPlayer.getTotalScore(), 30);
+        assertEquals(30, mockPlayer.getTotalScore());
 
         //Check that total score changes when a QRCode is removed
         qrCodeScore = 13;
         totalScore = mockPlayer.getTotalScore() - qrCodeScore;
         mockPlayer.setTotalScore(totalScore);
-        assertEquals(mockPlayer.getTotalScore(), 17);
+        assertEquals(17, mockPlayer.getTotalScore());
     }
 
     /**
@@ -111,28 +111,29 @@ public class PlayerTest {
         Player mockPlayer = mockPlayerWithPhone();
 
         //Check that total QR codes scanned is initially 0
-        assertEquals(mockPlayer.getTotalQRCodes(), 0);
+        assertEquals(0, mockPlayer.getTotalQRCodes());
 
         //Simulate adding a QRCode to total
         mockPlayer.incrementTotalQRCodes();
-        assertEquals(mockPlayer.getTotalQRCodes(), 1);
+        assertEquals(1, mockPlayer.getTotalQRCodes());
 
         //Simulate removing a QRCode from total
         mockPlayer.decrementTotalQRCodes();
-        assertEquals(mockPlayer.getTotalQRCodes(), 0);
+        assertEquals(0, mockPlayer.getTotalQRCodes());
 
         //Check that totalQRCodes cannot become negative
         mockPlayer.decrementTotalQRCodes();
-        assertEquals(mockPlayer.getTotalQRCodes(), 0);
+        assertEquals(0, mockPlayer.getTotalQRCodes());
 
         //Check setTotalQRCodes sets totalQRCodes correctly
         mockPlayer.setTotalQRCodes(5);
-        assertEquals(mockPlayer.getTotalQRCodes(), 5);
+        assertEquals(5, mockPlayer.getTotalQRCodes());
 
         //Check that totalQRCodes cannot be set to a negative numbers
         mockPlayer.setTotalQRCodes(-1);
-        assertEquals(mockPlayer.getTotalQRCodes(), 0);
+        assertEquals(0, mockPlayer.getTotalQRCodes());
     }
+
 
     /**
      * Tests adding a QR code to a player's list of QR codes scanned
@@ -148,11 +149,11 @@ public class PlayerTest {
 
         //Check that a qrCode can be added to the list
         mockPlayer.addQRCodeScanned(mockQRCode);
-        assertEquals(mockPlayer.getQrCodesScanned().size(), 1);
+        assertEquals(1, mockPlayer.getQrCodesScanned().size());
 
         //Check that a qrCode can be removed from list
         mockPlayer.removeQRCodeScanned(mockQRCode);
-        assertEquals(mockPlayer.getQrCodesScanned().size(), 0);
+        assertEquals(0, mockPlayer.getQrCodesScanned().size());
     }
 
     /**
@@ -169,7 +170,7 @@ public class PlayerTest {
 
         //Check that a qrCode can be added to the list
         mockPlayer.addQRCodeScanned(mockQRCode);
-        assertEquals(mockPlayer.getQrCodesScanned().size(), 1);
+        assertEquals(1, mockPlayer.getQrCodesScanned().size());
 
         //Check that a QRCode cannot be added to list if it is already in list
         assertThrows(IllegalArgumentException.class, () -> {
@@ -192,11 +193,11 @@ public class PlayerTest {
 
         //Check that a qrCode can be added to the list
         mockPlayer.addQRCodeScanned(mockQRCode);
-        assertEquals(mockPlayer.getQrCodesScanned().size(), 1);
+        assertEquals(1, mockPlayer.getQrCodesScanned().size());
 
         //Check that a qrCode can be removed from list
         mockPlayer.removeQRCodeScanned(mockQRCode);
-        assertEquals(mockPlayer.getQrCodesScanned().size(), 0);
+        assertEquals(0, mockPlayer.getQrCodesScanned().size());
     }
 
     /**
@@ -217,11 +218,11 @@ public class PlayerTest {
 
         //Check that a qrCode can be added to the list
         mockPlayer.addQRCodeScanned(mockQRCode);
-        assertEquals(mockPlayer.getQrCodesScanned().size(), 1);
+        assertEquals(1, mockPlayer.getQrCodesScanned().size());
 
         //Check that a qrCode can be removed from list
         mockPlayer.removeQRCodeScanned(mockQRCode);
-        assertEquals(mockPlayer.getQrCodesScanned().size(), 0);
+        assertEquals(0, mockPlayer.getQrCodesScanned().size());
 
         //Check that a qrCode not in the list cannot be removed
         assertThrows(IllegalArgumentException.class, () -> {

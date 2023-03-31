@@ -35,6 +35,7 @@
         </activity>
         <activity android:name=".ScanQRActivity"/>
         <activity android:name=".qrcode.QRCodeInfoActivity"/>
+        <activity android:name=".qrcode.QRCodeScannedByActivity"/>
         <activity android:name=".otherProfileActivity"/>
         <activity android:name=".ui.QRedit.QRCodeEditActivity"/>
         <activity android:name=".MapActivity"/>
