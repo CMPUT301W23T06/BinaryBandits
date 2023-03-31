@@ -3,7 +3,9 @@ import static android.content.ContentValues.TAG;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -80,6 +82,10 @@ public class QRCodeInfoActivity extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
 
+        // get currents users name for commenting
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String username = preferences.getString("login_username", "");
+
         if (extras != null) {
 
             String name = extras.getString("name");
@@ -92,7 +98,7 @@ public class QRCodeInfoActivity extends AppCompatActivity {
                 /**
                  * Obtain and display appropriate information for the QRCode
                  * @param qrCode
-                 *      QRcode object of the QR the user clicked on
+                 *      QRCode object of the QR the user clicked on
                  */
                 @Override
                 public void onQRCodeCallback(QRCode qrCode) {
@@ -139,9 +145,9 @@ public class QRCodeInfoActivity extends AppCompatActivity {
                             String commentText = String.valueOf(textBox.getText());
                             commentsAdapter.notifyDataSetChanged();
                             textBox.setText("");
-                            Comment newComment = new Comment(commentText, "user");
+                            Comment newComment = new Comment(commentText, username);
                             commentsList.add(newComment);
-                            commentsStringList.add("user"+": "+commentText);
+                            commentsStringList.add(username+": "+commentText);
                             collectionReference.document(name).update("comments", commentsList);
                         }
                     });

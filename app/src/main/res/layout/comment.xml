@@ -6,4 +6,4 @@
     android:padding="4dp"
     android:textAlignment="gravity"
     android:textColor="#FFFFFF"
-    android:textSize="14sp" />
+    android:textSize="18sp" />
