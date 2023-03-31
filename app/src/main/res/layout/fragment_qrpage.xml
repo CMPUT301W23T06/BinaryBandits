@@ -40,15 +40,15 @@
         android:id="@+id/qr_code_name"
         android:layout_width="393dp"
         android:layout_height="36dp"
+        android:layout_marginTop="272dp"
         android:gravity="center"
         android:text="QRcodeName"
         android:textColor="#FF426F"
         android:textSize="30sp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.111"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/QRImageView"
-        app:layout_constraintVertical_bias="0.372" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/qr_code_score"
@@ -175,15 +175,16 @@
         android:id="@+id/addCommentBtn"
         android:layout_width="77dp"
         android:layout_height="42dp"
+        android:layout_marginBottom="5dp"
         android:background="@color/red"
         android:text="Comment"
         android:textColor="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.898"
+        app:layout_constraintHorizontal_bias="0.943"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.798" />
+        app:layout_constraintVertical_bias="0.804" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
