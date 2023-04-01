@@ -35,6 +35,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
@@ -247,9 +248,16 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 String name = qrCode.getName();
                 double latitude = qrCode.getCoordinates().get(0);
                 double longitude = qrCode.getCoordinates().get(1);
-                Marker marker = googleMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)).title(name));
+                Marker marker = googleMap.addMarker(
+                        new MarkerOptions()
+                                .position(new LatLng(latitude, longitude)).title(name)
+                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_pink)));
+
                 assert marker != null;
                 marker.setTag(qrCode);
+                //new MarkerOptions()
+                        //.icon(BitmapDescriptorFactory.defaultMarker());
+                        //.icon(BitmapDescriptorFactory.fromFile());
             }
         }
     }
