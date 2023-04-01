@@ -8,37 +8,32 @@
     android:background="@color/background_black"
     tools:context=".otherProfileActivity">
 
-
     <TextView
-        android:id="@+id/text_notifications"
-        android:layout_width="match_parent"
+        android:id="@+id/profile_text"
+        android:layout_width="wrap_content"
+
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
         android:text="@string/title_profile"
         android:textAlignment="center"
+
         android:textColor="@color/gray"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/profileCardView"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/profileCardView"
-        android:layout_width="96dp"
-        android:layout_height="96dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:layout_gravity="center"
-        android:layout_marginTop="2dp"
 
+        android:layout_marginTop="21dp"
         app:cardCornerRadius="250dp"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_notifications">
+        app:layout_constraintTop_toBottomOf="@+id/profile_text">
 
         <ImageView
             android:id="@+id/profileIconImageView"
@@ -52,31 +47,45 @@
 
     </androidx.cardview.widget.CardView>
 
-    <LinearLayout
-        android:id="@+id/linearLayout2"
-        android:layout_width="411dp"
-        android:layout_height="120dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/list_view_player_qr_codes"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.666">
+    <TextView
+        android:id="@+id/text_username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
 
-        <TextView
-            android:id="@+id/text_username"
-            android:layout_width="match_parent"
+        android:text="@string/username_placeholder_text"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="30sp"
+        android:textStyle="bold"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profileCardView" />
+
+    <LinearLayout
+        android:id="@+id/points_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_marginTop="8dp"
+
+        android:orientation="horizontal"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_username">
+
+        <ImageView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/username_placeholder_text"
-            android:textAlignment="center"
-            android:textColor="@color/white"
-            android:textSize="30sp"
-            android:textStyle="bold" />
+            android:src="@drawable/points_icon"
+            app:tint="@color/yellow"
+            android:paddingEnd="10dp"
+            />
 
         <TextView
             android:id="@+id/score_text"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="@string/score_text"
@@ -84,143 +93,130 @@
             android:textSize="20sp"
             android:textStyle="bold" />
 
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/max_min_points"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:orientation="horizontal"
+
+        android:showDividers="middle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/points_layout">
+
         <LinearLayout
-            android:id="@+id/linearLayout"
-            android:layout_width="410dp"
-            android:layout_height="30dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="80dp"
             android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/total_qr_scanned_label"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.5"
-                android:text="@string/total_qr_codes_scanned_label"
-                android:textAlignment="textEnd"
-                android:textColor="@color/yellow"
-                android:textSize="20sp"
-                tools:layout_editor_absoluteX="-37dp"
-                tools:layout_editor_absoluteY="214dp" />
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginEnd="10dp"
+                android:src="@drawable/arrow_up"
+                app:tint="#24FF00" />
 
             <TextView
-                android:id="@+id/total_qr_scanned_text"
-                android:layout_width="match_parent"
+                android:id="@+id/highest_score_text"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.5"
-                android:text="@string/score_text"
-                android:textAlignment="textStart"
-                android:textColor="@color/yellow"
-                android:textSize="20sp" />
+                android:text="0"
+                android:textColor="#24FF00"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
         </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginEnd="10dp"
+                android:rotation="-180"
+                android:src="@drawable/arrow_up"
+                app:tint="@color/red" />
+
+            <TextView
+                android:id="@+id/lowest_score_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="10"
+                android:textColor="@color/red"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/qr_scanned_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="30dp"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/max_min_points">
+
+        <TextView
+            android:id="@+id/total_qr_scanned_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:text="@string/total_qr_codes_scanned_label"
+            android:textAlignment="textEnd"
+            android:textColor="@color/yellow"
+            android:textSize="20sp"
+            tools:layout_editor_absoluteX="-37dp"
+            tools:layout_editor_absoluteY="214dp" />
+
+        <TextView
+            android:id="@+id/total_qr_scanned_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:text="@string/score_text"
+            android:textAlignment="textStart"
+            android:textColor="@color/yellow"
+            android:textSize="20sp" />
+
     </LinearLayout>
 
     <ListView
         android:id="@+id/list_view_player_qr_codes"
-        android:layout_width="371dp"
-        android:layout_height="309dp"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="68dp"
         android:layout_weight="1"
         android:background="#333333"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/qr_scanned_layout"
         tools:listitem="@layout/support_simple_spinner_dropdown_item" />
-
-    <LinearLayout
-        android:layout_width="409dp"
-        android:layout_height="76dp"
-        android:layout_marginTop="1dp"
-        android:layout_marginBottom="1dp"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/list_view_player_qr_codes"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
-
-
-        <LinearLayout
-            android:layout_width="208dp"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/lowest_header_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="@string/lowest"
-                android:textColor="@color/red"
-                android:textSize="24sp"
-                android:textStyle="bold">
-
-            </TextView>
-
-            <TextView
-                android:id="@+id/lowest_score_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="@string/score_text"
-                android:textColor="@color/red"
-                android:textSize="24sp"
-                android:textStyle="bold">
-
-            </TextView>
-
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/highest_header_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="@string/highest"
-                android:textColor="#24FF00"
-                android:textSize="24sp"
-                android:textStyle="bold">
-
-            </TextView>
-
-            <TextView
-                android:id="@+id/highest_score_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="@string/score_text"
-                android:textColor="#24FF00"
-                android:textSize="24sp"
-                android:textStyle="bold">
-
-            </TextView>
-
-
-        </LinearLayout>
-
-    </LinearLayout>
 
     <ImageButton
         android:id="@+id/buttonBack"
         android:layout_width="51dp"
         android:layout_height="39dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
         android:background="@android:color/transparent"
         android:scaleType="fitXY"
         android:src="@drawable/back_arrow"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.022"
+        android:visibility="invisible"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.03"
-        android:visibility="invisible"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
