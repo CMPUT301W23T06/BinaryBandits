@@ -63,7 +63,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private Slider radiusSlider;
     private ArrayList<Double> coordinatesOfAddress = new ArrayList<>();
     private ArrayList<QRCode> qrCodes = new ArrayList<>();
-    private MapController mapController = new MapController();
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
