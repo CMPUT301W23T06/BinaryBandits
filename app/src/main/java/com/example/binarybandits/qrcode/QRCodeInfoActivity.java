@@ -164,12 +164,18 @@ public class QRCodeInfoActivity extends AppCompatActivity {
                         @Override
                         public void onClick(View v) {
                             String commentText = String.valueOf(textBox.getText());
-                            commentsAdapter.notifyDataSetChanged();
-                            textBox.setText("");
-                            Comment newComment = new Comment(commentText, username);
-                            commentsList.add(newComment);
-                            commentsStringList.add(username+": "+commentText);
-                            collectionReference.document(name).update("comments", commentsList);
+                            // make sure comment is not empty
+                            if(commentText.equals("")){
+                                Toast.makeText(getApplicationContext(), "Comment can not be empty!", Toast.LENGTH_SHORT).show();
+                            }
+                            else {
+                                commentsAdapter.notifyDataSetChanged();
+                                textBox.setText("");
+                                Comment newComment = new Comment(commentText, username);
+                                commentsList.add(newComment);
+                                commentsStringList.add(username + ": " + commentText);
+                                collectionReference.document(name).update("comments", commentsList);
+                            }
                         }
                     });
 
