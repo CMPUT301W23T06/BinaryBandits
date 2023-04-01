@@ -1,7 +1,9 @@
 package com.example.binarybandits.ui.leaderboard;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
@@ -26,6 +28,7 @@ import com.example.binarybandits.player.PlayerCallback;
 import com.example.binarybandits.player.PlayerDB;
 import com.example.binarybandits.DBConnector;
 import com.example.binarybandits.player.PlayerListCallback;
+import com.example.binarybandits.ui.profile.ProfileFragment;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -36,6 +39,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -120,10 +124,19 @@ public class LeaderboardSearchFragment extends Fragment {
                                         Intent intent = new Intent(LeaderboardSearchFragment.this.getActivity(), otherProfileActivity.class); // go to other player's profile
                                         Bundle extras = new Bundle(); // pass the player's username to the other profile activity
                                         extras.putString("name", playerList.get(i).getUsername());
-                                        extras.putString("list", "search");
-                                        intent.putExtras(extras);
-                                        startActivity(intent); // start the activity
 
+                                        // get current users name
+                                        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+                                        String username = preferences.getString("login_username", "");
+
+                                        if(Objects.equals(playerList.get(i).getUsername(), username)){
+                                            getFragmentManager().beginTransaction().replace(R.id.container, new ProfileFragment()).commit();
+                                        }
+                                        else {
+                                            extras.putString("list", "search");
+                                            intent.putExtras(extras);
+                                            startActivity(intent); // start the activity
+                                        }
                                     }
                                 });
                             }
