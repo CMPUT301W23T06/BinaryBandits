@@ -22,8 +22,11 @@ import com.example.binarybandits.qrcode.QRCodeDB;
 import com.example.binarybandits.qrcode.QRCodeInfoActivity;
 import com.example.binarybandits.qrcode.QRCodeListCallback;
 import com.example.binarybandits.ui.QRedit.QRCodeEditActivity;
+import com.google.android.gms.common.api.GoogleApi;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -40,11 +43,24 @@ import org.checkerframework.checker.units.qual.A;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Locale;
 
+/**
+ * View class that uses the Google Maps API to display geolocation of all QR codes. This
+ * class also has a search button that takes users to MapSearchFragment.
+ * Outstanding Issues: N/A
+ */
 public class MapActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private FusedLocationProviderClient fusedLocationClient;
     private ArrayList<Double> currentLocation;
+
+    /**
+     * Accesses bundles from instance and handles events accordingly. Initializes the map fragment
+     * @param savedInstanceState If the activity is being re-initialized after
+     *     previously being shut down then this Bundle contains the data it most
+     *     recently supplied in {@link #onSaveInstanceState}.  <b><i>Note: Otherwise it is null.</i></b>
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,7 +73,10 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         mapFragment.getMapAsync(this);
     }
 
-    // Get a handle to the GoogleMap object and display marker.
+    /**
+     * Get a handle to the GoogleMap object and display markers for every QR code with a geolocation
+     * @param googleMap Google Maps SDK object
+     */
     @Override
     public void onMapReady(GoogleMap googleMap) {
         try {
@@ -73,7 +92,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         } catch (Resources.NotFoundException e) {
             Log.e(TAG, "Can't find style. Error: ", e);
         }
-        //getCurrentLocation(googleMap);
+        getCurrentLocation(googleMap);
         /*googleMap.addMarker(new MarkerOptions()
                 .position(new LatLng(0, 0))
                 .title("Marker"));*/
@@ -127,17 +146,33 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     }
 
     /**
-     *
-     * @param googleMap
+     * Get the user's current location and show current location on the MapActivity
+     * @param googleMap Google Maps SDK object
      */
     public void getCurrentLocation(GoogleMap googleMap) {
-        //Alex: I am still working on this function!
-        //Referenced: https://stackoverflow.com/questions/21403496/how-to-get-current-location-in-google-map-android
+        //Referenced: https://developers.google.com/maps/documentation/android-sdk/current-place-tutorial
         if (PermissionsController.locationPermissionGranted) {
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 PermissionsController.askLocationPermission(this);
             }
-
+            fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+            googleMap.setMyLocationEnabled(true);
+            fusedLocationClient.getLastLocation()
+                    .addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                        @Override
+                        public void onSuccess(Location location) {
+                            // Got last known location. In some rare situations this can be null.
+                            if (location != null) {
+                                final float defaultZoom = 15.0f;
+                                LatLng coordinates = new LatLng(location.getLatitude(), location.getLongitude());
+                                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(coordinates, defaultZoom));
+                                googleMap.getUiSettings().setMyLocationButtonEnabled(false);
+                            }
+                        }
+                    });
         }
     }
+
+
+
 }
