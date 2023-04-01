@@ -12,6 +12,7 @@
     <color name="yellow">#FFFFB800</color>
     <color name="red">#FFFF426F</color>
     <color name="background_black">#FF1E1E1E</color>
+    <color name="bottom_nav_bg_color">#121212</color>
     <color name="gray">#8E8E8E</color>
 
 </resources>
