@@ -34,6 +34,9 @@ import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.util.ArrayList;
 
+/**
+ * An activity that allows users to add a location image and accept/decline geolocation permissions
+ */
 public class QRCodeEditActivity extends AppCompatActivity {
 
     private TextView nameTextView;
@@ -53,6 +56,10 @@ public class QRCodeEditActivity extends AppCompatActivity {
 
     private static final int CAMERA_REQUEST = 1888;
 
+    /**
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

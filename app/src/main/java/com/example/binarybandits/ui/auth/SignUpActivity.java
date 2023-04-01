@@ -12,7 +12,7 @@ import com.example.binarybandits.R;
 import com.example.binarybandits.controllers.AuthController;
 
 /**
- * An activity got the Sign-Up Page
+ * Activity class for the Sign Up page shown when users select "Create an Account"
  */
 public class SignUpActivity extends AppCompatActivity {
 
@@ -22,6 +22,10 @@ public class SignUpActivity extends AppCompatActivity {
     private Button signUpBtn;
     private Animation vibrate;
 
+    /**
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,7 +66,7 @@ public class SignUpActivity extends AppCompatActivity {
 
     /**
      * Function to redirect to LogInActivity on click
-     * @param v A refernce to the view that was just clicked
+     * @param v A reference to the view that was just clicked
      */
     public void onClickLogInBtn(View v) {
         Intent myIntent = new Intent(SignUpActivity.this, LogInActivity.class);

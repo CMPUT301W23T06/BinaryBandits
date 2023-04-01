@@ -117,6 +117,7 @@
             android:scaleType="fitCenter"
             android:src="@drawable/ic_image" />
 
+
         <LinearLayout
             android:layout_width="228dp"
             android:layout_height="match_parent"
