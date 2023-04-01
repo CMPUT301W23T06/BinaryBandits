@@ -7,12 +7,15 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Camera;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.core.app.ActivityCompat;
 
 import com.example.binarybandits.controllers.AuthController;
@@ -41,8 +44,10 @@ import com.google.android.gms.tasks.Task;
 
 import org.checkerframework.checker.units.qual.A;
 
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -53,7 +58,9 @@ import java.util.Locale;
 public class MapActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private FusedLocationProviderClient fusedLocationClient;
+    private SearchView searchView;
     private ArrayList<Double> currentLocation;
+    private final float defaultZoom = 15.0f;
 
     /**
      * Accesses bundles from instance and handles events accordingly. Initializes the map fragment
@@ -71,6 +78,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
     }
 
     /**
@@ -104,24 +112,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         coordinatesTest.add(-113.5233741);
         Log.d("Maps", String.valueOf(coordinatesTest.get(0)));
 
-        //Referenced: https://stackoverflow.com/questions/49839437/how-to-show-markers-only-inside-of-radius-circle-on-maps
-        qrCodeDB.getQRCodesByQuery(qrCodeDB.getQRCodesWithCoordinates(), new QRCodeListCallback() {
-            @Override
-            public void onQRCodeListCallback(ArrayList<QRCode> qrCodeList) {
-                for(int i = 0; i < qrCodeList.size(); i++) {
-                    QRCode qrCode = qrCodeList.get(i);
-                    if(qrCode != null) {
-                        String name = qrCode.getName();
-                        double latitude = qrCode.getCoordinates().get(0);
-                        double longitude = qrCode.getCoordinates().get(1);
-                        Marker marker = googleMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)).title(name));
-                        assert marker != null;
-                        marker.setTag(qrCode);
-                    }
-                }
-            }
-        });
-
         //When the user clicks on a marker, show the visual representation, and points of QR code
         googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
@@ -143,6 +133,47 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 return false;
             }
         });
+
+        getQRCodeLocations(qrCodeDB, googleMap);
+        //Referenced: https://www.geeksforgeeks.org/how-to-add-searchview-in-google-maps-in-android/
+        //Author: https://auth.geeksforgeeks.org/user/chaitanyamunje/articles
+        //License: CCBY-SA https://www.geeksforgeeks.org/copyright-information/
+        searchView = findViewById(R.id.map_search_view);
+
+        searchView.setIconified(false);
+        searchView.clearFocus();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                String input = searchView.getQuery().toString();
+
+                List<Address> addressList = null;
+                if(input != null || input.equals("")) {
+                    Geocoder geocoder = new Geocoder(MapActivity.this);
+
+                    try {
+                        addressList = geocoder.getFromLocationName(input, 1);
+                    } catch (IOException e) {
+                        Log.d("MapActivity", e.toString());
+                    }
+
+                    if (!addressList.isEmpty()) {
+                        //Get the first result from the list of results (addresses)
+                        Address address = addressList.get(0);
+
+                        LatLng latLngOfAddress = new LatLng(address.getLatitude(), address.getLongitude());
+
+                        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLngOfAddress, defaultZoom));
+                    }
+                }
+                return false;
+            }
+
+                @Override
+                public boolean onQueryTextChange(String newText) {
+                    return false;
+                }
+            });
     }
 
     /**
@@ -163,7 +194,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                         public void onSuccess(Location location) {
                             // Got last known location. In some rare situations this can be null.
                             if (location != null) {
-                                final float defaultZoom = 15.0f;
                                 LatLng coordinates = new LatLng(location.getLatitude(), location.getLongitude());
                                 googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(coordinates, defaultZoom));
                                 googleMap.getUiSettings().setMyLocationButtonEnabled(false);
@@ -171,6 +201,28 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                         }
                     });
         }
+    }
+
+
+    public void getQRCodeLocations(QRCodeDB qrCodeDB, GoogleMap googleMap) {
+        //TODO: Currently all QR codes with a location are retrieved (we should only retrieve nearby QR codes)
+        //Referenced: https://stackoverflow.com/questions/49839437/how-to-show-markers-only-inside-of-radius-circle-on-maps
+        qrCodeDB.getQRCodesByQuery(qrCodeDB.getQRCodesWithCoordinates(), new QRCodeListCallback() {
+            @Override
+            public void onQRCodeListCallback(ArrayList<QRCode> qrCodeList) {
+                for(int i = 0; i < qrCodeList.size(); i++) {
+                    QRCode qrCode = qrCodeList.get(i);
+                    if(qrCode != null) {
+                        String name = qrCode.getName();
+                        double latitude = qrCode.getCoordinates().get(0);
+                        double longitude = qrCode.getCoordinates().get(1);
+                        Marker marker = googleMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)).title(name));
+                        assert marker != null;
+                        marker.setTag(qrCode);
+                    }
+                }
+            }
+        });
     }
 
 

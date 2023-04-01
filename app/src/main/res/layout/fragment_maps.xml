@@ -1,15 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.fragment.app.FragmentContainerView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:map="http://schemas.android.com/apk/res-auto"
-    android:name="com.google.android.gms.maps.SupportMapFragment"
-    android:id="@+id/map"
+<!--Referenced: https://www.geeksforgeeks.org/how-to-add-searchview-in-google-maps-in-android/ -->
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    map:mapType="normal"
-    map:uiCompass="true"
-    map:uiMapToolbar="true"
-    map:liteMode="false"
-    map:uiZoomControls="true"
+    android:background="@color/background_black"
+    android:foregroundTint="#333333"
+    tools:context=".MapActivity">
 
-    />
+    <androidx.fragment.app.FragmentContainerView
+        xmlns:map="http://schemas.android.com/apk/res-auto"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:id="@+id/map"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        map:mapType="normal"
+        map:uiCompass="true"
+        map:uiMapToolbar="true"
+        map:liteMode="false"
+        map:uiZoomControls="true">
+    </androidx.fragment.app.FragmentContainerView>
+
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/map_search_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="#BFBFBF"
+        android:elevation="5dp"
+        app:queryHint="Search here"/>
+</RelativeLayout>
