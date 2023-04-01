@@ -4,6 +4,9 @@ import static android.content.ContentValues.TAG;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -31,10 +34,17 @@ import com.example.binarybandits.models.Player;
 import com.example.binarybandits.models.QRCode;
 import com.example.binarybandits.player.PlayerCallback;
 import com.example.binarybandits.player.PlayerDB;
+import com.example.binarybandits.ui.QRedit.LocationImageFragment;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -110,6 +120,7 @@ public class QRCodeInfoActivity extends AppCompatActivity {
                     TextView qr_score = findViewById(R.id.qr_code_score);
                     ImageButton delete_button = findViewById(R.id.delete_button);
                     Button commentButton = findViewById(R.id.addCommentBtn);
+                    ImageButton view_location_button = findViewById(R.id.location_img_button);
                     EditText textBox = findViewById(R.id.user_comment);
 
                     // get list of players who have scanned this QR Code
@@ -156,6 +167,36 @@ public class QRCodeInfoActivity extends AppCompatActivity {
                     if (current_player == false){
                         delete_button.setVisibility(View.GONE);
                     }
+
+
+                    view_location_button.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Log.d("myTag", "Test1");
+                            if (qrCode.getLocationImage() ==null) {
+                                Log.d("myTag", "Test2");
+                                AlertDialog.Builder noLocationPopup = new AlertDialog.Builder(QRCodeInfoActivity.this);
+                                // confirm delete message
+                                noLocationPopup.setMessage("No location image available")
+                                        .setCancelable(true)
+                                        .setNegativeButton("Back", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                dialog.cancel();
+                                            }
+                                        });
+                                AlertDialog alertDialog = noLocationPopup.create();
+                                alertDialog.show();
+
+                            } else {
+                                Log.d("myTag", "Test3");
+                                showLocationImage(v, qrCode);
+                            }
+                        }
+                    });
+
+
+
                     /**
                      * add comment upon user pressing button
                      * add comment to fireStore database
@@ -164,12 +205,18 @@ public class QRCodeInfoActivity extends AppCompatActivity {
                         @Override
                         public void onClick(View v) {
                             String commentText = String.valueOf(textBox.getText());
-                            commentsAdapter.notifyDataSetChanged();
-                            textBox.setText("");
-                            Comment newComment = new Comment(commentText, username);
-                            commentsList.add(newComment);
-                            commentsStringList.add(username+": "+commentText);
-                            collectionReference.document(name).update("comments", commentsList);
+                            // make sure comment is not empty
+                            if(commentText.equals("")){
+                                Toast.makeText(getApplicationContext(), "Comment can not be empty!", Toast.LENGTH_SHORT).show();
+                            }
+                            else {
+                                commentsAdapter.notifyDataSetChanged();
+                                textBox.setText("");
+                                Comment newComment = new Comment(commentText, username);
+                                commentsList.add(newComment);
+                                commentsStringList.add(username + ": " + commentText);
+                                collectionReference.document(name).update("comments", commentsList);
+                            }
                         }
                     });
 
@@ -269,5 +316,68 @@ public class QRCodeInfoActivity extends AppCompatActivity {
                 QRCodeInfoActivity.this.finish();
             }
         });
+
+
+
+
+
+
     }
+
+    /**
+     * Displays a pop up of the image of the location for a given QR code
+     * Retrieves
+     * @param v
+     *      the view clicked on
+     * @param qrCode
+     *      current QR code
+     */
+    private void showLocationImage(View v, QRCode qrCode) {
+//        Bitmap location_img = null;
+        Log.d("myTag", "test1");
+        //Log.d("myTag", "test2");
+        //String location_img_url_string = qrCode.getLocationImage();
+        //Log.d("myTag", "test3");
+        //URL location_img_url = new URL(location_img_url_string);
+        //Log.d("myTag", "test4");
+        //location_img = BitmapFactory.decodeStream(location_img_url.openConnection().getInputStream());
+        //Log.d("myTag", "test5");
+
+//            String location_img_url_string = qrCode.getLocationImage();
+//            URL location_img_url = new URL(location_img_url_string);
+//            HttpURLConnection connection = (HttpURLConnection) location_img_url
+//                    .openConnection();
+//            connection.setDoInput(true);
+//            connection.connect();
+//            InputStream input = connection.getInputStream();
+//            Bitmap location_img= BitmapFactory.decodeStream(input);
+
+        String location_img_url_string = qrCode.getLocationImage();
+        Log.d("myTag", location_img_url_string);
+        Picasso.get()
+                .load(location_img_url_string)
+                .into(new Target() {
+                    @Override
+                    public void onBitmapLoaded (final Bitmap bitmap, Picasso.LoadedFrom from){
+
+                        new LocationImageFragment(bitmap).show(getSupportFragmentManager(), "show");
+                    }
+
+                    @Override
+                    public void onBitmapFailed(Exception e, Drawable errorDrawable) {
+
+                    }
+
+                    @Override
+                    public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+                    }
+                });
+//            new LocationImageFragment(location_img).show(getSupportFragmentManager(), "show");
+
+    }
+
+
+
+
 }

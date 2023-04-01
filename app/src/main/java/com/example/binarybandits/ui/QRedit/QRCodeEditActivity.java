@@ -93,6 +93,7 @@ public class QRCodeEditActivity extends AppCompatActivity {
         String name = qrController.generateUniqueName(hash);
         int points = qrController.calculatePoints(hash);
         nameTextView.setText(name);
+        String username = AuthController.getUsername(QRCodeEditActivity.this);
         String pointsString = points + " point(s) collected!";
         pointsTextView.setText(pointsString);
         DownloadImageTask.loadQRImageIntoView(imageView, hash);
@@ -106,7 +107,7 @@ public class QRCodeEditActivity extends AppCompatActivity {
                 PlayerDB db = new PlayerDB(new DBConnector());
                 if (photo != null) {
                     QRCodeDB qrCodeDB = new QRCodeDB(new DBConnector());
-                    qrCodeDB.addLocationImageToServer(photo, name);
+                    qrCodeDB.addLocationImageToServer(photo, name+username);
                 }
                 db.getPlayer(uid, new PlayerCallback() {
                     @Override
