@@ -24,7 +24,6 @@ import com.example.binarybandits.DBConnector;
 import com.example.binarybandits.MapActivity;
 import com.example.binarybandits.R;
 import com.example.binarybandits.controllers.AuthController;
-import com.example.binarybandits.controllers.MapController;
 import com.example.binarybandits.controllers.PermissionsController;
 import com.example.binarybandits.models.QRCode;
 import com.example.binarybandits.qrcode.QRCodeDB;
