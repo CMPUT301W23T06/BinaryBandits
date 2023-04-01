@@ -3,7 +3,8 @@ package com.example.binarybandits.controllers;
 import java.util.ArrayList;
 
 /**
- * Controller class for LeaderboardFragment
+ * Controller class for LeaderboardFragment. Calculates the user's percentile for estimation of
+ * ranking for highest scoring unique QR code.
  */
 public class LeaderboardController {
 

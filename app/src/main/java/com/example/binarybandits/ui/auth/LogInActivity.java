@@ -14,7 +14,7 @@ import com.example.binarybandits.R;
 import com.example.binarybandits.controllers.AuthController;
 
 /**
- * An activity got the Log-In Page
+ * Activity class for the Log In page shown when users use the app for the first time.
  */
 public class LogInActivity extends AppCompatActivity {
 
@@ -23,6 +23,10 @@ public class LogInActivity extends AppCompatActivity {
     private Button signUpBtn;
     private Animation vibrate;
 
+    /**
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

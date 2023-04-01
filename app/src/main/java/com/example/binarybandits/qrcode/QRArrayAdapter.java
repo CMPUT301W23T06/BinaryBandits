@@ -19,10 +19,26 @@ import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
+/**
+ *
+ */
 public class QRArrayAdapter extends ArrayAdapter<QRCode> {
+    /**
+     *
+     * @param context
+     * @param qrCodes
+     */
     public QRArrayAdapter(Context context, ArrayList<QRCode> qrCodes) {
         super(context, 0, qrCodes);
     }
+
+    /**
+     *
+     * @param position
+     * @param convertView
+     * @param parent
+     * @return
+     */
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {

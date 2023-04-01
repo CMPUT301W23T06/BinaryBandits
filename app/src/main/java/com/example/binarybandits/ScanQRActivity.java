@@ -19,6 +19,10 @@ import com.example.binarybandits.ui.QRedit.QRCodeEditActivity;
 import com.example.binarybandits.controllers.QRController;
 import com.google.zxing.Result;
 
+/**
+ * An activity that uses the device's camera to scan QR codes. Scanned QR codes are added to a player's
+ * list of scanned QR codes and added/updated in both the QR code database and the Player database
+ */
 public class ScanQRActivity extends AppCompatActivity {
 
     private CodeScannerView scannerView;
@@ -26,6 +30,10 @@ public class ScanQRActivity extends AppCompatActivity {
     private QRController qrController;
     private ScannerController scannerController;
 
+    /**
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,12 +71,18 @@ public class ScanQRActivity extends AppCompatActivity {
         scannerView.setOnClickListener(view -> codeScanner.startPreview());
     }
 
+    /**
+     *
+     */
     @Override
     protected void onResume() {
         super.onResume();
         codeScanner.startPreview();
     }
 
+    /**
+     *
+     */
     @Override
     protected void onPause() {
         codeScanner.releaseResources();
