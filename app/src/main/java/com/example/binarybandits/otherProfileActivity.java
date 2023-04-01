@@ -25,6 +25,7 @@ import com.example.binarybandits.player.PlayerListCallback;
 import com.example.binarybandits.qrcode.QRArrayAdapter;
 import com.example.binarybandits.qrcode.QRCodeInfoActivity;
 import com.example.binarybandits.ui.leaderboard.LeaderboardFragment;
+import com.google.firebase.firestore.Query;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -57,7 +58,17 @@ public class otherProfileActivity extends Activity {
         String player_name = extras.getString("name");
         String typeOfList = extras.getString("list");
 
-        db.getPlayersByQuery(db.getSortedPlayers(), new PlayerListCallback() {
+        //Query used to order players depends on whether the current leaderboard is the total score leaderboard
+        //or the highest scoring QR code leaderboard
+        boolean scoreLeaderboard = extras.getBoolean("scoreLeaderboard");
+        Query query;
+        if(scoreLeaderboard) {
+            query = db.getSortedPlayers();
+        }
+        else {
+            query = db.getHighestQRCodes();
+        }
+        db.getPlayersByQuery(query, new PlayerListCallback() {
             @Override
             public void onPlayerListCallback(ArrayList<Player> playerList) {
                 players = playerList;

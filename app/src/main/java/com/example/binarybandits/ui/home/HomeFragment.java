@@ -5,7 +5,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+
 import com.example.binarybandits.R;
 import com.example.binarybandits.ScanQRActivity;
 import com.example.binarybandits.controllers.PermissionsController;
@@ -27,7 +30,6 @@ public class HomeFragment extends Fragment {
                 requireActivity().startActivity(myIntent);
             }
         });
-
         PermissionsController.askAllPermissions(getActivity());
 
         return view;

@@ -1,14 +1,22 @@
 package com.example.binarybandits.qrcode;
+import static android.content.ContentValues.TAG;
+
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
@@ -18,11 +26,17 @@ import com.example.binarybandits.DBConnector;
 import com.example.binarybandits.MainActivity;
 import com.example.binarybandits.R;
 import com.example.binarybandits.controllers.AuthController;
+import com.example.binarybandits.models.Comment;
 import com.example.binarybandits.models.Player;
 import com.example.binarybandits.models.QRCode;
 import com.example.binarybandits.player.PlayerCallback;
 import com.example.binarybandits.player.PlayerDB;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * QRCodeInfoActivity gets the name of a QR code to display and displays the QR codes score,
@@ -48,6 +62,17 @@ public class QRCodeInfoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_qrpage);
 
+        // initialize variables for adding comments
+        ListView commentsView = findViewById(R.id.commentsList);
+        ArrayList<Comment> commentsList = new ArrayList<>();
+        ArrayList<String> commentsStringList = new ArrayList<>();
+        ArrayAdapter commentsAdapter = new ArrayAdapter<>(this, R.layout.comment, commentsStringList);
+        commentsView.setAdapter(commentsAdapter);
+        FirebaseFirestore db;
+        CollectionReference collectionReference;
+        DBConnector connector = new DBConnector();
+        db = connector.getDB();
+        collectionReference = connector.getCollectionReference("QRCodes");
 
         QRCodeDB db_qr = new QRCodeDB(new DBConnector());
         PlayerDB db_player = new PlayerDB(new DBConnector());
@@ -58,19 +83,23 @@ public class QRCodeInfoActivity extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
 
+        // get currents users name for commenting
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String username = preferences.getString("login_username", "");
+
         if (extras != null) {
 
             String name = extras.getString("name");
             String player_user = extras.getString("username");
             Boolean current_player = extras.getBoolean("current_user");
             /**
-             * getQR code will allow databse access to the QR code, while using a Callback
+             * getQR code will allow dataBase access to the QR code, while using a Callback
              */
             db_qr.getQRCode(name, new QRCodeCallback() {
                 /**
                  * Obtain and display appropriate information for the QRCode
                  * @param qrCode
-                 *      QRcode object of the QR the user clicked on
+                 *      QRCode object of the QR the user clicked on
                  */
                 @Override
                 public void onQRCodeCallback(QRCode qrCode) {
@@ -80,6 +109,28 @@ public class QRCodeInfoActivity extends AppCompatActivity {
                     TextView qr_name = findViewById(R.id.qr_code_name);
                     TextView qr_score = findViewById(R.id.qr_code_score);
                     ImageButton delete_button = findViewById(R.id.delete_button);
+                    Button commentButton = findViewById(R.id.addCommentBtn);
+                    EditText textBox = findViewById(R.id.user_comment);
+
+                    // get list of players who have scanned this QR Code
+                    ArrayList<String> players = qrCode.getPlayersScannedBy();
+
+                    // bool for testing if user can comment on this qr code
+                    Boolean playerHasScanned =  false;
+
+                    // test to see if player has scanned QR Code
+                    Integer playersSize = players.size();
+                    for(int i = 0; i<playersSize; i++){
+                        if(Objects.equals(players.get(i), username)){
+                            playerHasScanned = true;
+                        }
+                    }
+                    // set permissions if player does not have QR code
+                    if(playerHasScanned == false){
+                        commentButton.setEnabled(false);
+                        textBox.setEnabled(false);
+                        textBox.setHint("Scan this QR code to comment");
+                    }
 
                     // get score and picture of QR code
                     String score = Integer.toString(qrCode.getPoints());
@@ -90,13 +141,37 @@ public class QRCodeInfoActivity extends AppCompatActivity {
                     qr_name.setText(name);
                     qr_score.setText(score);
 
+                    // get all comments on QR code from dataBase
+                    ArrayList<Comment> comments = qrCode.getComments();
+                    Integer commSize = comments.size();
+                    for(int i =0; i<commSize; i++){
+                        commentsList.add(comments.get(i));
+                        commentsStringList.add(commentsList.get(i).getAuthor()+": "+commentsList.get(i).getContent());
+                    }
+                    commentsAdapter.notifyDataSetChanged();
+
 
                     // if we are viewing another persons profile, ensure that user cannot delete
                     // another users QR code
                     if (current_player == false){
                         delete_button.setVisibility(View.GONE);
                     }
-
+                    /**
+                     * add comment upon user pressing button
+                     * add comment to fireStore database
+                     */
+                    commentButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            String commentText = String.valueOf(textBox.getText());
+                            commentsAdapter.notifyDataSetChanged();
+                            textBox.setText("");
+                            Comment newComment = new Comment(commentText, username);
+                            commentsList.add(newComment);
+                            commentsStringList.add(username+": "+commentText);
+                            collectionReference.document(name).update("comments", commentsList);
+                        }
+                    });
 
                     /**
                      * If current user clicks delete button, confirm message is prompted. If confirmed,
@@ -132,7 +207,7 @@ public class QRCodeInfoActivity extends AppCompatActivity {
                                                     //remove QR code from players in database and locally
                                                     player.removeQRCodeScanned(qrCode);
 
-                                                    db_qr.deleteQRCode(qrCode);
+                                                    db_qr.deleteQRCode(qrCode, player_user);
 
                                                     player.decrementTotalQRCodes();
                                                     int newScore = player.getTotalScore() - qrCode.getPoints();
@@ -141,11 +216,12 @@ public class QRCodeInfoActivity extends AppCompatActivity {
                                                 }
                                             });
 
-                                            //QRCodeInfoActivity.this.finish();
+                                            QRCodeInfoActivity.this.finish();
                                             // Send back to profile page with updated QR code list
                                             // BUG: back to profile page shows home screen selected on bottom navigation
+                                            Toast message = Toast.makeText(QRCodeInfoActivity.this, "QRCode has been deleted!", Toast.LENGTH_LONG);
+                                            message.show();
                                             Intent myIntent = new Intent(QRCodeInfoActivity.this, MainActivity.class);
-
                                             Bundle extras = new Bundle();
                                             extras.putBoolean("Deleted QR code", true);
                                             myIntent.putExtras(extras);
@@ -166,14 +242,21 @@ public class QRCodeInfoActivity extends AppCompatActivity {
                 }
             });
 
-
-
-
+            //Get other players that have scanned a QRCode
+            ImageButton playersScannedByButton = findViewById(R.id.other_players_button);
+            playersScannedByButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent myIntent = new Intent(QRCodeInfoActivity.this, QRCodeScannedByActivity.class);
+                    Bundle extras = new Bundle();
+                    extras.putString("name", name);
+                    myIntent.putExtras(extras);
+                    startActivity(myIntent);
+                }
+            });
         } else {
             System.out.println("error");
         }
-
-
 
         ImageButton back_button = findViewById(R.id.back_button);
         /**
@@ -186,9 +269,5 @@ public class QRCodeInfoActivity extends AppCompatActivity {
                 QRCodeInfoActivity.this.finish();
             }
         });
-
-
-
-
     }
 }

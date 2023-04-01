@@ -92,10 +92,8 @@ public class QRCodeEditActivity extends AppCompatActivity {
 
         saveBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v)  {
-                // TODO: add QR Code to database here
                 String uid = AuthController.getUsername(QRCodeEditActivity.this);
 
-                QRCode qrCode = new QRCode(hash, name, points, uid, coordinates, "", new ArrayList<>(), 0);
                 ScannerController scannerController = new ScannerController();
 
                 PlayerDB db = new PlayerDB(new DBConnector());
@@ -106,6 +104,12 @@ public class QRCodeEditActivity extends AppCompatActivity {
                 db.getPlayer(uid, new PlayerCallback() {
                     @Override
                     public void onPlayerCallback(Player player) {
+                        //Add current player's username to list of players that have scanned a QR code
+                        String username = player.getUsername();
+                        ArrayList<String> playersScannedBy = new ArrayList<>();
+                        playersScannedBy.add(username);
+                        //Create a new QR code and add it to the database. Location image can be set by clicking add image button
+                        QRCode qrCode = new QRCode(hash, name, points, uid, coordinates, "", new ArrayList<>(), 1, playersScannedBy);
                         scannerController.addQRCode(qrCode, player);
                     }
                 });

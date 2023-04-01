@@ -1,8 +1,12 @@
 package com.example.binarybandits;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
+
 import com.example.binarybandits.ui.home.HomeFragment;
 import com.example.binarybandits.ui.leaderboard.LeaderboardFragment;
 import com.example.binarybandits.ui.maps.MapFragment;
@@ -14,7 +18,7 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
 
     BottomNavigationView bottomNavigationView;
     LeaderboardFragment leaderboardFragment = new LeaderboardFragment();
-    MapFragment mapFragment = new MapFragment();
+    MapActivity mapFragment = new MapActivity();
     HomeFragment homeFragment = new HomeFragment();
     ProfileFragment profileFragment = new ProfileFragment();
 
@@ -42,6 +46,8 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
         }
 
         if (deleted_qr){
+            Log.d("MainActivity", "QRCode deleted");
+            bottomNavigationView.setSelectedItemId(R.id.navigation_profile);
             getSupportFragmentManager().beginTransaction().replace(R.id.container, profileFragment).commit();
         }
     }
@@ -52,7 +58,12 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
         if (itemId == R.id.navigation_leaderboard) {
             getSupportFragmentManager().beginTransaction().replace(R.id.container, leaderboardFragment).commit();
         } else if (itemId == R.id.navigation_maps) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.container, mapFragment).commit();
+            //getSupportFragmentManager().beginTransaction().replace(R.id.container, mapFragment).commit();
+
+                    Intent intent = new Intent(MainActivity.this, MapActivity.class);
+                    intent.putExtra("message", "Hello from SourceActivity");
+                    startActivity(intent);
+
         } else if (itemId == R.id.navigation_home) {
             getSupportFragmentManager().beginTransaction().replace(R.id.container, homeFragment).commit();
         } else if (itemId == R.id.navigation_profile) {

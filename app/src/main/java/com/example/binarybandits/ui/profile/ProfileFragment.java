@@ -156,6 +156,7 @@ public class ProfileFragment extends Fragment {
                             myIntent.putExtras(extras);
                             // go to QRCodeInfoActivity to display the QR code
                             getActivity().startActivity(myIntent);
+                            QRAdapter.notifyDataSetChanged();
                         }
                     });
                 }
