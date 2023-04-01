@@ -243,7 +243,7 @@ public class QRCodeInfoActivity extends AppCompatActivity {
             });
 
             //Get other players that have scanned a QRCode
-            Button playersScannedByButton = findViewById(R.id.other_players_button);
+            ImageButton playersScannedByButton = findViewById(R.id.other_players_button);
             playersScannedByButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
