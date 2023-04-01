@@ -188,6 +188,11 @@ public class QRCodeDB {
         });
     }
 
+    /**
+     *
+     * @param query
+     * @param callback
+     */
     public void getQRCodesByQuery(Query query, QRCodeListCallback callback) {
         ArrayList<QRCode> qrCodeList = new ArrayList<>();
         query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -224,12 +229,20 @@ public class QRCodeDB {
         });
     }
 
+    /**
+     *
+     * @return
+     */
     public Query getQRCodesWithCoordinates() {
         return collectionReference.whereNotEqualTo("coordinates", null);
     }
 
-
-
+    /**
+     *
+     * @param radius
+     * @param location
+     * @param callback
+     */
     public void getNearbyQRCodes(float radius, ArrayList<Double> location, QRCodeListCallback callback) {
         ArrayList<QRCode> qrCodeList = new ArrayList<>();
         collectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -392,8 +405,4 @@ public class QRCodeDB {
             }
         });
     }
-
-    /*public CollectionReference getCollectionReference() {
-        return collectionReference;
-    }*/
 }
