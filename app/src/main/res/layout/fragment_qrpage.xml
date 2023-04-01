@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_black">
+    android:background="@color/background_black"
+    android:windowSoftInputMode="adjustPan">
 
     <TextView
         android:id="@+id/QR_header"
@@ -23,26 +24,27 @@
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/QRImageView"
-        android:layout_width="220dp"
-        android:layout_height="221dp"
+        android:layout_width="202dp"
+        android:layout_height="196dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/QR_header"
-        app:strokeColor="@color/white"
-        app:strokeWidth="2dp" />
+        app:layout_constraintTop_toBottomOf="@+id/QR_header"/>
+<!--        app:strokeColor="@color/white"-->
+<!--        app:strokeWidth="2dp" />-->
 
     <TextView
         android:id="@+id/qr_code_name"
         android:layout_width="393dp"
         android:layout_height="43dp"
-        android:layout_marginTop="268dp"
+        android:layout_marginTop="240dp"
         android:gravity="center"
         android:text="QRcodeName"
         android:textColor="#FF426F"
         android:textSize="30sp"
-        app:layout_constraintBottom_toTopOf="@+id/commentsList"
+        app:layout_constraintBottom_toBottomOf="@+id/comment_box"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.444"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
@@ -52,13 +54,11 @@
         android:layout_width="393dp"
         android:layout_height="39dp"
         android:layout_marginTop="3dp"
-        android:layout_marginBottom="20dp"
         android:gravity="center"
         android:text="###"
         android:textColor="@color/yellow"
         android:textSize="23sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/commentsList"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/qr_code_name" />
@@ -67,19 +67,21 @@
         android:id="@+id/comment_box"
         android:layout_width="398dp"
         android:layout_height="47dp"
+        android:layout_marginTop="90dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.461"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.802"
+        app:layout_constraintVertical_bias="0.764"
         app:srcCompat="@drawable/big_rounded_button"
         app:tint="#333333" />
 
     <EditText
         android:id="@+id/user_comment"
-        android:layout_width="390dp"
-        android:layout_height="34dp"
-        android:layout_marginStart="2dp"
+        android:layout_width="384dp"
+        android:layout_height="37dp"
+        android:layout_marginStart="5dp"
         android:layout_marginEnd="3dp"
         android:autofillHints=""
         android:hint="Add a comment..."
@@ -98,13 +100,12 @@
         android:id="@+id/linearLayout4"
         android:layout_width="383dp"
         android:layout_height="65dp"
+        android:layout_marginTop="60dp"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.678"
+        app:layout_constraintHorizontal_bias="0.75"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/comment_box"
-        app:layout_constraintVertical_bias="0.9">
+        app:layout_constraintTop_toBottomOf="@+id/comment_box">
 
 
         <ImageButton
@@ -168,34 +169,39 @@
         android:id="@+id/commentsList"
         android:layout_width="390dp"
         android:layout_height="161dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/ic_outline"
+        android:backgroundTint="#333333"
+        android:divider="#333333"
+        android:dividerHeight="1dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.444"
+        app:layout_constraintHorizontal_bias="0.476"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.653">
+        app:layout_constraintTop_toBottomOf="@+id/qr_code_score">
 
     </ListView>
 
     <Button
         android:id="@+id/addCommentBtn"
-        android:layout_width="77dp"
-        android:layout_height="42dp"
-        android:layout_marginBottom="5dp"
-        android:background="@color/red"
+        android:layout_width="82dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="290dp"
+        android:background="@drawable/big_rounded_button"
+        android:backgroundTint="@color/red"
         android:text="Comment"
         android:textColor="#FFFFFF"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.943"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.804" />
+        app:layout_constraintBottom_toBottomOf="@+id/comment_box"
+        app:layout_constraintEnd_toEndOf="@+id/comment_box"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/comment_box"
+        app:layout_constraintTop_toTopOf="@+id/comment_box"
+        app:layout_constraintVertical_bias="0.0" />
 
     <ImageButton
         android:id="@+id/other_players_button"
         android:layout_width="72dp"
         android:layout_height="65dp"
+        android:layout_marginBottom="48dp"
         android:background="@drawable/big_rounded_button"
         android:backgroundTint="@color/red"
         android:scaleType="fitCenter"
@@ -203,9 +209,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/linearLayout4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/comment_box"
-        app:layout_constraintVertical_bias="0.152" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
