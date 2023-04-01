@@ -36,6 +36,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * QRCodeInfoActivity gets the name of a QR code to display and displays the QR codes score,
@@ -110,6 +111,26 @@ public class QRCodeInfoActivity extends AppCompatActivity {
                     ImageButton delete_button = findViewById(R.id.delete_button);
                     Button commentButton = findViewById(R.id.addCommentBtn);
                     EditText textBox = findViewById(R.id.user_comment);
+
+                    // get list of players who have scanned this QR Code
+                    ArrayList<String> players = qrCode.getPlayersScannedBy();
+
+                    // bool for testing if user can comment on this qr code
+                    Boolean playerHasScanned =  false;
+
+                    // test to see if player has scanned QR Code
+                    Integer playersSize = players.size();
+                    for(int i = 0; i<playersSize; i++){
+                        if(Objects.equals(players.get(i), username)){
+                            playerHasScanned = true;
+                        }
+                    }
+                    // set permissions if player does not have QR code
+                    if(playerHasScanned == false){
+                        commentButton.setEnabled(false);
+                        textBox.setEnabled(false);
+                        textBox.setHint("Scan this QR code to comment");
+                    }
 
                     // get score and picture of QR code
                     String score = Integer.toString(qrCode.getPoints());
