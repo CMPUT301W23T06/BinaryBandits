@@ -134,6 +134,7 @@
                 android:background="@drawable/gray_button"
                 android:scaleType="fitCenter"
                 android:src="@drawable/ic_delete"
+                android:padding="5dp"
                 android:backgroundTint="#333333"
                 />
 
