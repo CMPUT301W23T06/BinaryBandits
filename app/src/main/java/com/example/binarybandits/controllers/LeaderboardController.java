@@ -25,6 +25,6 @@ public class LeaderboardController {
             }
         }
         percentile = (int) Math.ceil((double)(count * 100) / (n - 1));
-        return percentile;
+        return 100 - percentile;
     }
 }

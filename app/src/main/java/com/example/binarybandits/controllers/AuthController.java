@@ -124,7 +124,6 @@ public class AuthController {
                     ctx.startActivity(myIntent);
                 }
                 else {
-                    //Need to move Toast to a View class
                     Toast message = Toast.makeText(ctx, "Username is taken!", Toast.LENGTH_LONG);
                     message.show();
                 }
