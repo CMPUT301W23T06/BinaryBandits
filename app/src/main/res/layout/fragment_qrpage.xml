@@ -13,10 +13,6 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:text="QR Code"
-        android:textAlignment="center"
-        android:textColor="@color/gray"
-        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -45,20 +41,24 @@
         android:text="QRcodeName"
         android:textColor="#FF426F"
         android:textSize="30sp"
+        app:layout_constraintBottom_toTopOf="@+id/commentsList"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.666"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/qr_code_score"
         android:layout_width="393dp"
         android:layout_height="39dp"
-        android:layout_marginTop="7dp"
+        android:layout_marginTop="3dp"
+        android:layout_marginBottom="20dp"
         android:gravity="center"
         android:text="###"
         android:textColor="@color/yellow"
         android:textSize="23sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/commentsList"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/qr_code_name" />
@@ -104,7 +104,7 @@
         app:layout_constraintHorizontal_bias="0.678"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/comment_box"
-        app:layout_constraintVertical_bias="0.771">
+        app:layout_constraintVertical_bias="0.9">
 
 
         <ImageButton
@@ -132,11 +132,10 @@
                 android:layout_gravity="center"
                 android:layout_marginBottom="16dp"
                 android:background="@drawable/gray_button"
-                android:scaleType="fitCenter"
-                android:src="@drawable/ic_delete"
-                android:padding="5dp"
                 android:backgroundTint="#333333"
-                />
+                android:padding="5dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_delete" />
 
 
         </LinearLayout>
