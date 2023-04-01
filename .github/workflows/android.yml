@@ -24,8 +24,6 @@ jobs:
       run: chmod +x gradlew
     - name: Touch local properties
       run: touch local.properties
-    - name: Add Api Key
-      run: echo "apiKey=\"\"" >> local.properties
     - name: Build with Gradle
       run: ./gradlew build
     - name: Run Unit Tests
