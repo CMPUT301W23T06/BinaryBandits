@@ -40,6 +40,10 @@ public class otherProfileActivity extends Activity {
     private ArrayList<Player> players;
     private PlayerController controller;
 
+    /**
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -14,14 +14,21 @@ import com.example.binarybandits.ui.profile.ProfileFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
+/**
+ *
+ */
 public class MainActivity extends AppCompatActivity implements NavigationBarView.OnItemSelectedListener {
 
     BottomNavigationView bottomNavigationView;
     LeaderboardFragment leaderboardFragment = new LeaderboardFragment();
-    MapActivity mapFragment = new MapActivity();
+    MapFragment mapFragment = new MapFragment();
     HomeFragment homeFragment = new HomeFragment();
     ProfileFragment profileFragment = new ProfileFragment();
 
+    /**
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,17 +59,22 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
         }
     }
 
+    /**
+     *
+     * @param item
+     * @return
+     */
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int itemId = item.getItemId();
         if (itemId == R.id.navigation_leaderboard) {
             getSupportFragmentManager().beginTransaction().replace(R.id.container, leaderboardFragment).commit();
         } else if (itemId == R.id.navigation_maps) {
-            //getSupportFragmentManager().beginTransaction().replace(R.id.container, mapFragment).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.container, mapFragment).commit();
 
-                    Intent intent = new Intent(MainActivity.this, MapActivity.class);
+                    /*Intent intent = new Intent(MainActivity.this, MapActivity.class);
                     intent.putExtra("message", "Hello from SourceActivity");
-                    startActivity(intent);
+                    startActivity(intent);*/
 
         } else if (itemId == R.id.navigation_home) {
             getSupportFragmentManager().beginTransaction().replace(R.id.container, homeFragment).commit();

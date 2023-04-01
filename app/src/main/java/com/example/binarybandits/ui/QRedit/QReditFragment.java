@@ -22,17 +22,29 @@ import android.widget.ImageView;
 
 import com.example.binarybandits.R;
 
+/**
+ *
+ */
 public class QReditFragment extends Fragment {
 
     private QReditViewModel mViewModel;
     private int REQUEST_IMAGE_CAPTURE = 1 ;
     private Button add_location;
 
-
+    /**
+     *
+     * @return
+     */
     public static QReditFragment newInstance() {
         return new QReditFragment();
     }
 
+    /**
+     *
+     * @param inflater
+     * @param container
+     * @param v
+     */
     public void onClick(LayoutInflater inflater, ViewGroup container ,View v) {
 
         if ( v == getView().findViewById(R.id.add_location_button)) {
@@ -53,6 +65,13 @@ public class QReditFragment extends Fragment {
         }
 
     }
+
+    /**
+     *
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     @Override
     public void onActivityResult(int requestCode,int resultCode,@Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -68,6 +87,11 @@ public class QReditFragment extends Fragment {
             imageView.setImageBitmap(capturedImage);
 
         }}
+
+    /**
+     *
+     * @param view
+     */
     public void onCheckboxClicked(View view) {
         // Is the view now checked?
         boolean checked = ((CheckBox) view).isChecked();
@@ -85,12 +109,23 @@ public class QReditFragment extends Fragment {
         }
     }
 
+    /**
+     *
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_qredit, container, false);
     }
 
+    /**
+     *
+     * @param savedInstanceState
+     */
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
