@@ -21,7 +21,6 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.binarybandits.DBConnector;
-import com.example.binarybandits.MapActivity;
 import com.example.binarybandits.R;
 import com.example.binarybandits.controllers.AuthController;
 import com.example.binarybandits.controllers.PermissionsController;
@@ -167,7 +166,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     }
 
     /**
-     * Get the user's current location and show current location on the MapActivity
+     * Get the user's current location and show current location on the MapFragment
      * @param googleMap Google Maps SDK object
      */
     public void getCurrentLocation(GoogleMap googleMap) {
