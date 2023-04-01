@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Camera;
+import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -34,6 +35,8 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.Circle;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
@@ -59,7 +62,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     private FusedLocationProviderClient fusedLocationClient;
     private SearchView searchView;
-    private ArrayList<Double> currentLocation;
     private final float defaultZoom = 15.0f;
 
     /**
@@ -101,9 +103,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             Log.e(TAG, "Can't find style. Error: ", e);
         }
         getCurrentLocation(googleMap);
-        /*googleMap.addMarker(new MarkerOptions()
-                .position(new LatLng(0, 0))
-                .title("Marker"));*/
 
         QRCodeDB qrCodeDB = new QRCodeDB(new DBConnector());
 
@@ -135,6 +134,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         });
 
         getQRCodeLocations(qrCodeDB, googleMap);
+
         //Referenced: https://www.geeksforgeeks.org/how-to-add-searchview-in-google-maps-in-android/
         //Author: https://auth.geeksforgeeks.org/user/chaitanyamunje/articles
         //License: CCBY-SA https://www.geeksforgeeks.org/copyright-information/
@@ -162,7 +162,12 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                         Address address = addressList.get(0);
 
                         LatLng latLngOfAddress = new LatLng(address.getLatitude(), address.getLongitude());
+                        ArrayList<Double> coordinatesOfAddress = new ArrayList<>();
+                        coordinatesOfAddress.add(address.getLatitude());
+                        coordinatesOfAddress.add(address.getLongitude());
 
+                        int km = 5; //For testing purposes
+                        getNearbyQRCodes(qrCodeDB, googleMap, coordinatesOfAddress, km);
                         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLngOfAddress, defaultZoom));
                     }
                 }
@@ -204,25 +209,65 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     }
 
 
+    /**
+     * Get locations of all QR codes that have a geolocation. Place markers at locations of all QR codes.
+     * @param qrCodeDB database of QRCodes
+     * @param googleMap Google Maps SDK object
+     */
     public void getQRCodeLocations(QRCodeDB qrCodeDB, GoogleMap googleMap) {
         //TODO: Currently all QR codes with a location are retrieved (we should only retrieve nearby QR codes)
         //Referenced: https://stackoverflow.com/questions/49839437/how-to-show-markers-only-inside-of-radius-circle-on-maps
         qrCodeDB.getQRCodesByQuery(qrCodeDB.getQRCodesWithCoordinates(), new QRCodeListCallback() {
             @Override
             public void onQRCodeListCallback(ArrayList<QRCode> qrCodeList) {
-                for(int i = 0; i < qrCodeList.size(); i++) {
-                    QRCode qrCode = qrCodeList.get(i);
-                    if(qrCode != null) {
-                        String name = qrCode.getName();
-                        double latitude = qrCode.getCoordinates().get(0);
-                        double longitude = qrCode.getCoordinates().get(1);
-                        Marker marker = googleMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)).title(name));
-                        assert marker != null;
-                        marker.setTag(qrCode);
-                    }
-                }
+                googleMap.clear();
+                placeMarkers(qrCodeList, googleMap);
             }
         });
+    }
+
+    /**
+     * Get locations of all QR codes near a given location. Place markers at locations of all QR codes.
+     * @param qrCodeDB database of QRCodes
+     * @param googleMap Google Maps SDK object
+     * @param location latitude and longitude of location to find codes near
+     * @param km radius of search near location
+     */
+    public void getNearbyQRCodes(QRCodeDB qrCodeDB, GoogleMap googleMap, ArrayList<Double> location, int km) {
+        final float toDegreesScalar = 0.009f;
+        float distance = toDegreesScalar*km;
+        qrCodeDB.getNearbyQRCodes(distance, location, new QRCodeListCallback() {
+            @Override
+            public void onQRCodeListCallback(ArrayList<QRCode> qrCodeList) {
+                googleMap.clear();
+                googleMap.addCircle(new CircleOptions()
+                        .center(new LatLng(location.get(0), location.get(1)))
+                        .radius(km*1000)
+                        .strokeColor(Color.RED)
+                        .strokeWidth(2.0f)
+                        .fillColor(0x220000FF));
+                placeMarkers(qrCodeList, googleMap);
+            }
+        });
+    }
+
+    /**
+     * Place markers on the map at locations of all QR codes in a list
+     * @param qrCodeList list of QRCodes
+     * @param googleMap Google Maps SDK object
+     */
+    public void placeMarkers(ArrayList<QRCode> qrCodeList, GoogleMap googleMap) {
+        for(int i = 0; i < qrCodeList.size(); i++) {
+            QRCode qrCode = qrCodeList.get(i);
+            if(qrCode != null) {
+                String name = qrCode.getName();
+                double latitude = qrCode.getCoordinates().get(0);
+                double longitude = qrCode.getCoordinates().get(1);
+                Marker marker = googleMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)).title(name));
+                assert marker != null;
+                marker.setTag(qrCode);
+            }
+        }
     }
 
 

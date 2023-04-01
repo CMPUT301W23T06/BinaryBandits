@@ -16,7 +16,7 @@
         app:labelVisibilityMode="unlabeled"
         app:itemIconTint="@color/bottom_nav_color"
         app:itemBackground="@android:color/transparent"
-        android:background="?android:attr/windowBackground"
+        android:background="@color/bottom_nav_bg_color"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
