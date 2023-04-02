@@ -113,7 +113,7 @@
             android:layout_width="72dp"
             android:layout_height="match_parent"
             android:background="@drawable/big_rounded_button"
-            android:padding="5dp"
+            android:padding="8dp"
             android:scaleType="fitCenter"
             android:src="@drawable/ic_image" />
 
@@ -148,7 +148,8 @@
             android:layout_height="match_parent"
             android:background="@drawable/big_rounded_button"
             android:scaleType="fitCenter"
-            android:src="@drawable/ic_geopin" />
+            android:src="@drawable/ic_geopin"
+            android:padding="5dp"/>
 
 
     </LinearLayout>
@@ -207,6 +208,7 @@
         android:backgroundTint="@color/red"
         android:scaleType="fitCenter"
         android:src="@drawable/ic_other_users"
+        android:padding="7dp"
         app:layout_constraintBottom_toBottomOf="@+id/linearLayout4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
