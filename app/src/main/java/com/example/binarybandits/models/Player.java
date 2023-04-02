@@ -28,7 +28,7 @@ public class Player {
         this.totalScore = 0;
         this.totalQRCodes = 0;
         this.playerAvatar = null; //temporary
-        this.qrCodesScanned = new ArrayList<QRCode>();
+        this.qrCodesScanned = new ArrayList<String>();
         this.highestScore = 0;
     }
 
@@ -43,7 +43,7 @@ public class Player {
         this.totalScore = 0;
         this.totalQRCodes = 0;
         this.playerAvatar = null; //temporary
-        this.qrCodesScanned = new ArrayList<QRCode>();
+        this.qrCodesScanned = new ArrayList<String>();
         this.highestScore = 0;
     }
 
@@ -54,9 +54,9 @@ public class Player {
      * @param totalScore total score of a player's scanned QR codes
      * @param totalQRCodes number of QR codes a player has scanned
      * @param playerAvatar player's avatar picture
-     * @param qrCodesScanned list of QR code objects scanned by the player
+     * @param qrCodesScanned list of QR code names scanned by the player
      */
-    public Player(String username, String phone, int totalScore, int totalQRCodes, Bitmap playerAvatar, ArrayList<QRCode> qrCodesScanned, int highestScore) {
+    public Player(String username, String phone, int totalScore, int totalQRCodes, Bitmap playerAvatar, ArrayList<String> qrCodesScanned, int highestScore) {
         this.username = username;
         this.phone = phone;
         this.totalScore = totalScore;
@@ -71,7 +71,7 @@ public class Player {
     int totalScore;
     int totalQRCodes;
     Bitmap playerAvatar;
-    ArrayList<QRCode> qrCodesScanned;
+    ArrayList<String> qrCodesScanned;
     int highestScore;
 
 
@@ -180,7 +180,7 @@ public class Player {
      * Gets list of scanned QR codes
      * @return Return the list of scanned QR codes
      */
-    public ArrayList<QRCode> getQrCodesScanned() {
+    public ArrayList<String> getQrCodesScanned() {
         return qrCodesScanned;
     }
 
@@ -188,7 +188,7 @@ public class Player {
      * Sets list of scanned QR codes to a new ArrayList
      * @param qrCodesScanned new ArrayList of QR codes scanned
      */
-    public void setQrCodesScanned(ArrayList<QRCode> qrCodesScanned) {
+    public void setQrCodesScanned(ArrayList<String> qrCodesScanned) {
         this.qrCodesScanned = qrCodesScanned;
     }
 
@@ -215,7 +215,7 @@ public class Player {
      * Adds a QRCode to list of scanned QR codes if the QRCode is not in the list
      * @param qrCode QRCode to add to list of scanned QR codes
      */
-    public void addQRCodeScanned(QRCode qrCode) {
+    public void addQRCodeScanned(String qrCode) {
         if (findQRCodeScanned(qrCode)) {
             throw new IllegalArgumentException();
         }
@@ -227,9 +227,9 @@ public class Player {
      * @param qrCode QRCode to look for in list of scanned QR codes
      * @return Return true if the qrCode is found in list of scanned QR codes, false otherwise
      */
-    public boolean findQRCodeScanned(QRCode qrCode) {
+    public boolean findQRCodeScanned(String qrCode) {
         for (int i = 0; i < qrCodesScanned.size(); i++) {
-            if (qrCodesScanned.get(i).getName().equals(qrCode.getName())) {
+            if (qrCodesScanned.get(i).equals(qrCode)) {
                 return true;
             }
         }
@@ -240,11 +240,11 @@ public class Player {
      * Removes a QRCode from the list of scanned QR codes if the QR code is in the list
      * @param qrCode QRCode to remove in list of scanned QR codes
      */
-    public void removeQRCodeScanned(QRCode qrCode) {
+    public void removeQRCodeScanned(String qrCode) {
         //Referenced: https://stackoverflow.com/questions/8520808/how-to-remove-specific-object-from-arraylist-in-java
         //Author: https://stackoverflow.com/users/1899700/tmh
         //License: CC BY-SA 4.0
-        if(!qrCodesScanned.removeIf(qrCode1 -> qrCode.getName().equals(qrCode1.getName()))) {
+        if(!qrCodesScanned.removeIf(qrCode::equals)) {
             throw new IllegalArgumentException();
         }
     }

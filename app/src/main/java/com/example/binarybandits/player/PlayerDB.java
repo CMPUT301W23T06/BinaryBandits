@@ -133,11 +133,11 @@ public class PlayerDB {
                         Bitmap avatar = (Bitmap) documentSnapshot.get("avatar");
                         int totalScore = Objects.requireNonNull(documentSnapshot.getLong("totalScore")).intValue();
                         int totalQRCodes = Objects.requireNonNull(documentSnapshot.getLong("totalQRCodes")).intValue();
-                        ArrayList<Map<String, Object>> qrCodesScanned = (ArrayList<Map<String, Object>>) documentSnapshot.get("qrCodesScanned");
-
-                        ArrayList<QRCode> convertedQRCodes = getPlayerHelper(qrCodesScanned);
+                        //ArrayList<Map<String, Object>> qrCodesScanned = (ArrayList<Map<String, Object>>) documentSnapshot.get("qrCodesScanned");
+                        ArrayList<String> qrCodesScanned = (ArrayList<String>) documentSnapshot.get("qrCodesScanned");
+                        //ArrayList<QRCode> convertedQRCodes = getPlayerHelper(qrCodesScanned);
                         int highestScore = Objects.requireNonNull(documentSnapshot.getLong("highestScore")).intValue();
-                        player = new Player(username, phone, totalScore, totalQRCodes, avatar, convertedQRCodes, highestScore);
+                        player = new Player(username, phone, totalScore, totalQRCodes, avatar, qrCodesScanned, highestScore);
                         Log.d(TAG, "Player information retrieved from database");
                         Log.d(TAG, "Player Name: " + player.getUsername() + "\n Score: " + player.getTotalScore());
                     } else {
@@ -247,11 +247,11 @@ public class PlayerDB {
                             Bitmap avatar = (Bitmap) doc.get("avatar");
                             int totalScore = Objects.requireNonNull(doc.getLong("totalScore")).intValue();
                             int totalQRCodes = Objects.requireNonNull(doc.getLong("totalQRCodes")).intValue();
-                            ArrayList<Map<String, Object>> qrCodesScanned = (ArrayList<Map<String, Object>>) doc.get("qrCodesScanned");
-
-                            ArrayList<QRCode> convertedQRCodes = getPlayerHelper(qrCodesScanned);
+                            //ArrayList<Map<String, Object>> qrCodesScanned = (ArrayList<Map<String, Object>>) doc.get("qrCodesScanned");
+                            ArrayList<String> qrCodesScanned = (ArrayList<String>) doc.get("qrCodesScanned");
+                            //ArrayList<QRCode> convertedQRCodes = getPlayerHelper(qrCodesScanned);
                             int highestScore = Objects.requireNonNull(doc.getLong("highestScore")).intValue();
-                            Player player = new Player(username, phone, totalScore, totalQRCodes, avatar, convertedQRCodes, highestScore);
+                            Player player = new Player(username, phone, totalScore, totalQRCodes, avatar, qrCodesScanned, highestScore);
                             playerList.add(player);
                             Log.d(TAG, "Player added!");
                         }
@@ -304,7 +304,7 @@ public class PlayerDB {
      * @param qrCode QR code to find all players that have scanned it
      * @param callback has method containing what to do with list of players with the given QR code
      */
-    public void findPlayersWithQRCode(QRCode qrCode, PlayerListCallback callback) {
+    public void findPlayersWithQRCode(String qrCode, PlayerListCallback callback) {
         ArrayList<Player> playersWithQRCode = new ArrayList<>();
         getPlayersByQuery(getAllPlayers(), new PlayerListCallback() {
             @Override

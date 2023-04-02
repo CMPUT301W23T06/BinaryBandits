@@ -295,38 +295,43 @@ public class QRCodeDB {
      */
     public void getQRCodesFromList(ArrayList<String> qrCodeNames, QRCodeListCallback callback) {
         ArrayList<QRCode> qrCodeList = new ArrayList<>();
-        collectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    for(QueryDocumentSnapshot doc: task.getResult()) {
-                        Log.d(TAG, doc.getString("name"));
-                        if (doc != null) {
-                            String scannerUID = doc.getString("scannerUID");
-                            String hash = doc.getString("hash");
-                            String name = doc.getString("name");
-                            int points = doc.getLong("points").intValue();
-                            ArrayList<Double> coordinates = (ArrayList<Double>) doc.get("coordinates");
-                            String locationImage = doc.getString("locationImage");
-                            ArrayList<Map<String, Object>> comments = (ArrayList<Map<String, Object>>) doc.get("comments");
+        if(qrCodeNames.isEmpty()) {
+            callback.onQRCodeListCallback(qrCodeList);
+        }
+        else {
+            Query query = collectionReference.whereIn("name", qrCodeNames);
+            query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot doc : task.getResult()) {
+                            Log.d(TAG, doc.getString("name"));
+                            if (doc != null) {
+                                String scannerUID = doc.getString("scannerUID");
+                                String hash = doc.getString("hash");
+                                String name = doc.getString("name");
+                                int points = doc.getLong("points").intValue();
+                                ArrayList<Double> coordinates = (ArrayList<Double>) doc.get("coordinates");
+                                String locationImage = doc.getString("locationImage");
+                                ArrayList<Map<String, Object>> comments = (ArrayList<Map<String, Object>>) doc.get("comments");
 
-                            ArrayList<Comment> convertedComments = getQRCodeHelper(comments);
+                                ArrayList<Comment> convertedComments = getQRCodeHelper(comments);
 
-                            ArrayList<String> playersScannedBy = (ArrayList<String>) doc.get("playersScannedBy");
-                            int numPlayersScannedBy = doc.getLong("numPlayersScannedBy").intValue();
-                            QRCode qrCode = new QRCode(hash, name, points, scannerUID, coordinates,
-                                    locationImage, convertedComments, numPlayersScannedBy, playersScannedBy);
-                            qrCodeList.add(qrCode);
+                                ArrayList<String> playersScannedBy = (ArrayList<String>) doc.get("playersScannedBy");
+                                int numPlayersScannedBy = doc.getLong("numPlayersScannedBy").intValue();
+                                QRCode qrCode = new QRCode(hash, name, points, scannerUID, coordinates,
+                                        locationImage, convertedComments, numPlayersScannedBy, playersScannedBy);
+                                qrCodeList.add(qrCode);
+                            }
                         }
+                        Log.d(TAG, qrCodeList.toString());
+                        callback.onQRCodeListCallback(qrCodeList);
+                    } else {
+                        Log.d(TAG, task.getException().getMessage());
                     }
-                    Log.d(TAG, qrCodeList.toString());
-                    callback.onQRCodeListCallback(qrCodeList);
                 }
-                else {
-                    Log.d(TAG, task.getException().getMessage());
-                }
-            }
-        });
+            });
+        }
     }
 
     /**

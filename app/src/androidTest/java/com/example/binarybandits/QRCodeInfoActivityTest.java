@@ -164,7 +164,7 @@ public class QRCodeInfoActivityTest {
                 db_p.getPlayer("test", new PlayerCallback() {
                     @Override
                     public void onPlayerCallback(Player player) {
-                        assertFalse(player.findQRCodeScanned(qrCode));
+                        assertFalse(player.findQRCodeScanned(qrCode.getName()));
                     }
                 });
             }
