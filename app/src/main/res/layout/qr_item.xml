@@ -33,19 +33,21 @@
         android:id="@+id/QR_name"
         android:layout_width="243dp"
         android:layout_height="53dp"
+        android:layout_marginLeft="7dp"
+        android:fontFamily="@font/poppins"
         android:gravity="center_vertical"
         android:text="Name"
         android:textColor="@color/white"
-        android:textSize="20sp"
-        android:layout_marginLeft="7dp"/>
+        android:textSize="18sp" />
 
     <TextView
         android:id="@+id/QR_score"
         android:layout_width="83dp"
         android:layout_height="54dp"
+        android:fontFamily="@font/poppins_semibold"
         android:gravity="center"
         android:text="###"
         android:textColor="@color/yellow"
-        android:textSize="20sp" />
+        android:textSize="18sp" />
 
 </LinearLayout>
