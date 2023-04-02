@@ -95,7 +95,9 @@ public class QRCodeDB {
                                     qrCodeInDB.setPlayersScannedBy(playersScannedBy);
                                 }
                                 else {
-                                    qrCodeInDB.addPlayerScannedBy(username);
+                                    if(!qrCodeInDB.getPlayersScannedBy().contains(username)) {
+                                        qrCodeInDB.addPlayerScannedBy(username);
+                                    }
                                 }
 
                                 //Coordinates is set to most recent location of QRCode
