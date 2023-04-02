@@ -114,10 +114,10 @@ public class QRCodeEditActivity extends AppCompatActivity {
                     public void onPlayerCallback(Player player) {
                         //Add current player's username to list of players that have scanned a QR code
                         String username = player.getUsername();
-                        ArrayList<String> playersScannedBy = new ArrayList<>();
-                        playersScannedBy.add(username);
+                        //ArrayList<String> playersScannedBy = new ArrayList<>();
+                        //playersScannedBy.add(username);
                         //Create a new QR code and add it to the database. Location image can be set by clicking add image button
-                        QRCode qrCode = new QRCode(hash, name, points, uid, coordinates, "", new ArrayList<>(), 1, playersScannedBy);
+                        QRCode qrCode = new QRCode(hash, name, points, uid, coordinates, "", new ArrayList<>(), 1, new ArrayList<>());
                         scannerController.addQRCode(qrCode, player);
                     }
                 });
