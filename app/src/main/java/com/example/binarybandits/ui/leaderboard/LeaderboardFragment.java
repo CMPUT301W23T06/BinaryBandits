@@ -39,6 +39,7 @@ import com.example.binarybandits.qrcode.QRCodeDB;
 import com.example.binarybandits.qrcode.QRCodeListCallback;
 import com.example.binarybandits.ui.profile.ProfileFragment;
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.squareup.picasso.Picasso;
 
 import org.checkerframework.checker.units.qual.A;
@@ -86,33 +87,6 @@ public class LeaderboardFragment extends Fragment {
             @Override
             public void onPlayerListCallback(ArrayList<Player> playerResultsList) {
                 Log.d("Leaderboard", playerResultsList.toString());
-                //Remove Later!!!
-                /*
-                Log.d("Size", String.valueOf(playerResultsList.size()));
-                for(int i = 0; i < playerResultsList.size(); i++) {
-                    ArrayList<QRCode> qrCodes = playerResultsList.get(i).getQrCodesScanned();
-                    ArrayList<String> names = new ArrayList<>();
-                    for(int j = 0; j < qrCodes.size(); j++) {
-                        names.add(qrCodes.get(j).getName());
-                    }
-                    Log.d("OuterLoop", names.toString());
-                    Log.d("Username", playerResultsList.get(i).getUsername());
-                    if(qrCodes != null) {
-                        for(int j = 0; j < qrCodes.size(); j++) {
-                            int finalJ = j;
-                            db.findPlayersWithQRCode(qrCodes.get(j), new PlayerListCallback() {
-                                @Override
-                                public void onPlayerListCallback(ArrayList<Player> playerList) {
-                                    for(int k = 0; k < playerList.size(); k++) {
-                                        qrCodes.get(finalJ).addPlayerScannedBy(playerList.get(k).getUsername());
-                                    }
-                                    qrCodeDB.updateQRCode(qrCodes.get(finalJ));
-                                }
-                            });
-                        }
-                    }
-                }
-                */
                 displayLeaderboard(leaderboard, playerResultsList, true);
             }
         });
@@ -147,7 +121,11 @@ public class LeaderboardFragment extends Fragment {
                     String nameOfPlayer = (String) name.getText();
                     // If user clicks on themselves in leaderboard send them to their profile page
                     if(Objects.equals(players.get(i+3).getUsername(), nameOfPlayer)){
-                        getFragmentManager().beginTransaction().replace(R.id.container, new ProfileFragment()).commit();
+
+                        BottomNavigationView bottomNavigationView = getActivity().findViewById(R.id.nav_view);
+                        bottomNavigationView.setSelectedItemId(R.id.navigation_profile);
+
+                        //getFragmentManager().beginTransaction().replace(R.id.container, new ProfileFragment()).commit();
                     }
                     // else send them to other players profile
                     else{
@@ -169,7 +147,12 @@ public class LeaderboardFragment extends Fragment {
                     String nameOfPlayer = (String) name.getText();
                     // If user clicks on themselves in leaderboard send them to their profile page
                     if(Objects.equals(players.get(0).getUsername(), nameOfPlayer)){
-                        getFragmentManager().beginTransaction().replace(R.id.container, new ProfileFragment()).commit();
+
+                        BottomNavigationView bottomNavigationView = getActivity().findViewById(R.id.nav_view);
+                        bottomNavigationView.setSelectedItemId(R.id.navigation_profile);
+
+                        //getFragmentManager().beginTransaction().replace(R.id.container, new ProfileFragment()).commit();
+
                     }
                     // else send them to other players profile
                     else {
@@ -192,7 +175,11 @@ public class LeaderboardFragment extends Fragment {
                     String nameOfPlayer = (String) name.getText();
                     // If user clicks on themselves in leaderboard send them to their profile page
                     if(Objects.equals(players.get(1).getUsername(), nameOfPlayer)){
-                        getFragmentManager().beginTransaction().replace(R.id.container, new ProfileFragment()).commit();
+
+                        BottomNavigationView bottomNavigationView = getActivity().findViewById(R.id.nav_view);
+                        bottomNavigationView.setSelectedItemId(R.id.navigation_profile);
+
+                        //getFragmentManager().beginTransaction().replace(R.id.container, new ProfileFragment()).commit();
                     }
                     // else send them to other players profile
                     else {
@@ -214,7 +201,11 @@ public class LeaderboardFragment extends Fragment {
                     String nameOfPlayer = (String) name.getText();
                     // If user clicks on themselves in leaderboard send them to their profile page
                     if(Objects.equals(players.get(2).getUsername(), nameOfPlayer)){
-                        getFragmentManager().beginTransaction().replace(R.id.container, new ProfileFragment()).commit();
+
+                        BottomNavigationView bottomNavigationView = getActivity().findViewById(R.id.nav_view);
+                        bottomNavigationView.setSelectedItemId(R.id.navigation_profile);
+
+                        //getFragmentManager().beginTransaction().replace(R.id.container, new ProfileFragment()).commit();
                     }
                     // else send them to other players profile
                     else {
