@@ -60,7 +60,6 @@ public class otherProfileActivity extends Activity {
         ImageView otherImage = findViewById(R.id.profileIconImageView);
         ImageButton back = findViewById(R.id.buttonBack);
         back.setVisibility(View.VISIBLE);
-        LeaderboardFragment leaderboard = new LeaderboardFragment();
         Bundle extras = getIntent().getExtras();
         String player_name = extras.getString("name");
         String typeOfList = extras.getString("list");
@@ -119,14 +118,14 @@ public class otherProfileActivity extends Activity {
                 else{
                     lowest.setText("0");
                 }*/
-                ListView QRlist = findViewById(R.id.list_view_player_qr_codes);
                 ArrayList<String> qrCodeNames = otherPlayer.getQrCodesScanned();
-                ArrayList<QRCode> dataList = new ArrayList<>();
+                //ArrayList<QRCode> dataList = new ArrayList<>();
 
                 final Player finalOtherPlayer = otherPlayer;
                 qrCodeDB.getQRCodesFromList(qrCodeNames, new QRCodeListCallback() {
                     @Override
                     public void onQRCodeListCallback(ArrayList<QRCode> qrCodeList) {
+                        ListView QRlist = findViewById(R.id.list_view_player_qr_codes);
                         ArrayAdapter<QRCode> QRAdapter = new QRArrayAdapter(otherProfileActivity.this, qrCodeList);
                         QRlist.setAdapter(QRAdapter);
                         ArrayList<QRCode> finalDataList = qrCodeList;

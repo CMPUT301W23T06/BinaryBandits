@@ -235,7 +235,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     /**
      * Get locations of all QR codes near a given location. Place markers at locations of all QR codes.
-     * @param qrCodeList
+     * @param qrCodeList list of all QR codes with locations in the database
      * @param googleMap Google Maps SDK object
      * @param location latitude and longitude of location to find codes near
      * @param radius radius of search near location
