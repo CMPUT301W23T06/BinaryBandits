@@ -67,6 +67,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         // Inflate the layout for this fragment
         mapView = inflater.inflate(R.layout.fragment_maps, container, false);
 
+        if (getArguments() != null) {
+            Bundle args = getArguments();
+            String qrCode = args.getString("QRCode");
+            Log.d("test", "test1");
+            Log.d("name", qrCode);
+        }
+
 
         // Get a handle to the fragment and register the callback.
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
