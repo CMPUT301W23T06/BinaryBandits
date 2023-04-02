@@ -4,14 +4,15 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.example.binarybandits.R;
 import com.example.binarybandits.ScanQRActivity;
 import com.example.binarybandits.controllers.PermissionsController;
+import com.example.binarybandits.ui.auth.LogInActivity;
 
 /**
  * A Fragment displaying the Home Page, to be displayed in MainActivity above bottom navigation bar
@@ -19,6 +20,7 @@ import com.example.binarybandits.controllers.PermissionsController;
 public class HomeFragment extends Fragment {
 
     private ImageButton scanButton;
+    private Button signOut;
 
     /**
      *
@@ -35,6 +37,15 @@ public class HomeFragment extends Fragment {
             public void onClick(View v)  {
                 Intent myIntent = new Intent(getActivity(), ScanQRActivity.class);
                 requireActivity().startActivity(myIntent);
+            }
+        });
+
+        signOut = view.findViewById(R.id.signOutButton);
+        signOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent myIntent = new Intent(getActivity(), LogInActivity.class);
+                startActivity(myIntent);
             }
         });
         PermissionsController.askAllPermissions(getActivity());
