@@ -1,5 +1,8 @@
 package com.example.binarybandits.ui.leaderboard;
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -240,6 +243,9 @@ public class LeaderboardFragment extends Fragment {
                     @Override
                     public void onPlayerListCallback(ArrayList<Player> playerList) {
                         displayLeaderboard(leaderboard, playerList, true);
+                        scoreButton.setTextColor(Color.parseColor("#FFFFFF"));
+                        qrCodeButton.setBackground(null);
+                        qrCodeButton.setTextColor(Color.parseColor("#FD426F"));
                     }
                 });
             }
@@ -254,6 +260,9 @@ public class LeaderboardFragment extends Fragment {
                     @Override
                     public void onPlayerListCallback(ArrayList<Player> playerList) {
                         displayLeaderboard(leaderboard, playerList, false);
+                        qrCodeButton.setTextColor(Color.parseColor("#FFFFFF"));
+                        scoreButton.setBackground(null);
+                        scoreButton.setTextColor(Color.parseColor("#FD426F"));
                     }
                 });
             }
