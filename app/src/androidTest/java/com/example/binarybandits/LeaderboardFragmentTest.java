@@ -15,10 +15,14 @@ import com.example.binarybandits.player.PlayerDB;
 import com.example.binarybandits.ui.auth.LogInActivity;
 import com.robotium.solo.Solo;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
+/**
+ * Test class for the LeaderboardFragment view class.
+ */
 public class LeaderboardFragmentTest{
     private Solo solo;
     private PlayerDB db = new PlayerDB(new DBConnector());
@@ -107,14 +111,15 @@ public class LeaderboardFragmentTest{
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
         solo.clickOnView(solo.getView(R.id.navigation_leaderboard)); //Click leaderboard
         solo.waitForText("#4"); // wait until screen is loaded
-        solo.clickOnView(solo.getView(R.id.player_name_text));//Click player Button
+        solo.clickOnView(solo.getView(R.id.playerList));
+        solo.clickOnView(solo.getView(R.id.profileCardView));
         solo.assertCurrentActivity("Wrong Activity", otherProfileActivity.class);
     }
 
     /**
      * 
      */
-    @Test
+    @After
     public void tearDown() {
         solo.finishOpenedActivities();
         AuthController.setUserLoggedInStatus(rule.getActivity(), false);
