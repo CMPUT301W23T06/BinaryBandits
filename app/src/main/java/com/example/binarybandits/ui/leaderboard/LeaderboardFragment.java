@@ -15,6 +15,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -382,6 +383,7 @@ public class LeaderboardFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 button.setVisibility(View.GONE);
+                toggleUserIconVisibility(leaderboard);
                 FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
                 transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
                 transaction.replace(R.id.fragment_container, new LeaderboardSearchFragment());
@@ -391,4 +393,25 @@ public class LeaderboardFragment extends Fragment {
 
         });
     }
+
+    public void toggleUserIconVisibility(View leaderboard) {
+        CardView card1 = leaderboard.findViewById(R.id.card1);
+        CardView card2 = leaderboard.findViewById(R.id.card2);
+        CardView card3 = leaderboard.findViewById(R.id.card3);
+        CardView card4 = leaderboard.findViewById(R.id.card4);
+
+        if (card1.getVisibility() == View.VISIBLE) {
+            card1.setVisibility(View.INVISIBLE);
+            card2.setVisibility(View.INVISIBLE);
+            card3.setVisibility(View.INVISIBLE);
+            card4.setVisibility(View.INVISIBLE);
+        } else {
+            card1.setVisibility(View.VISIBLE);
+            card2.setVisibility(View.VISIBLE);
+            card3.setVisibility(View.VISIBLE);
+            card4.setVisibility(View.VISIBLE);
+        }
+    }
+
+
 }
