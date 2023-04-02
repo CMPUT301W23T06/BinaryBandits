@@ -10,10 +10,11 @@
         android:id="@+id/rank_number"
         android:layout_width="70dp"
         android:layout_height="match_parent"
+        android:fontFamily="@font/poppins_semibold"
         android:padding="20dp"
         android:text="#1"
         android:textColor="#FFB800"
-        android:textSize="15sp" />
+        android:textSize="14sp" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/profileCardView3"
@@ -40,19 +41,21 @@
         android:id="@+id/player_name_text"
         android:layout_width="157dp"
         android:layout_height="match_parent"
+        android:fontFamily="@font/poppins"
         android:padding="20dp"
         android:text="name"
         android:textAlignment="center"
         android:textColor="@color/white"
-        android:textSize="15sp" />
+        android:textSize="14sp" />
 
     <TextView
         android:id="@+id/score_Player"
         android:layout_width="92dp"
         android:layout_height="match_parent"
+        android:fontFamily="@font/poppins_semibold"
         android:padding="20dp"
         android:text="score"
         android:textAlignment="center"
         android:textColor="#FF426F"
-        android:textSize="15sp" />
+        android:textSize="14sp" />
 </LinearLayout>
