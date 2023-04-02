@@ -25,7 +25,7 @@ import com.example.binarybandits.R;
 /**
  *
  */
-public class QReditFragment extends Fragment {
+public class QReditFragment extends Fragment{
 
     private QReditViewModel mViewModel;
     private int REQUEST_IMAGE_CAPTURE = 1 ;
