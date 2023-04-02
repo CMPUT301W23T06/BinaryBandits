@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.binarybandits.R;
 import com.example.binarybandits.ScanQRActivity;
+import com.example.binarybandits.controllers.AuthController;
 import com.example.binarybandits.controllers.PermissionsController;
 import com.example.binarybandits.ui.auth.LogInActivity;
 
@@ -45,6 +46,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent myIntent = new Intent(getActivity(), LogInActivity.class);
+                AuthController.setUserLoggedInStatus(getActivity(), false);
                 startActivity(myIntent);
             }
         });

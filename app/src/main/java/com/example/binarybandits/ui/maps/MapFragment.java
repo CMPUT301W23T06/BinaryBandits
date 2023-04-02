@@ -99,6 +99,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             Log.e(TAG, "Can't find style. Error: ", e);
         }
 
+
         getQRCodes(qrCodeDB, googleMap);
 
         //When the user clicks on a marker, show the visual representation, and points of QR code
@@ -174,6 +175,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 getNearbyQRCodes(qrCodes, googleMap, coordinatesOfAddress, value);
             }
         });
+
     }
 
     /**
