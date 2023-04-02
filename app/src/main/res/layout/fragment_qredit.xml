@@ -11,9 +11,11 @@
         android:layout_width="345dp"
         android:layout_height="80dp"
         android:layout_marginTop="96dp"
+        android:fontFamily="@font/poppins_bold"
         android:text="QR Code Options"
+        android:textAlignment="center"
         android:textColor="#FFFFFF"
-        android:textSize="45sp"
+        android:textSize="35sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -51,11 +53,11 @@
                 android:id="@+id/confirm_geolocation"
                 android:layout_width="match_parent"
                 android:layout_height="64dp"
-                android:text="Save geolocation?"
-                android:textColor="@color/white"
+                android:fontFamily="@font/poppins"
                 android:gravity="center"
-                android:textSize="20dp"
-              />
+                android:text="Save Geolocation?"
+                android:textColor="@color/white"
+                android:textSize="18dp" />
 
             <CheckBox
                 android:id="@+id/checkBox"
@@ -64,9 +66,11 @@
                 android:layout_marginLeft="65dp"
                 android:layout_marginRight="50dp"
                 android:button="@color/white"
+                android:fontFamily="@font/poppins"
                 android:gravity="center"
                 android:text="Check box"
-                android:textColor="@color/white"/>
+                android:textColor="@color/white"
+                android:textSize="14sp" />
         </LinearLayout>
 
 
@@ -78,10 +82,11 @@
         android:layout_width="343dp"
         android:layout_height="50dp"
         android:background="@drawable/big_rounded_button"
+        android:fontFamily="@font/poppins"
         android:text="Add a photo of location"
         android:textAllCaps="false"
         android:textColor="#FFFFFF"
-        android:textSize="20sp"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -94,10 +99,11 @@
         android:layout_height="50dp"
         android:background="@drawable/big_rounded_button"
         android:backgroundTint="@color/red"
+        android:fontFamily="@font/poppins"
         android:text="Skip"
         android:textAllCaps="false"
         android:textColor="#FFFFFF"
-        android:textSize="20sp"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
