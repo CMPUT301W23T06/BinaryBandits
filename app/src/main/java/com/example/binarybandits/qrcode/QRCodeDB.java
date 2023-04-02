@@ -295,7 +295,8 @@ public class QRCodeDB {
      */
     public void getQRCodesFromList(ArrayList<String> qrCodeNames, QRCodeListCallback callback) {
         ArrayList<QRCode> qrCodeList = new ArrayList<>();
-        collectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        Query query = collectionReference.whereIn("name", qrCodeNames);
+        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {

@@ -1,10 +1,15 @@
 package com.example.binarybandits.controllers;
 
+import android.util.Log;
+
+import com.example.binarybandits.DBConnector;
+import com.example.binarybandits.ScoreCallback;
 import com.example.binarybandits.models.Player;
 import com.example.binarybandits.models.QRCode;
 import com.example.binarybandits.player.PlayerCallback;
 import com.example.binarybandits.player.PlayerDB;
 import com.example.binarybandits.qrcode.QRCodeDB;
+import com.example.binarybandits.qrcode.QRCodeListCallback;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,8 +21,7 @@ import java.util.Comparator;
  */
 public class PlayerController {
 
-    private PlayerDB playerDB;
-    private QRCodeDB qrCodeDB;
+    private QRCodeDB qrCodeDB = new QRCodeDB(new DBConnector());
     private Player player;
 
     /**
@@ -32,36 +36,49 @@ public class PlayerController {
      * Gets the highest scoring QR code scanned by a Player
      * @return Returns the highest scoring QR code scanned by a Player
      */
-    public QRCode getHighestQRCode() {
-        QRCode highestQRCode;
-        ArrayList<QRCode> qrCodesScanned = player.getQrCodesScanned();
-        qrCodesScanned = sortQRCodes(qrCodesScanned);
-        if(qrCodesScanned.size() > 0) {
-            highestQRCode = qrCodesScanned.get(qrCodesScanned.size() - 1);
-            player.setHighestScore(highestQRCode.getPoints());
+    public void getHighestQRCode(ScoreCallback callback) {
+        int highestQRCode;
+        ArrayList<String> qrCodeNames = player.getQrCodesScanned();
+        if (qrCodeNames.size() == 0) {
+            highestQRCode = 0;
+            player.setHighestScore(0);
+            callback.scoreCallback(highestQRCode);
         }
         else {
-            highestQRCode = null;
-            player.setHighestScore(0);
+            qrCodeDB.getQRCodesFromList(qrCodeNames, new QRCodeListCallback() {
+                @Override
+                public void onQRCodeListCallback(ArrayList<QRCode> qrCodeList) {
+                    Log.d("Controller", qrCodeList.toString());
+                    qrCodeList = sortQRCodes(qrCodeList);
+                    int highestQRCode = qrCodeList.get(qrCodeList.size() - 1).getPoints();
+                    player.setHighestScore(highestQRCode);
+                    callback.scoreCallback(highestQRCode);
+                }
+            });
         }
-        return highestQRCode;
     }
 
     /**
      * Gets the lowest QR code scanned by a Player
      * @return Returns the lowest scoring QR code scanned by a Player
      */
-    public QRCode getLowestQRCode() {
-        QRCode lowestQRCode;
-        ArrayList<QRCode> qrCodesScanned = player.getQrCodesScanned();
-        qrCodesScanned = sortQRCodes(qrCodesScanned);
-        if(qrCodesScanned.size() > 0) {
-            lowestQRCode = qrCodesScanned.get(0);
+    public void getLowestQRCode(ScoreCallback callback) {
+        int lowestQRCode;
+        ArrayList<String> qrCodeNames = player.getQrCodesScanned();
+        if (qrCodeNames.size() == 0) {
+            lowestQRCode = 0;
+            callback.scoreCallback(lowestQRCode);
         }
         else {
-            lowestQRCode = null;
+            qrCodeDB.getQRCodesFromList(qrCodeNames, new QRCodeListCallback() {
+                @Override
+                public void onQRCodeListCallback(ArrayList<QRCode> qrCodeList) {
+                    qrCodeList = sortQRCodes(qrCodeList);
+                    int lowestQRCode = qrCodeList.get(0).getPoints();
+                    callback.scoreCallback(lowestQRCode);
+                }
+            });
         }
-        return lowestQRCode;
     }
 
     /**
