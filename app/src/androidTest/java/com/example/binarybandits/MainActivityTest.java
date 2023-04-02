@@ -91,7 +91,10 @@ public class MainActivityTest {
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
         BottomNavigationView navBar = (BottomNavigationView) solo.getView(R.id.nav_view);
         solo.clickOnView(navBar.findViewById(R.id.navigation_maps));
-        assertTrue(solo.waitForText("Maps", 1, 2000));
+        //Check that all elements of MapFragment appear
+        assertTrue(solo.waitForView(R.id.map_search_view));
+        assertTrue(solo.waitForView(R.id.map));
+        assertTrue(solo.waitForView(R.id.map_slider));
 
     }
 

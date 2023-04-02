@@ -44,7 +44,7 @@ public class AuthenticationTest {
     @Before
     public void setUp() throws Exception {
         solo = new Solo(InstrumentationRegistry.getInstrumentation(), rule.getActivity());
-        AuthController.setUserLoggedInStatus(solo.getCurrentActivity().getApplicationContext(), false);
+        AuthController.setUserLoggedInStatus(rule.getActivity(), false);
         PlayerDB db = new PlayerDB(new DBConnector());
         db.deletePlayer("BostonBoy");
         db.deletePlayer("Josh123");
@@ -57,6 +57,11 @@ public class AuthenticationTest {
     @Test
     public void start() throws Exception {
         Activity activity = rule.getActivity();
+    }
+
+    @Before
+    public void before() {
+        AuthController.setUserLoggedInStatus(rule.getActivity(), false);
     }
 
     /**
@@ -168,5 +173,6 @@ public class AuthenticationTest {
     @After
     public void tearDown() throws Exception {
         solo.finishOpenedActivities();
+        AuthController.setUserLoggedInStatus(rule.getActivity(), false);
     }
 }

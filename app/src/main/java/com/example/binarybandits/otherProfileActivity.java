@@ -23,7 +23,9 @@ import com.example.binarybandits.models.QRCode;
 import com.example.binarybandits.player.PlayerDB;
 import com.example.binarybandits.player.PlayerListCallback;
 import com.example.binarybandits.qrcode.QRArrayAdapter;
+import com.example.binarybandits.qrcode.QRCodeDB;
 import com.example.binarybandits.qrcode.QRCodeInfoActivity;
+import com.example.binarybandits.qrcode.QRCodeListCallback;
 import com.example.binarybandits.ui.leaderboard.LeaderboardFragment;
 import com.google.firebase.firestore.Query;
 import com.squareup.picasso.Picasso;
@@ -48,6 +50,7 @@ public class otherProfileActivity extends Activity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         PlayerDB db = new PlayerDB(new DBConnector());
+        QRCodeDB qrCodeDB = new QRCodeDB(new DBConnector());
         setContentView(R.layout.fragment_profile);
         TextView name = findViewById(R.id.text_username);
         TextView score = findViewById(R.id.score_text);
@@ -94,9 +97,19 @@ public class otherProfileActivity extends Activity {
                 num_scanned.setText(Integer.toString(otherPlayer.getTotalQRCodes()));
                 String url_user = "https://api.dicebear.com/5.x/avataaars-neutral/png?seed=" + otherPlayer.getUsername();
                 Picasso.get().load(url_user).into(otherImage);
-                QRCode highestQR = controller.getHighestQRCode();
-                QRCode lowestQR = controller.getLowestQRCode();
-                if(highestQR != null)
+                controller.getHighestQRCode(new ScoreCallback() {
+                    @Override
+                    public void scoreCallback(int score) {
+                        highest.setText(Integer.toString(score));
+                    }
+                });
+                controller.getLowestQRCode(new ScoreCallback() {
+                    @Override
+                    public void scoreCallback(int score) {
+                        lowest.setText(Integer.toString(score));
+                    }
+                });
+                /*if(highestQR != null)
                     highest.setText(Integer.toString(highestQR.getPoints()));
                 else {
                     highest.setText("0");
@@ -105,10 +118,46 @@ public class otherProfileActivity extends Activity {
                     lowest.setText(Integer.toString(lowestQR.getPoints()));
                 else{
                     lowest.setText("0");
-                }
+                }*/
                 ListView QRlist = findViewById(R.id.list_view_player_qr_codes);
+                ArrayList<String> qrCodeNames = otherPlayer.getQrCodesScanned();
                 ArrayList<QRCode> dataList = new ArrayList<>();
-                dataList = otherPlayer.getQrCodesScanned();
+
+                final Player finalOtherPlayer = otherPlayer;
+                qrCodeDB.getQRCodesFromList(qrCodeNames, new QRCodeListCallback() {
+                    @Override
+                    public void onQRCodeListCallback(ArrayList<QRCode> qrCodeList) {
+                        ArrayAdapter<QRCode> QRAdapter = new QRArrayAdapter(otherProfileActivity.this, qrCodeList);
+                        QRlist.setAdapter(QRAdapter);
+                        ArrayList<QRCode> finalDataList = qrCodeList;
+                        QRAdapter.notifyDataSetChanged();
+
+                        /**
+                         * When a QR code object is clicked on from the list of the users QR codes,
+                         * user is taken to QR page to see more information on the given QR
+                         * (go to QRCodeInfoActivity)
+                         */
+                        QRlist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                                // create intent with name of the QR code, username of the user, and a
+                                // true boolean value that confirms we are on the current users profile
+                                Intent myIntent = new Intent(otherProfileActivity.this, QRCodeInfoActivity.class);
+                                Bundle extras = new Bundle();
+                                extras.putString("name", String.valueOf(finalDataList.get(position).getName()));
+                                extras.putString("username", String.valueOf(finalOtherPlayer.getUsername()));
+                                extras.putBoolean("current_user", true);
+                                myIntent.putExtras(extras);
+                                // go to QRCodeInfoActivity to display the QR code
+                                startActivity(myIntent);
+                                QRAdapter.notifyDataSetChanged();
+                            }
+                        });
+                    }
+                });
+
+                /*dataList = otherPlayer.getQrCodesScanned();
                 ArrayAdapter<QRCode> QRAdapter = new QRArrayAdapter(otherProfileActivity.this, dataList);
                 QRlist.setAdapter(QRAdapter);
 
@@ -128,7 +177,7 @@ public class otherProfileActivity extends Activity {
                         myIntent.putExtras(extras);
                         otherProfileActivity.this.startActivity(myIntent);
                     }
-                });
+                });*/
             }
         });
 

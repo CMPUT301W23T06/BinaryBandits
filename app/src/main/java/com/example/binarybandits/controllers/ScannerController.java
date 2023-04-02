@@ -29,10 +29,10 @@ public class ScannerController {
             @Override
             public void onPlayerCallback(Player updatedPlayer) {
                 Log.d("ScannerController", updatedPlayer.getQrCodesScanned().toString());
-                if(!updatedPlayer.findQRCodeScanned(qrCode)) {
+                if(!updatedPlayer.findQRCodeScanned(qrCode.getName())) {
                     // Add/Update QR code on the database
                     qrCodeDB.addQRCode(qrCode, updatedPlayer.getUsername()); //Add QRCode to database if it is not there already
-                    updatedPlayer.addQRCodeScanned(qrCode); //Add QRCode to player's profile (locally)
+                    updatedPlayer.addQRCodeScanned(qrCode.getName()); //Add QRCode to player's profile (locally)
                     updatedPlayer.incrementTotalQRCodes();
                     int points = qrCode.getPoints();
 

@@ -148,11 +148,11 @@ public class PlayerTest {
         assertTrue(mockPlayer.getQrCodesScanned().isEmpty());
 
         //Check that a qrCode can be added to the list
-        mockPlayer.addQRCodeScanned(mockQRCode);
+        mockPlayer.addQRCodeScanned(mockQRCode.getName());
         assertEquals(1, mockPlayer.getQrCodesScanned().size());
 
         //Check that a qrCode can be removed from list
-        mockPlayer.removeQRCodeScanned(mockQRCode);
+        mockPlayer.removeQRCodeScanned(mockQRCode.getName());
         assertEquals(0, mockPlayer.getQrCodesScanned().size());
     }
 
@@ -169,12 +169,12 @@ public class PlayerTest {
         assertTrue(mockPlayer.getQrCodesScanned().isEmpty());
 
         //Check that a qrCode can be added to the list
-        mockPlayer.addQRCodeScanned(mockQRCode);
+        mockPlayer.addQRCodeScanned(mockQRCode.getName());
         assertEquals(1, mockPlayer.getQrCodesScanned().size());
 
         //Check that a QRCode cannot be added to list if it is already in list
         assertThrows(IllegalArgumentException.class, () -> {
-            mockPlayer.addQRCodeScanned(mockQRCode);
+            mockPlayer.addQRCodeScanned(mockQRCode.getName());
         });
     }
 
@@ -192,11 +192,11 @@ public class PlayerTest {
         assertTrue(mockPlayer.getQrCodesScanned().isEmpty());
 
         //Check that a qrCode can be added to the list
-        mockPlayer.addQRCodeScanned(mockQRCode);
+        mockPlayer.addQRCodeScanned(mockQRCode.getName());
         assertEquals(1, mockPlayer.getQrCodesScanned().size());
 
         //Check that a qrCode can be removed from list
-        mockPlayer.removeQRCodeScanned(mockQRCode);
+        mockPlayer.removeQRCodeScanned(mockQRCode.getName());
         assertEquals(0, mockPlayer.getQrCodesScanned().size());
     }
 
@@ -217,16 +217,16 @@ public class PlayerTest {
         assertTrue(mockPlayer.getQrCodesScanned().isEmpty());
 
         //Check that a qrCode can be added to the list
-        mockPlayer.addQRCodeScanned(mockQRCode);
+        mockPlayer.addQRCodeScanned(mockQRCode.getName());
         assertEquals(1, mockPlayer.getQrCodesScanned().size());
 
         //Check that a qrCode can be removed from list
-        mockPlayer.removeQRCodeScanned(mockQRCode);
+        mockPlayer.removeQRCodeScanned(mockQRCode.getName());
         assertEquals(0, mockPlayer.getQrCodesScanned().size());
 
         //Check that a qrCode not in the list cannot be removed
         assertThrows(IllegalArgumentException.class, () -> {
-            mockPlayer.removeQRCodeScanned(qrCode);
+            mockPlayer.removeQRCodeScanned(qrCode.getName());
         });
     }
 
