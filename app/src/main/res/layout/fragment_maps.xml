@@ -37,8 +37,9 @@
         android:id="@+id/map_slider"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/map_search_view"
         android:valueFrom="1"
-        android:valueTo="100">
+        android:valueTo="100"
+        android:theme="@style/Theme.Material3.Dark" />
 
-    </com.google.android.material.slider.Slider>
 </RelativeLayout>
