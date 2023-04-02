@@ -41,6 +41,7 @@ public class HomeFragment extends Fragment {
             }
         });
 
+        // on sign out button clicked send user back to Log in page
         signOut = view.findViewById(R.id.signOutButton);
         signOut.setOnClickListener(new View.OnClickListener() {
             @Override
