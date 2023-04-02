@@ -66,26 +66,17 @@ public class ScanQRActivity extends AppCompatActivity {
         codeScanner = new CodeScanner(this, scannerView);
 
 
-        final Drawable drawable = ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_heart);
-        drawableShape = new Shape.DrawableShape(drawable, true);
-
-        konfettiView = findViewById(R.id.konfettiView);
-        EmitterConfig emitterConfig = new Emitter(5L, TimeUnit.SECONDS).perSecond(50);
-        Party party = new PartyFactory(emitterConfig)
-                .angle(270)
-                .spread(90)
-                .setSpeedBetween(1f, 5f)
-                .timeToLive(2000L)
-                .shapes(new Shape.Rectangle(0.2f), drawableShape)
-                .sizes(new Size(12, 5f, 0.2f))
-                .position(0.0, 0.0, 1.0, 0.0)
-                .build();
-        konfettiView.setOnClickListener(view ->
-                konfettiView.start(party)
-        );
-
-
+        /**
+         * This is the callback function that is called when a QR code is scanned. The QR code is
+         * added to the player's list of scanned QR codes and added/updated in both the QR code
+         * database and the Player database.
+         * param - The callback function's parameter is the result of the QR code scan.
+         */
         codeScanner.setDecodeCallback(new DecodeCallback() {
+            /***
+             * This function switches to the QRCodeEditActivity and passes the QR code's hash to the activity.
+             * @param result - the result of the QR code scan.
+             */
             @Override
             public void onDecoded(@NonNull final Result result) {
                 runOnUiThread(new Runnable() {
@@ -103,8 +94,7 @@ public class ScanQRActivity extends AppCompatActivity {
 
                         Intent myIntent = new Intent(ScanQRActivity.this, QRCodeEditActivity.class);
                         myIntent.putExtra("hash", hash);
-                        ScanQRActivity.this.startActivity(myIntent);
-                        explode();
+                        ScanQRActivity.this.startActivity(myIntent); // start the QRCodeEditActivity
                     }
                 });
             }
@@ -112,21 +102,9 @@ public class ScanQRActivity extends AppCompatActivity {
         scannerView.setOnClickListener(view -> codeScanner.startPreview());
     }
 
-    public void explode() {
-        EmitterConfig emitterConfig = new Emitter(100L, TimeUnit.MILLISECONDS).max(100);
-        konfettiView.start(
-                new PartyFactory(emitterConfig)
-                        .spread(360)
-                        .shapes(Arrays.asList(Shape.Square.INSTANCE, Shape.Circle.INSTANCE, drawableShape))
-                        .colors(Arrays.asList(0xfce18a, 0xff726d, 0xf4306d, 0xb48def))
-                        .setSpeedBetween(0f, 30f)
-                        .position(new Position.Relative(0.5, 0.3))
-                        .build()
-        );
-    }
 
-    /**
-     *
+    /***
+     * This function is called when the activity is resumed. It starts the camera preview.
      */
     @Override
     protected void onResume() {
@@ -134,8 +112,8 @@ public class ScanQRActivity extends AppCompatActivity {
         codeScanner.startPreview();
     }
 
-    /**
-     *
+    /***
+     * This function is called when the activity is paused. It releases the camera resources.
      */
     @Override
     protected void onPause() {
