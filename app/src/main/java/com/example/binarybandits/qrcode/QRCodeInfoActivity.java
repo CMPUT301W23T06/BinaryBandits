@@ -242,7 +242,6 @@ public class QRCodeInfoActivity extends AppCompatActivity {
 
                                                     //remove QR code from players in database and locally
                                                     player.removeQRCodeScanned(qrCode.getName());
-
                                                     db_qr.deleteQRCode(qrCode, player_user);
 
                                                     player.decrementTotalQRCodes();
