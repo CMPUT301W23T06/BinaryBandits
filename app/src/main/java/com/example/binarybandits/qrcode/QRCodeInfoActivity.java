@@ -129,6 +129,7 @@ public class QRCodeInfoActivity extends AppCompatActivity {
                     ImageButton delete_button = findViewById(R.id.delete_button);
                     Button commentButton = findViewById(R.id.addCommentBtn);
                     ImageButton view_location_button = findViewById(R.id.location_img_button);
+                    ImageButton view_map_button = findViewById(R.id.map_button);
                     EditText textBox = findViewById(R.id.user_comment);
 
                     // get list of players who have scanned this QR Code
@@ -176,7 +177,11 @@ public class QRCodeInfoActivity extends AppCompatActivity {
                         delete_button.setVisibility(View.GONE);
                     }
 
-
+                    /**
+                     * When view_location_button is clicked, send to showLocationImage with QRcode
+                     * name and the users username to handle getting bitmap instance of image and
+                     * display
+                     */
                     view_location_button.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -184,6 +189,37 @@ public class QRCodeInfoActivity extends AppCompatActivity {
                         }
                     });
 
+
+                    view_map_button.setOnClickListener((new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                            if (qrCode.getCoordinates() != null){
+                                Intent myIntent = new Intent(QRCodeInfoActivity.this, MainActivity.class);
+                                Bundle extras = new Bundle();
+                                extras.putBoolean("Map Page", true);
+                                extras.putString("QRCode", qrCode.getName());
+                                myIntent.putExtras(extras);
+                                startActivity(myIntent);
+                            }
+                            else {
+                                AlertDialog.Builder noLocationPopup = new AlertDialog.Builder(QRCodeInfoActivity.this);
+                                // confirm delete message
+                                noLocationPopup.setMessage("No geolocation available.")
+                                        .setCancelable(true)
+                                        .setNegativeButton("Back", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                dialog.cancel();
+                                            }
+                                        });
+                                AlertDialog alertDialog = noLocationPopup.create();
+                                alertDialog.show();
+
+                            }
+
+                        }
+                    }));
 
 
                     /**
@@ -258,7 +294,7 @@ public class QRCodeInfoActivity extends AppCompatActivity {
                                                 }
                                             });
 
-                                            QRCodeInfoActivity.this.finish();
+                                            //QRCodeInfoActivity.this.finish();
                                             // Send back to profile page with updated QR code list
                                             // BUG: back to profile page shows home screen selected on bottom navigation
                                             Toast message = Toast.makeText(QRCodeInfoActivity.this, "QRCode has been deleted!", Toast.LENGTH_LONG);
@@ -319,7 +355,7 @@ public class QRCodeInfoActivity extends AppCompatActivity {
      * Displays a pop up of the image of the location for a given QR code
      * and user name
      * @param v
-     *      the view clicked on
+     *      current view
      * @param qrCode
      *      current QR code
      */
@@ -340,7 +376,7 @@ public class QRCodeInfoActivity extends AppCompatActivity {
                 .into(new Target() {
                     @Override
                     public void onBitmapLoaded (final Bitmap bitmap, Picasso.LoadedFrom from){
-                        // display image of location
+                        // display image of location via fragment
                         new LocationImageFragment(bitmap).show(getSupportFragmentManager(), "show");
                     }
                     @Override
@@ -357,7 +393,7 @@ public class QRCodeInfoActivity extends AppCompatActivity {
             @Override
             public void onFailure(@NonNull Exception e) {
                 AlertDialog.Builder noLocationPopup = new AlertDialog.Builder(QRCodeInfoActivity.this);
-                // confirm delete message
+                // pop up message stating no location image stored
                 noLocationPopup.setMessage("No location image available")
                         .setCancelable(true)
                         .setNegativeButton("Back", new DialogInterface.OnClickListener() {
