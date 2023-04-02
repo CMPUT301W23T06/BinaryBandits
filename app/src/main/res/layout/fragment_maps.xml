@@ -40,6 +40,6 @@
         android:layout_below="@+id/map_search_view"
         android:valueFrom="1"
         android:valueTo="100"
-        android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar"/>
+        android:theme="@style/Theme.Material3.Dark" />
 
 </RelativeLayout>

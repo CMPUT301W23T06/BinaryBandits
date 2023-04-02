@@ -15,6 +15,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -300,6 +301,7 @@ public class LeaderboardFragment extends Fragment {
         // set users info at bottom of leaderboard
         user_name.setText(current_user.getUsername());
 
+        CardView card4 = leaderboard.findViewById(R.id.card4);
         if(scoreLeaderboard) {
             user_score.setText(Integer.toString(current_user.getTotalScore()));
             users_rank.setText("#"+Integer.toString(user_rank));
@@ -309,6 +311,7 @@ public class LeaderboardFragment extends Fragment {
             user_score.setVisibility(View.VISIBLE);
             users_rank.setVisibility(View.VISIBLE);
             user_image.setVisibility(View.VISIBLE);
+            card4.setVisibility(View.VISIBLE);
             percentileLabel.setVisibility(View.INVISIBLE);
         }
         else {
@@ -318,6 +321,7 @@ public class LeaderboardFragment extends Fragment {
             user_score.setVisibility(View.INVISIBLE);
             users_rank.setVisibility(View.INVISIBLE);
             user_image.setVisibility(View.INVISIBLE);
+            card4.setVisibility(View.INVISIBLE);
             percentileLabel.setVisibility(View.VISIBLE);
 
             int percentile = leaderboardController.getPercentile(scores, current_user.getHighestScore());
@@ -382,6 +386,7 @@ public class LeaderboardFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 button.setVisibility(View.GONE);
+                toggleUserIconVisibility(leaderboard);
                 FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
                 transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
                 transaction.replace(R.id.fragment_container, new LeaderboardSearchFragment());
@@ -391,4 +396,29 @@ public class LeaderboardFragment extends Fragment {
 
         });
     }
+
+    /**
+     * Change the visibility of the top 3 icons on leaderboard and user ranking icon when the search button is clicked
+     * @param leaderboard leaderboard view object
+     */
+    public void toggleUserIconVisibility(View leaderboard) {
+        CardView card1 = leaderboard.findViewById(R.id.card1);
+        CardView card2 = leaderboard.findViewById(R.id.card2);
+        CardView card3 = leaderboard.findViewById(R.id.card3);
+        CardView card4 = leaderboard.findViewById(R.id.card4);
+
+        if (card1.getVisibility() == View.VISIBLE) {
+            card1.setVisibility(View.INVISIBLE);
+            card2.setVisibility(View.INVISIBLE);
+            card3.setVisibility(View.INVISIBLE);
+            card4.setVisibility(View.INVISIBLE);
+        } else {
+            card1.setVisibility(View.VISIBLE);
+            card2.setVisibility(View.VISIBLE);
+            card3.setVisibility(View.VISIBLE);
+            card4.setVisibility(View.VISIBLE);
+        }
+    }
+
+
 }
