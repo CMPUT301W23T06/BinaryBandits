@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -21,6 +22,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -37,8 +39,12 @@ import com.example.binarybandits.models.QRCode;
 import com.example.binarybandits.player.PlayerCallback;
 import com.example.binarybandits.player.PlayerDB;
 import com.example.binarybandits.ui.QRedit.LocationImageFragment;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
@@ -174,26 +180,7 @@ public class QRCodeInfoActivity extends AppCompatActivity {
                     view_location_button.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            Log.d("myTag", "Test1");
-                            if (qrCode.getLocationImage() ==null) {
-                                Log.d("myTag", "Test2");
-                                AlertDialog.Builder noLocationPopup = new AlertDialog.Builder(QRCodeInfoActivity.this);
-                                // confirm delete message
-                                noLocationPopup.setMessage("No location image available")
-                                        .setCancelable(true)
-                                        .setNegativeButton("Back", new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                dialog.cancel();
-                                            }
-                                        });
-                                AlertDialog alertDialog = noLocationPopup.create();
-                                alertDialog.show();
-
-                            } else {
-                                Log.d("myTag", "Test3");
-                                showLocationImage(v, qrCode);
-                            }
+                            showLocationImage(v, qrCode, player_user);
                         }
                     });
 
@@ -327,62 +314,63 @@ public class QRCodeInfoActivity extends AppCompatActivity {
         });
 
 
-
-
-
-
     }
 
     /**
      * Displays a pop up of the image of the location for a given QR code
-     * Retrieves
+     * and user name
      * @param v
      *      the view clicked on
      * @param qrCode
      *      current QR code
      */
-    private void showLocationImage(View v, QRCode qrCode) {
-//        Bitmap location_img = null;
-        Log.d("myTag", "test1");
-        //Log.d("myTag", "test2");
-        //String location_img_url_string = qrCode.getLocationImage();
-        //Log.d("myTag", "test3");
-        //URL location_img_url = new URL(location_img_url_string);
-        //Log.d("myTag", "test4");
-        //location_img = BitmapFactory.decodeStream(location_img_url.openConnection().getInputStream());
-        //Log.d("myTag", "test5");
+    private void showLocationImage(View v, QRCode qrCode, String username) {
 
-//            String location_img_url_string = qrCode.getLocationImage();
-//            URL location_img_url = new URL(location_img_url_string);
-//            HttpURLConnection connection = (HttpURLConnection) location_img_url
-//                    .openConnection();
-//            connection.setDoInput(true);
-//            connection.connect();
-//            InputStream input = connection.getInputStream();
-//            Bitmap location_img= BitmapFactory.decodeStream(input);
+        String firebase_url_string = "locationImgs/"+qrCode.getName()+username+".jpg";
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReference().child(firebase_url_string);
 
-        String location_img_url_string = qrCode.getLocationImage();
-        Log.d("myTag", location_img_url_string);
-        Picasso.get()
-                .load(location_img_url_string)
+        storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                // Get string of image URL via Firebase
+                String imageUrl = uri.toString();
+                // Use Picasso to retrieve a bitmap image of URL
+                Picasso.get()
+                .load(imageUrl)
                 .into(new Target() {
                     @Override
                     public void onBitmapLoaded (final Bitmap bitmap, Picasso.LoadedFrom from){
-
+                        // display image of location
                         new LocationImageFragment(bitmap).show(getSupportFragmentManager(), "show");
                     }
-
                     @Override
                     public void onBitmapFailed(Exception e, Drawable errorDrawable) {
-
                     }
-
                     @Override
                     public void onPrepareLoad(Drawable placeHolderDrawable) {
-
                     }
                 });
-//            new LocationImageFragment(location_img).show(getSupportFragmentManager(), "show");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            // if no image is associated with the QRcode and user, display alert dialogue stating
+            // no image was saved.
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                AlertDialog.Builder noLocationPopup = new AlertDialog.Builder(QRCodeInfoActivity.this);
+                // confirm delete message
+                noLocationPopup.setMessage("No location image available")
+                        .setCancelable(true)
+                        .setNegativeButton("Back", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+                AlertDialog alertDialog = noLocationPopup.create();
+                alertDialog.show();
+            }
+        });
 
     }
 
