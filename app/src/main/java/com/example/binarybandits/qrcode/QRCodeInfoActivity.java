@@ -28,7 +28,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.binarybandits.DBConnector;
 import com.example.binarybandits.MainActivity;
 import com.example.binarybandits.R;
+import com.example.binarybandits.ScoreCallback;
 import com.example.binarybandits.controllers.AuthController;
+import com.example.binarybandits.controllers.PlayerController;
 import com.example.binarybandits.models.Comment;
 import com.example.binarybandits.models.Player;
 import com.example.binarybandits.models.QRCode;
@@ -259,6 +261,13 @@ public class QRCodeInfoActivity extends AppCompatActivity {
                                                     player.decrementTotalQRCodes();
                                                     int newScore = player.getTotalScore() - qrCode.getPoints();
                                                     player.setTotalScore(newScore);
+                                                    PlayerController controller = new PlayerController(player);
+                                                    controller.getHighestQRCode(new ScoreCallback() {
+                                                        @Override
+                                                        public void scoreCallback(int score) {
+                                                            player.setHighestScore(score);
+                                                        }
+                                                    });
                                                     db_player.updatePlayer(player);
                                                 }
                                             });
