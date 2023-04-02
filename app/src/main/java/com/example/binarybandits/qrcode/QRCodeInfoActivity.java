@@ -174,7 +174,11 @@ public class QRCodeInfoActivity extends AppCompatActivity {
                         delete_button.setVisibility(View.GONE);
                     }
 
-
+                    /**
+                     * When view_location_button is clicked, send to showLocationImage with QRcode
+                     * name and the users username to handle getting bitmap instance of image and
+                     * display
+                     */
                     view_location_button.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -311,7 +315,7 @@ public class QRCodeInfoActivity extends AppCompatActivity {
      * Displays a pop up of the image of the location for a given QR code
      * and user name
      * @param v
-     *      the view clicked on
+     *      current view
      * @param qrCode
      *      current QR code
      */
@@ -332,7 +336,7 @@ public class QRCodeInfoActivity extends AppCompatActivity {
                 .into(new Target() {
                     @Override
                     public void onBitmapLoaded (final Bitmap bitmap, Picasso.LoadedFrom from){
-                        // display image of location
+                        // display image of location via fragment
                         new LocationImageFragment(bitmap).show(getSupportFragmentManager(), "show");
                     }
                     @Override
