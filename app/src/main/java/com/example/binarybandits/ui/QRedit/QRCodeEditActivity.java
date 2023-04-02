@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
 import android.view.View;
@@ -15,6 +16,8 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
 import com.example.binarybandits.DBConnector;
 import com.example.binarybandits.MainActivity;
 import com.example.binarybandits.R;
@@ -33,6 +36,19 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.concurrent.TimeUnit;
+
+import nl.dionsegijn.konfetti.core.Angle;
+import nl.dionsegijn.konfetti.core.Party;
+import nl.dionsegijn.konfetti.core.PartyFactory;
+import nl.dionsegijn.konfetti.core.Position;
+import nl.dionsegijn.konfetti.core.Spread;
+import nl.dionsegijn.konfetti.core.emitter.Emitter;
+import nl.dionsegijn.konfetti.core.emitter.EmitterConfig;
+import nl.dionsegijn.konfetti.core.models.Shape;
+import nl.dionsegijn.konfetti.core.models.Size;
+import nl.dionsegijn.konfetti.xml.KonfettiView;
 
 /**
  * An activity that allows users to add a location image and accept/decline geolocation permissions
@@ -54,7 +70,27 @@ public class QRCodeEditActivity extends AppCompatActivity {
     private View popupView;
     private PopupWindow popupWindow;
 
+    private KonfettiView konfettiView = null;
+    private Shape.DrawableShape drawableShape = null;
+
     private static final int CAMERA_REQUEST = 1888;
+
+    /*final Drawable drawable = ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_heart);
+    drawableShape = new Shape.DrawableShape(drawable, true);
+
+    konfettiView = findViewById(R.id.konfettiView);
+    EmitterConfig emitterConfig = new Emitter(5L, TimeUnit.SECONDS).perSecond(50);
+    Party party = new PartyFactory(emitterConfig)
+            .angle(270)
+            .spread(90)
+            .setSpeedBetween(1f, 5f)
+            .timeToLive(2000L)
+            .shapes(new Shape.Rectangle(0.2f), drawableShape)
+            .sizes(new Size(12, 5f, 0.2f))
+            .position(0.0, 0.0, 1.0, 0.0)
+            .build();*/
+
+
 
     /**
      *
@@ -98,6 +134,32 @@ public class QRCodeEditActivity extends AppCompatActivity {
         pointsTextView.setText(pointsString);
         DownloadImageTask.loadQRImageIntoView(imageView, hash);
 
+        // Confetti animation for when the user find a QR code
+        // Sourced from https://github.com/DanielMartinus/Konfetti
+        final Drawable drawable = ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_heart); //adds a heart shape to the confetti
+        drawableShape = new Shape.DrawableShape(drawable, true);
+
+        // Styles the confetti
+        konfettiView = findViewById(R.id.konfettiView);
+        EmitterConfig emitterConfig = new Emitter(5L, TimeUnit.SECONDS).perSecond(50);
+        Party party = new PartyFactory(emitterConfig) // creates a party with the given emitter config
+                .angle(270)
+                .spread(90)
+                .setSpeedBetween(1f, 5f)
+                .timeToLive(2000L)
+                .shapes(new Shape.Rectangle(0.2f), drawableShape)
+                .sizes(new Size(12, 5f, 0.2f))
+                .position(0.0, 0.0, 1.0, 0.0)
+                .build();
+                konfettiView.start(party);
+                parade(); // invokes the confetti animation in parade style
+
+
+        /***
+         * When the user clicks the save button, the QR code is saved to the database
+         * and the user is redirected to the scanner activity
+         * @param v - the view
+         */
         saveBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v)  {
                 String uid = AuthController.getUsername(QRCodeEditActivity.this);
@@ -114,10 +176,10 @@ public class QRCodeEditActivity extends AppCompatActivity {
                     public void onPlayerCallback(Player player) {
                         //Add current player's username to list of players that have scanned a QR code
                         String username = player.getUsername();
-                        ArrayList<String> playersScannedBy = new ArrayList<>();
-                        playersScannedBy.add(username);
+                        //ArrayList<String> playersScannedBy = new ArrayList<>();
+                        //playersScannedBy.add(username);
                         //Create a new QR code and add it to the database. Location image can be set by clicking add image button
-                        QRCode qrCode = new QRCode(hash, name, points, uid, coordinates, "", new ArrayList<>(), 1, playersScannedBy);
+                        QRCode qrCode = new QRCode(hash, name, points, uid, coordinates, "", new ArrayList<>(), 1, new ArrayList<>());
                         scannerController.addQRCode(qrCode, player);
                     }
                 });
@@ -133,7 +195,37 @@ public class QRCodeEditActivity extends AppCompatActivity {
                 startActivityForResult(cameraIntent, CAMERA_REQUEST);
             }
         });
+
+
     }
+
+    /***
+     * Builds the confetti in a parade style!
+     * Source: https://github.com/DanielMartinus/Konfetti
+     */
+    public void parade() {
+        EmitterConfig emitterConfig = new Emitter(5, TimeUnit.SECONDS).perSecond(30);
+        konfettiView.start(
+                new PartyFactory(emitterConfig)
+                        .angle(Angle.RIGHT - 45)
+                        .spread(Spread.SMALL)
+                        .shapes(Arrays.asList(Shape.Square.INSTANCE, Shape.Circle.INSTANCE, drawableShape))
+                        .colors(Arrays.asList(0xfce18a, 0xff726d, 0xf4306d, 0xb48def))
+                        .setSpeedBetween(10f, 30f)
+                        .position(new Position.Relative(0.0, 0.5))
+                        .build(),
+                new PartyFactory(emitterConfig)
+                        .angle(Angle.LEFT + 45)
+                        .spread(Spread.SMALL)
+                        .shapes(Arrays.asList(Shape.Square.INSTANCE, Shape.Circle.INSTANCE, drawableShape))
+                        .colors(Arrays.asList(0xfce18a, 0xff726d, 0xf4306d, 0xb48def))
+                        .setSpeedBetween(10f, 30f)
+                        .position(new Position.Relative(1.0, 0.5))
+                        .build()
+        );
+    }
+
+
 
     /**
      * Function to get last known location of users
@@ -173,6 +265,12 @@ public class QRCodeEditActivity extends AppCompatActivity {
         viewImageTextView.setVisibility(View.VISIBLE);
     }
 
+    /***
+     * Function to handle the result of the camera intent
+     * @param requestCode - the request code
+     * @param resultCode - the result code
+     * @param data - the data
+     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(resultCode, resultCode, data);

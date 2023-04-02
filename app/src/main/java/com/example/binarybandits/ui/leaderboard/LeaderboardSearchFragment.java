@@ -29,6 +29,7 @@ import com.example.binarybandits.player.PlayerDB;
 import com.example.binarybandits.DBConnector;
 import com.example.binarybandits.player.PlayerListCallback;
 import com.example.binarybandits.ui.profile.ProfileFragment;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -129,8 +130,11 @@ public class LeaderboardSearchFragment extends Fragment {
                                         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
                                         String username = preferences.getString("login_username", "");
 
+                                        // if clicked on known profile, send to profile page
                                         if(Objects.equals(playerList.get(i).getUsername(), username)){
-                                            getFragmentManager().beginTransaction().replace(R.id.container, new ProfileFragment()).commit();
+                                            BottomNavigationView bottomNavigationView = getActivity().findViewById(R.id.nav_view);
+                                            bottomNavigationView.setSelectedItemId(R.id.navigation_profile);
+                                            //getFragmentManager().beginTransaction().replace(R.id.container, new ProfileFragment()).commit();
                                         }
                                         else {
                                             extras.putString("list", "search");

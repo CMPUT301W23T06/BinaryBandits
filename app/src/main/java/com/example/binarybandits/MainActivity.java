@@ -1,6 +1,7 @@
 package com.example.binarybandits;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -44,10 +45,10 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
 
         // If a player has just deleted a QR code, they come back to the Profile Page Fragment of the
         // MainActivity with their QRCode list updated
-        Boolean deleted_qr;
+        boolean deleted_qr;
         try{
-            Bundle extras = getIntent().getExtras();
-            deleted_qr = extras.getBoolean("Deleted QR code");
+            Bundle extras_qr = getIntent().getExtras();
+            deleted_qr = extras_qr.getBoolean("Deleted QR code");
         } catch(Exception ex){
             deleted_qr = false;
         }
@@ -56,6 +57,34 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
             Log.d("MainActivity", "QRCode deleted");
             bottomNavigationView.setSelectedItemId(R.id.navigation_profile);
             getSupportFragmentManager().beginTransaction().replace(R.id.container, profileFragment).commit();
+        }
+
+        boolean go_to_map;
+        try{
+            Bundle extras_map = getIntent().getExtras();
+            go_to_map = extras_map.getBoolean("Map Page");
+        } catch(Exception ex){
+            go_to_map = false;
+        }
+
+        if (go_to_map){
+            Log.d("MainActivity", "Change to map page");
+            bottomNavigationView.setSelectedItemId(R.id.navigation_maps);
+            //getSupportFragmentManager().beginTransaction().replace(R.id.container, mapFragment).commit();
+            Bundle extras_map = getIntent().getExtras();
+            String qr_code_string = extras_map.getString("QRCode");
+
+//            Bundle args = new Bundle();
+//            args.putString("QRCode", qr_code_string);
+//            mapFragment newFragment = new mapFragment();
+//            newFragment.setArguments(args);
+
+            Bundle bundle = new Bundle();
+            bundle.putString("QRCode", qr_code_string);
+            //mapFragment fragment = new mapFragment();
+            mapFragment.setArguments(bundle);
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.container, mapFragment).commit();
         }
     }
 
