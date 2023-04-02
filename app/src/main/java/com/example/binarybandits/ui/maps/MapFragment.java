@@ -24,7 +24,9 @@ import com.example.binarybandits.DBConnector;
 import com.example.binarybandits.R;
 import com.example.binarybandits.controllers.AuthController;
 import com.example.binarybandits.controllers.PermissionsController;
+import com.example.binarybandits.controllers.QRController;
 import com.example.binarybandits.models.QRCode;
+import com.example.binarybandits.qrcode.QRCodeCallback;
 import com.example.binarybandits.qrcode.QRCodeDB;
 import com.example.binarybandits.qrcode.QRCodeInfoActivity;
 import com.example.binarybandits.qrcode.QRCodeListCallback;
@@ -66,6 +68,23 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         mapView = inflater.inflate(R.layout.fragment_maps, container, false);
+
+        // if sent from QRpage, the QRcode name is passed through. Get QRcode coordinates and send
+        // to
+        if (getArguments() != null) {
+            Bundle args = getArguments();
+            String qrCode = args.getString("QRCode");
+            Log.d("name", qrCode);
+
+
+            QRCodeDB db_qr = new QRCodeDB(new DBConnector());
+            db_qr.getQRCode(qrCode, new QRCodeCallback() {
+                @Override
+                public void onQRCodeCallback(QRCode qrCode) {
+                    ArrayList<Double> coords = qrCode.getCoordinates();
+                }
+            });
+        }
 
 
         // Get a handle to the fragment and register the callback.
