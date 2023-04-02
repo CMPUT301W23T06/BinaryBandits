@@ -10,20 +10,23 @@
     <ImageButton
         android:id="@+id/scan_button"
         style="?android:attr/borderlessButtonStyle"
-        android:layout_width="250dp"
-        android:layout_height="250dp"
+        android:layout_width="265dp"
+        android:layout_height="265dp"
 
-        android:layout_marginBottom="150dp"
+        android:layout_marginBottom="120dp"
         android:background="@drawable/big_rounded_button"
 
         android:contentDescription="@string/scan_code_content_desc"
-        android:cropToPadding="true"
-        android:scaleType="center"
+        android:padding="70dp"
+        android:scaleType="fitCenter"
         android:src="@drawable/ic_scan"
 
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/start_scanning_subtext"
+        app:layout_constraintVertical_bias="1.0" />
+
 
     <TextView
         android:id="@+id/start_scanning_text"
@@ -31,14 +34,16 @@
         android:layout_height="wrap_content"
 
         android:layout_marginStart="32dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="76dp"
         android:layout_marginEnd="32dp"
 
+        android:fontFamily="@font/poppins_bold"
         android:text="@string/start_scanning_text"
-        android:textColor="@color/white"
-        android:textSize="50sp"
 
+        android:textColor="@color/white"
+        android:textSize="35sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.51"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -48,13 +53,15 @@
         android:layout_height="wrap_content"
 
         android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="32dp"
+
+
+        android:fontFamily="@font/poppins"
 
         android:text="@string/start_scanning_subtext"
         android:textColor="@color/white"
-        android:textSize="18sp"
-
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/start_scanning_text" />
