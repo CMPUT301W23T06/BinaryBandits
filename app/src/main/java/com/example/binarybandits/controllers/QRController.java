@@ -148,8 +148,4 @@ public class QRController {
         return score;
     }
 
-//    public QRCode getQRCodeFromName(String name) {
-//
-//    }
-
 }
