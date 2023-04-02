@@ -8,12 +8,6 @@
     android:foregroundTint="#333333"
     tools:context=".MainActivity">
 
-    <FrameLayout
-        android:id="@+id/fragment_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </FrameLayout>
-
     <TextView
         android:id="@+id/text_notifications"
         android:layout_width="match_parent"
@@ -27,7 +21,7 @@
         tools:layout_editor_absoluteX="0dp" />
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/cardView2"
+        android:id="@+id/card1"
         android:layout_width="85dp"
         android:layout_height="85dp"
         android:layout_gravity="center"
@@ -52,14 +46,14 @@
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/cardView3"
+        android:id="@+id/card2"
         android:layout_width="85dp"
         android:layout_height="85dp"
 
         android:layout_gravity="center"
         android:layout_marginTop="50dp"
         app:cardCornerRadius="1000dp"
-        app:layout_constraintEnd_toStartOf="@+id/cardView2"
+        app:layout_constraintEnd_toStartOf="@+id/card1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_notifications">
 
@@ -84,12 +78,12 @@
         android:text="@string/username"
         android:textAlignment="center"
         android:textColor="#EFEFEF"
-        app:layout_constraintEnd_toStartOf="@+id/cardView2"
+        app:layout_constraintEnd_toStartOf="@+id/card1"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView3" />
+        app:layout_constraintTop_toBottomOf="@+id/card2" />
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/cardView"
+        android:id="@+id/card3"
         android:layout_width="85dp"
         android:layout_height="85dp"
         android:layout_gravity="center"
@@ -97,7 +91,7 @@
         android:layout_marginTop="50dp"
         app:cardCornerRadius="1000dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/cardView2"
+        app:layout_constraintStart_toEndOf="@+id/card1"
         app:layout_constraintTop_toBottomOf="@+id/text_notifications">
 
         <ImageView
@@ -133,7 +127,7 @@
         android:text="@string/_1000"
         android:textAlignment="center"
         android:textColor="#00F244"
-        app:layout_constraintEnd_toStartOf="@+id/cardView2"
+        app:layout_constraintEnd_toStartOf="@+id/card1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/player2" />
 
@@ -146,7 +140,7 @@
         android:textAlignment="center"
         android:textColor="#00F244"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/cardView2"
+        app:layout_constraintStart_toEndOf="@+id/card1"
         app:layout_constraintTop_toBottomOf="@+id/player3" />
 
     <TextView
@@ -158,8 +152,8 @@
         android:textAlignment="center"
         android:textColor="#EFEFEF"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/cardView2"
-        app:layout_constraintTop_toBottomOf="@+id/cardView" />
+        app:layout_constraintStart_toEndOf="@+id/card1"
+        app:layout_constraintTop_toBottomOf="@+id/card3" />
 
     <TextView
         android:id="@+id/player1"
@@ -171,7 +165,7 @@
         android:textColor="#EFEFEF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView2" />
+        app:layout_constraintTop_toBottomOf="@+id/card1" />
 
     <ListView
         android:id="@+id/playerList"
@@ -280,7 +274,7 @@
         app:layout_constraintTop_toTopOf="@+id/materialToolbar" />
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/cardView4"
+        android:id="@+id/card4"
         android:layout_width="37dp"
         android:layout_height="37dp"
 
@@ -340,7 +334,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:text="You are in the top x% of players"
+        android:text="You are in the top 0% of players"
         android:textColor="@color/red"
         android:textSize="15sp"
         android:textStyle="bold"
@@ -350,6 +344,12 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/materialToolbar" />
+
+    <FrameLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </FrameLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
