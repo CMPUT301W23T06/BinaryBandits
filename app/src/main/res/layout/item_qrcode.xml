@@ -17,19 +17,21 @@
         android:id="@+id/qr_code_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/qr_code"
-        android:padding="10dp"
-        android:textSize="12sp"
+        android:layout_weight="0.5"
+        android:fontFamily="@font/poppins"
         android:maxLines="1"
-        android:layout_weight="0.5"/>
+        android:padding="10dp"
+        android:text="@string/qr_code"
+        android:textSize="10sp" />
 
     <TextView
         android:id="@+id/qr_code_score"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/score_text"
+        android:layout_weight="0.3"
+        android:fontFamily="@font/poppins_semibold"
         android:padding="10dp"
-        android:textSize="12sp"
-        android:layout_weight="0.3"/>
+        android:text="@string/score_text"
+        android:textSize="10sp" />
 
 </LinearLayout>
