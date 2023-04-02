@@ -301,6 +301,7 @@ public class LeaderboardFragment extends Fragment {
         // set users info at bottom of leaderboard
         user_name.setText(current_user.getUsername());
 
+        CardView card4 = leaderboard.findViewById(R.id.card4);
         if(scoreLeaderboard) {
             user_score.setText(Integer.toString(current_user.getTotalScore()));
             users_rank.setText("#"+Integer.toString(user_rank));
@@ -310,6 +311,7 @@ public class LeaderboardFragment extends Fragment {
             user_score.setVisibility(View.VISIBLE);
             users_rank.setVisibility(View.VISIBLE);
             user_image.setVisibility(View.VISIBLE);
+            card4.setVisibility(View.VISIBLE);
             percentileLabel.setVisibility(View.INVISIBLE);
         }
         else {
@@ -319,6 +321,7 @@ public class LeaderboardFragment extends Fragment {
             user_score.setVisibility(View.INVISIBLE);
             users_rank.setVisibility(View.INVISIBLE);
             user_image.setVisibility(View.INVISIBLE);
+            card4.setVisibility(View.INVISIBLE);
             percentileLabel.setVisibility(View.VISIBLE);
 
             int percentile = leaderboardController.getPercentile(scores, current_user.getHighestScore());
@@ -394,6 +397,10 @@ public class LeaderboardFragment extends Fragment {
         });
     }
 
+    /**
+     * Change the visibility of the top 3 icons on leaderboard and user ranking icon when the search button is clicked
+     * @param leaderboard leaderboard view object
+     */
     public void toggleUserIconVisibility(View leaderboard) {
         CardView card1 = leaderboard.findViewById(R.id.card1);
         CardView card2 = leaderboard.findViewById(R.id.card2);
