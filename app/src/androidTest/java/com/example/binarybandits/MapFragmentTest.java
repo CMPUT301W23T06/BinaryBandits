@@ -1,9 +1,10 @@
 package com.example.binarybandits;
 
 import android.app.Activity;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
-import android.widget.SearchView;
 
+import androidx.appcompat.widget.SearchView;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 
@@ -38,19 +39,21 @@ public class MapFragmentTest {
         Activity activity = rule.getActivity();
     }
 
-    /*
+
     @Test
     public void checkSearch() throws Exception{
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
         solo.clickOnView(solo.getView(R.id.navigation_maps)); //Click maps
         solo.clickOnView(solo.getView(R.id.map_search_view)); //Click search view
-        solo.enterText((SearchView)solo.getView(R.id.map_search_view), "University of Alberta");
-    }*/
+        SearchView searchView = (SearchView)solo.getView(R.id.map_search_view);
+        searchView.setQuery("University of Alberta", true);
+    }
 
     @Test
     public void checkMapMarker() {
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
         solo.clickOnView(solo.getView(R.id.navigation_maps)); //Click maps
+
     }
 
 
