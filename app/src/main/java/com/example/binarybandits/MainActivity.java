@@ -71,11 +71,6 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
             getSupportFragmentManager().beginTransaction().replace(R.id.container, leaderboardFragment).commit();
         } else if (itemId == R.id.navigation_maps) {
             getSupportFragmentManager().beginTransaction().replace(R.id.container, mapFragment).commit();
-
-                    /*Intent intent = new Intent(MainActivity.this, MapActivity.class);
-                    intent.putExtra("message", "Hello from SourceActivity");
-                    startActivity(intent);*/
-
         } else if (itemId == R.id.navigation_home) {
             getSupportFragmentManager().beginTransaction().replace(R.id.container, homeFragment).commit();
         } else if (itemId == R.id.navigation_profile) {
