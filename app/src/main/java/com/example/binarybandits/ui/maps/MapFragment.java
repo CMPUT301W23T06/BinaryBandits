@@ -43,6 +43,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.slider.Slider;
 
+import org.checkerframework.checker.units.qual.A;
+
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -246,6 +248,17 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         }
         googleMap.clear();
         placeMarkers(resultsList, googleMap);
+    }
+
+    public void getQRCodeFromLocation(ArrayList<QRCode> qrCodeList, GoogleMap googleMap, ArrayList<Double> location) {
+        for(int i = 0; i < qrCodeList.size(); i++) {
+            if(qrCodeList.get(i).getCoordinates() == location) {
+                googleMap.clear();
+                ArrayList<QRCode> result = new ArrayList<>();
+                result.add(qrCodeList.get(i));
+                placeMarkers(qrCodeList, googleMap);
+            }
+        }
     }
 
     /**
