@@ -32,6 +32,8 @@ import com.example.binarybandits.qrcode.DownloadImageTask;
 
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 /**
  * ProfileFragment displays the current users profile page, including their username, total score,
@@ -41,6 +43,8 @@ public class ProfileFragment extends Fragment {
 
     private ImageView imageView;
     private PlayerController playerController;
+    private ArrayList<QRCode> dataList;
+    private ArrayAdapter<QRCode> QRAdapter;
 
     /**
      * On create, display current players profile icon and send to getCurrentPlayer()
@@ -95,6 +99,19 @@ public class ProfileFragment extends Fragment {
                     TextView highestQRCode = view.findViewById(R.id.highest_score_text);
                     TextView lowestQRCode = view.findViewById(R.id.lowest_score_text);
 
+                    highestQRCode.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            sortQRList(false);
+                        }
+                    });
+                    lowestQRCode.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            sortQRList(true);
+                        }
+                    });
+
                     // set total score and total QQR code count
                     scoreText.setText(String.valueOf(player.getTotalScore()));
                     totalQRText.setText(String.valueOf(player.getTotalQRCodes()));
@@ -121,9 +138,9 @@ public class ProfileFragment extends Fragment {
 
                     //Get ListView of QR codes scanned
                     ListView QRlist = view.findViewById(R.id.list_view_player_qr_codes);
-                    ArrayList<QRCode> dataList = new ArrayList<>();
+                    dataList = new ArrayList<>();
                     dataList = player.getQrCodesScanned();
-                    ArrayAdapter<QRCode> QRAdapter = new QRArrayAdapter(getActivity(), dataList);
+                    QRAdapter = new QRArrayAdapter(getActivity(), dataList);
                     QRlist.setAdapter(QRAdapter);
                     ArrayList<QRCode> finalDataList = dataList;
                     QRAdapter.notifyDataSetChanged();
@@ -156,4 +173,17 @@ public class ProfileFragment extends Fragment {
 
 
     }
+
+    public void sortQRList(boolean inc) {
+        dataList.sort(new Comparator<QRCode>() {
+            @Override
+            public int compare(QRCode qr1, QRCode qr2) {
+                int result = Integer.compare(qr1.getPoints(), qr2.getPoints());
+                return inc ? result : -result;
+            }
+        });
+        QRAdapter.notifyDataSetChanged();
+    }
+
+
 }
