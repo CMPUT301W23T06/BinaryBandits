@@ -99,6 +99,9 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
         if (itemId == R.id.navigation_leaderboard) {
             getSupportFragmentManager().beginTransaction().replace(R.id.container, leaderboardFragment).commit();
         } else if (itemId == R.id.navigation_maps) {
+            Bundle bundle = new Bundle();
+            bundle.putString("QRCode", "none");
+            mapFragment.setArguments(bundle);
             getSupportFragmentManager().beginTransaction().replace(R.id.container, mapFragment).commit();
         } else if (itemId == R.id.navigation_home) {
             getSupportFragmentManager().beginTransaction().replace(R.id.container, homeFragment).commit();

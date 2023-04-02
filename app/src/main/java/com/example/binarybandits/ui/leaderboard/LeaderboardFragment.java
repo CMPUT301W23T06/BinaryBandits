@@ -235,6 +235,7 @@ public class LeaderboardFragment extends Fragment {
                     public void onPlayerListCallback(ArrayList<Player> playerList) {
                         displayLeaderboard(leaderboard, playerList, true);
                         scoreButton.setTextColor(Color.parseColor("#FFFFFF"));
+                        scoreButton.setBackgroundResource(R.drawable.red_button);
                         qrCodeButton.setBackground(null);
                         qrCodeButton.setTextColor(Color.parseColor("#FD426F"));
                     }
@@ -252,6 +253,7 @@ public class LeaderboardFragment extends Fragment {
                     public void onPlayerListCallback(ArrayList<Player> playerList) {
                         displayLeaderboard(leaderboard, playerList, false);
                         qrCodeButton.setTextColor(Color.parseColor("#FFFFFF"));
+                        qrCodeButton.setBackgroundResource(R.drawable.red_button);
                         scoreButton.setBackground(null);
                         scoreButton.setTextColor(Color.parseColor("#FD426F"));
                     }
