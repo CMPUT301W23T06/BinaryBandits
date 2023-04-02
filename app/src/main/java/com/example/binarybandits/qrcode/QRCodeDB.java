@@ -95,7 +95,9 @@ public class QRCodeDB {
                                     qrCodeInDB.setPlayersScannedBy(playersScannedBy);
                                 }
                                 else {
-                                    qrCodeInDB.addPlayerScannedBy(username);
+                                    if(!qrCodeInDB.getPlayersScannedBy().contains(username)) {
+                                        qrCodeInDB.addPlayerScannedBy(username);
+                                    }
                                 }
 
                                 //Coordinates is set to most recent location of QRCode
@@ -123,7 +125,7 @@ public class QRCodeDB {
         data.put("scannerUID", qrCode.getScannerUID());
         data.put("hash", qrCode.getHash());
         data.put("points", qrCode.getPoints());
-        data.put("geolocation", qrCode.getCoordinates());
+        data.put("coordinates", qrCode.getCoordinates());
         data.put("locationImage", qrCode.getLocationImage());
         data.put("comments", qrCode.getComments());
         data.put("numPlayersScannedBy", qrCode.getNumPlayersScannedBy());
