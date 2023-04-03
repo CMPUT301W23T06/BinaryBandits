@@ -24,8 +24,8 @@ public class LogInActivity extends AppCompatActivity {
     private Animation vibrate;
 
     /**
-     *
-     * @param savedInstanceState
+     * Create the view and set content to the views in the xml.
+     * @param savedInstanceState the saved instance state that can be retrieved if the app crashes
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {

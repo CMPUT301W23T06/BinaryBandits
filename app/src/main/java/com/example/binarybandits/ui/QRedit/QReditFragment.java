@@ -23,7 +23,7 @@ import android.widget.ImageView;
 import com.example.binarybandits.R;
 
 /**
- *
+ * This fragment is responsible for displaying the location image
  */
 public class QReditFragment extends Fragment{
 
@@ -89,9 +89,18 @@ public class QReditFragment extends Fragment{
         }}
 
     /**
-     *
-     * @param view
+     * Creates the QRCodeEditFragmentView
+     * @param inflater the layout inflater
+     * @param container the view group container
+     * @param savedInstanceState the saved instance state that is restored after the app crashes
+     * @return Return the created QRCodeEditFragment view java object
      */
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_qredit, container, false);
+    }
+
     public void onCheckboxClicked(View view) {
         // Is the view now checked?
         boolean checked = ((CheckBox) view).isChecked();
@@ -110,21 +119,8 @@ public class QReditFragment extends Fragment{
     }
 
     /**
-     *
-     * @param inflater
-     * @param container
-     * @param savedInstanceState
-     * @return
-     */
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_qredit, container, false);
-    }
-
-    /**
-     *
-     * @param savedInstanceState
+     * Contains code determining what to do when the activity is created.
+     * @param savedInstanceState the saved instance state that is restored after the app crashes
      */
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {

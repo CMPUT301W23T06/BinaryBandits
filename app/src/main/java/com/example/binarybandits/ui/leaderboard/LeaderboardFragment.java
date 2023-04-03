@@ -68,19 +68,6 @@ public class LeaderboardFragment extends Fragment {
         View leaderboard = inflater.inflate(R.layout.fragment_leaderboard, container, false);
 
         PlayerDB db = new PlayerDB(new DBConnector());
-        QRCodeDB qrCodeDB = new QRCodeDB(new DBConnector());
-
-        /*
-        qrCodeDB.getAllQRCodes(new QRCodeListCallback() {
-            @Override
-            public void onQRCodeListCallback(ArrayList<QRCode> qrCodes) {
-                for(int i = 0; i < qrCodes.size(); i++) {
-                    qrCodes.get(i).setPlayersScannedBy(new ArrayList<>());
-                    qrCodeDB.updateQRCode(qrCodes.get(i));
-                }
-            }
-        });
-        */
 
         //Get list of players sorted by score
         db.getPlayersByQuery(db.getSortedPlayers(), new PlayerListCallback() {
@@ -223,7 +210,8 @@ public class LeaderboardFragment extends Fragment {
         toolbar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getFragmentManager().beginTransaction().replace(R.id.container, new ProfileFragment()).commit();
+                BottomNavigationView bottomNavigationView = getActivity().findViewById(R.id.nav_view);
+                bottomNavigationView.setSelectedItemId(R.id.navigation_profile);
             }
         });
 
@@ -302,11 +290,11 @@ public class LeaderboardFragment extends Fragment {
         }
         // set users info at bottom of leaderboard
         user_name.setText(current_user.getUsername());
-
         CardView card4 = leaderboard.findViewById(R.id.card4);
         if(scoreLeaderboard) {
             user_score.setText(Integer.toString(current_user.getTotalScore()));
-            users_rank.setText("#"+Integer.toString(user_rank));
+            String rankString = String.format(Locale.CANADA,"#%d", user_rank);
+            users_rank.setText(rankString);
             String url_user = "https://api.dicebear.com/5.x/avataaars-neutral/png?seed=" + current_user.getUsername();
             Picasso.get().load(url_user).into(user_image);
             user_name.setVisibility(View.VISIBLE);

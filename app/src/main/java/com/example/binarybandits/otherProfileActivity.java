@@ -37,14 +37,16 @@ import java.util.Objects;
  * switch activity to otherProfileActivity
  * respond to back button press and send back to MainActivity
  * set fields of player profile of user clicked on
+ *
+ * Outstanding Issue: QR codes are only displayed properly when a player has 10 or less QR codes (due to use of whereIn in QRCodeDB)
  */
 public class otherProfileActivity extends Activity {
     private ArrayList<Player> players;
     private PlayerController controller;
 
     /**
-     *
-     * @param savedInstanceState
+     * Create the activity for another player's profile
+     * @param savedInstanceState the saved instance state that is restored after the app crashes
      */
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -146,7 +148,7 @@ public class otherProfileActivity extends Activity {
                                 Bundle extras = new Bundle();
                                 extras.putString("name", String.valueOf(finalDataList.get(position).getName()));
                                 extras.putString("username", String.valueOf(finalOtherPlayer.getUsername()));
-                                extras.putBoolean("current_user", true);
+                                extras.putBoolean("current_user", false);
                                 myIntent.putExtras(extras);
                                 // go to QRCodeInfoActivity to display the QR code
                                 startActivity(myIntent);

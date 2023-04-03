@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -93,8 +94,8 @@ public class QRCodeEditActivity extends AppCompatActivity {
 
 
     /**
-     *
-     * @param savedInstanceState
+     * Creates the QRCodeEdit view
+     * @param savedInstanceState the saved instance state that is restored if the app crashes
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -155,7 +156,7 @@ public class QRCodeEditActivity extends AppCompatActivity {
                 parade(); // invokes the confetti animation in parade style
 
 
-        /***
+        /**
          * When the user clicks the save button, the QR code is saved to the database
          * and the user is redirected to the scanner activity
          * @param v - the view
@@ -180,7 +181,8 @@ public class QRCodeEditActivity extends AppCompatActivity {
                         //playersScannedBy.add(username);
                         //Create a new QR code and add it to the database. Location image can be set by clicking add image button
                         QRCode qrCode = new QRCode(hash, name, points, uid, coordinates, "", new ArrayList<>(), 1, new ArrayList<>());
-                        scannerController.addQRCode(qrCode, player);
+                        Log.d("ScannerController", String.valueOf(locationCheckBox.isChecked()));
+                        scannerController.addQRCode(qrCode, player, locationCheckBox.isChecked());
                     }
                 });
 
@@ -199,7 +201,7 @@ public class QRCodeEditActivity extends AppCompatActivity {
 
     }
 
-    /***
+    /**
      * Builds the confetti in a parade style!
      * Source: https://github.com/DanielMartinus/Konfetti
      */

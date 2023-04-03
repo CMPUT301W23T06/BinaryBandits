@@ -256,4 +256,7 @@ public class QRCode {
     public void removePlayerScannedBy(String username) {
         playersScannedBy.remove(username);
     }
+
+
+    public void removeCoordinates(){ this.coordinates = null;}
 }

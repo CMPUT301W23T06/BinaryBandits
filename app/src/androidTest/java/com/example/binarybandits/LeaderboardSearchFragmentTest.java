@@ -2,34 +2,28 @@ package com.example.binarybandits;
 
 import android.app.Activity;
 
-import android.content.Intent;
-
-
-import android.os.Bundle;
-import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.ListView;
 
-import androidx.test.ext.junit.runners.AndroidJUnit4;
+
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 
 
-import com.example.binarybandits.ui.leaderboard.LeaderboardFragment;
+import com.example.binarybandits.models.Player;
+import com.example.binarybandits.player.PlayerDB;
+import com.google.android.material.snackbar.BaseTransientBottomBar;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.robotium.solo.Solo;
 import org.junit.Rule;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+
+
 
 
 /**
@@ -44,12 +38,23 @@ public class LeaderboardSearchFragmentTest {
 
     /**
      * Runs before all tests and creates solo instance.
+     *
      * @throws Exception
      */
     @Before
     public void setUp() throws Exception {
         solo = new Solo(InstrumentationRegistry.getInstrumentation(), activityTestRule.getActivity());
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        //db.collection("Players").add(new Player("test"));
+        db.collection("Players").document("test").set(new Player("test"));
     }
+
+    /*public Player setUpPlayer() {
+        //solo = new Solo(InstrumentationRegistry.getInstrumentation(), activityTestRule.getActivity());
+        Player player = new Player("test");
+        return player;
+    }*/
+
 
     /**
      * Gets the activity
@@ -78,7 +83,7 @@ public class LeaderboardSearchFragmentTest {
         solo.waitForText("test", 1, 2000);
         solo.clickOnMenuItem("test");
         solo.clickOnView(solo.getView(R.id.search_results));
-        solo.clickOnView(solo.getView(R.id.profileCardView));
+        solo.clickOnView(solo.getView(R.id.profileCardView2));
         solo.assertCurrentActivity("Wrong Activity", otherProfileActivity.class);
     }
 
@@ -101,10 +106,10 @@ public class LeaderboardSearchFragmentTest {
         solo.waitForText("test", 1, 2000);
         solo.clickOnMenuItem("test");
         solo.clickOnView(solo.getView(R.id.search_results));
-        solo.clickOnView(solo.getView(R.id.profileCardView));
+        solo.clickOnView(solo.getView(R.id.profileCardView2));
         solo.assertCurrentActivity("Wrong Activity", otherProfileActivity.class);
 
-        assertTrue(solo.waitForText("test", 1, 2000));
+        assertTrue(solo.waitForText("test", 2, 2000));
 
     }
 
@@ -126,8 +131,10 @@ public class LeaderboardSearchFragmentTest {
         solo.waitForText("test", 1, 2000);
 
         solo.clearEditText((EditText) solo.getView(R.id.search_bar));
+        solo.sleep(3000);
+        solo.enterText((EditText) solo.getView(R.id.search_bar), " ");
 
-        assertFalse(solo.waitForText("test",2,2000)==true);
+        assertFalse(solo.waitForText("test",2,3000)==true);
 
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
 
@@ -162,6 +169,8 @@ public class LeaderboardSearchFragmentTest {
     @After
     public void tearDown() throws Exception {
         solo.finishOpenedActivities();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("Players").document("test").delete();
     }
 
 }
