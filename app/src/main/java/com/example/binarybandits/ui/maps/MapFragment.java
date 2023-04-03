@@ -55,7 +55,7 @@ import java.util.List;
 /**
  * View class that uses the Google Maps API to display geolocation of all QR codes. This
  * class also has a search button that takes users to MapSearchFragment.
- * Outstanding Issues:
+ * Outstanding Issues: N/A
  */
 public class MapFragment extends Fragment implements OnMapReadyCallback {
 

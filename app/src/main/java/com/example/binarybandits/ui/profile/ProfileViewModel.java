@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 /**
- *
+ * ViewModel for Profile fragment class.
  */
 public class ProfileViewModel extends ViewModel {
     private final MutableLiveData<String> mText;
