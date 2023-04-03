@@ -97,9 +97,6 @@ public class MapFragmentTest {
         searchView.setQuery("University of Alberta", true);
         solo.clickOnView(solo.getView(R.id.map_search_view));
         solo.sendKey(Solo.ENTER);
-        solo.clickOnView(solo.getView(R.id.map)); //Click middle of map view
-        solo.assertCurrentActivity("Wrong Activity", QRCodeInfoActivity.class);
-
     }
 
     /***
@@ -112,6 +109,10 @@ public class MapFragmentTest {
         solo.waitForView(solo.getView(R.id.map_search_view));
         SearchView searchView = (SearchView)solo.getView(R.id.map_search_view);
         searchView.setQuery("University of Alberta", true);
+        solo.clickOnView(solo.getView(R.id.map_search_view));
+        solo.sendKey(Solo.ENTER);
+        solo.clickOnView(solo.getView(R.id.map)); //Click middle of map view
+        solo.assertCurrentActivity("Wrong Activity", QRCodeInfoActivity.class);
     }
 
 

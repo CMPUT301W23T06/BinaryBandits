@@ -15,15 +15,15 @@ import org.junit.jupiter.api.Test;
 public class CommentTest {
 
     /**
-     *
-     * @return
+     * Create a mock Comment object for testing purposes
+     * @return Return a mock Comment object to perform unit tests on
      */
     public Comment mockComment() {
         return new Comment("That QR code is sick!", "Josh123");
     }
 
     /**
-     *
+     * Test getters and setters for contents
      */
     @Test
     public void testContents() {
@@ -35,7 +35,7 @@ public class CommentTest {
     }
 
     /**
-     *
+     * Test getters and setters for author
      */
     @Test
     public void testAuthor() {

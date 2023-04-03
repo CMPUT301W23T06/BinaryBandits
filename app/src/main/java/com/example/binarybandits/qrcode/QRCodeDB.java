@@ -312,6 +312,7 @@ public class QRCodeDB {
      * Updates number of players who have scanned a QRCode when a Player deletes a
      * QRCode from their account
      * @param qrCode QRCode to update in database
+     * @param username username of Player who deleted QR code
      */
     public void deleteQRCode(QRCode qrCode, String username) {
         if(!qrCode.getPlayersScannedBy().isEmpty()) {
