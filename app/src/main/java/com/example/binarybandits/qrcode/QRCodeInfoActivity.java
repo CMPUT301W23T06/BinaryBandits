@@ -173,6 +173,7 @@ public class QRCodeInfoActivity extends AppCompatActivity {
 
                     // if we are viewing another persons profile, ensure that user cannot delete
                     // another users QR code
+                    Log.d(TAG, current_player.toString() + " is the current player");
                     if (current_player == false){
                         delete_button.setVisibility(View.GONE);
                     }
