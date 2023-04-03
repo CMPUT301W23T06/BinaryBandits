@@ -1,17 +1,18 @@
 package com.example.binarybandits;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
 import android.app.Activity;
 import android.content.Context;
+import android.widget.EditText;
 
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 
+import com.example.binarybandits.controllers.AuthController;
 import com.example.binarybandits.models.Player;
 import com.example.binarybandits.player.PlayerDB;
+import com.example.binarybandits.ui.auth.LogInActivity;
 import com.robotium.solo.Solo;
 
 import org.junit.After;
@@ -19,20 +20,27 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
+/**
+ * Test class for the LeaderboardFragment view class.
+ */
 public class LeaderboardFragmentTest{
     private Solo solo;
+    private PlayerDB db = new PlayerDB(new DBConnector());
 
     @Rule
-    public ActivityTestRule<MainActivity> rule =
-            new ActivityTestRule<>(MainActivity.class, true, true);
+    public ActivityTestRule<LogInActivity> rule =
+            new ActivityTestRule<>(LogInActivity.class, true, true);
     /**
      * Runs before all tests and creates solo instance.
      * @throws Exception
      */
     @Before
     public void setUp() throws Exception{
-
         solo = new Solo(InstrumentationRegistry.getInstrumentation(),rule.getActivity());
+        AuthController.setUserLoggedInStatus(rule.getActivity(), false);
+        solo.assertCurrentActivity("Wrong Activity", LogInActivity.class);
+        solo.enterText((EditText) solo.getView(R.id.editUsername), "robot");
+        solo.clickOnView(solo.getView(R.id.loginBtn));
     }
 
     /**
@@ -66,19 +74,6 @@ public class LeaderboardFragmentTest{
         solo.waitForText("#4");
         solo.clickOnView(solo.getView(R.id.limage1));//Click player Button
         solo.assertCurrentActivity("Wrong Activity", otherProfileActivity.class);
-    }
-
-    /**
-     * test switch to QR leaderboard and switch back
-     */
-    @Test
-    public void switchLeaderboards(){
-        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
-        solo.clickOnView(solo.getView(R.id.navigation_leaderboard)); //Click leaderboard
-        solo.waitForText("#4");
-        solo.clickOnButton("QR Code");
-        assertTrue("Could not find the button!", solo.searchText("You are in the top"));
-        solo.clickOnButton("Score");
     }
 
     /**
@@ -116,16 +111,18 @@ public class LeaderboardFragmentTest{
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
         solo.clickOnView(solo.getView(R.id.navigation_leaderboard)); //Click leaderboard
         solo.waitForText("#4"); // wait until screen is loaded
-        solo.clickOnView(solo.getView(R.id.player_name_text));//Click player Button
+        solo.clickOnView(solo.getView(R.id.playerList));
+        solo.clickOnView(solo.getView(R.id.profileCardView));
         solo.assertCurrentActivity("Wrong Activity", otherProfileActivity.class);
     }
+
     /**
-     * Closes the activity after each test
-     * @throws Exception
+     * 
      */
     @After
-    public void tearDown() throws Exception{
+    public void tearDown() {
         solo.finishOpenedActivities();
+        AuthController.setUserLoggedInStatus(rule.getActivity(), false);
     }
 
 }

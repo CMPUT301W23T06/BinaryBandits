@@ -8,6 +8,7 @@ import androidx.appcompat.widget.SearchView;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 
+import com.example.binarybandits.controllers.PermissionsController;
 import com.robotium.solo.Solo;
 
 import org.junit.Before;
@@ -36,30 +37,23 @@ public class MapFragmentTest {
      */
     @Test
     public void start() throws Exception{
+        PermissionsController.askLocationPermission(rule.getActivity());
         Activity activity = rule.getActivity();
     }
 
 
+    /**
+     *
+     *
+     */
     @Test
-    public void checkSearch() throws Exception{
+    public void checkSearch() {
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
         solo.clickOnView(solo.getView(R.id.navigation_maps)); //Click maps
+        solo.waitForView(solo.getView(R.id.map_search_view));
         solo.clickOnView(solo.getView(R.id.map_search_view)); //Click search view
         SearchView searchView = (SearchView)solo.getView(R.id.map_search_view);
         searchView.setQuery("University of Alberta", true);
     }
-
-    @Test
-    public void checkMapMarker() {
-        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
-        solo.clickOnView(solo.getView(R.id.navigation_maps)); //Click maps
-
-    }
-
-
-
-
-
-
 
 }

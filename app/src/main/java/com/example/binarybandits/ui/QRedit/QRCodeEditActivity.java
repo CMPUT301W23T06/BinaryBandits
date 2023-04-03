@@ -93,8 +93,8 @@ public class QRCodeEditActivity extends AppCompatActivity {
 
 
     /**
-     *
-     * @param savedInstanceState
+     * Creates the QRCodeEdit view
+     * @param savedInstanceState the saved instance state that is restored if the app crashes
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -155,7 +155,7 @@ public class QRCodeEditActivity extends AppCompatActivity {
                 parade(); // invokes the confetti animation in parade style
 
 
-        /***
+        /**
          * When the user clicks the save button, the QR code is saved to the database
          * and the user is redirected to the scanner activity
          * @param v - the view
@@ -199,7 +199,7 @@ public class QRCodeEditActivity extends AppCompatActivity {
 
     }
 
-    /***
+    /**
      * Builds the confetti in a parade style!
      * Source: https://github.com/DanielMartinus/Konfetti
      */

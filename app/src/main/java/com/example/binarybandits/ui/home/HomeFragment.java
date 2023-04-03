@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.binarybandits.R;
 import com.example.binarybandits.ScanQRActivity;
+import com.example.binarybandits.controllers.AuthController;
 import com.example.binarybandits.controllers.PermissionsController;
 import com.example.binarybandits.ui.auth.LogInActivity;
 
@@ -23,11 +24,11 @@ public class HomeFragment extends Fragment {
     private Button signOut;
 
     /**
-     *
-     * @param inflater
-     * @param container
-     * @param savedInstanceState
-     * @return
+     * Create the view class containing a scan button and a sign out button
+     * @param inflater converts xml view to java object
+     * @param container parent view that contains Home Fragment
+     * @param savedInstanceState the saved instance state that can be retrieved if the app crashes
+     * @return Return the Home Fragment View
      */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -46,6 +47,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent myIntent = new Intent(getActivity(), LogInActivity.class);
+                AuthController.setUserLoggedInStatus(getActivity(), false);
                 startActivity(myIntent);
             }
         });

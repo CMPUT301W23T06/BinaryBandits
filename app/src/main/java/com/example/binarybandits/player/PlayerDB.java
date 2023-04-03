@@ -354,10 +354,4 @@ public class PlayerDB {
         collectionReference.document(username).delete();
     }
 
-    /**
-     *
-     */
-    public CollectionReference getCollectionReference() {
-        return collectionReference;
-    }
 }

@@ -16,7 +16,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
 /**
- *
+ * MainActivity contains the 4 main fragments of the program: Leaderboard, Map, Home, and Profile. Allows for
+ * navigation between fragments using a bottom navigation bar
  */
 public class MainActivity extends AppCompatActivity implements NavigationBarView.OnItemSelectedListener {
 
@@ -27,8 +28,8 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
     ProfileFragment profileFragment = new ProfileFragment();
 
     /**
-     *
-     * @param savedInstanceState
+     * Create MainActivity
+     * @param savedInstanceState the saved instance state that is restored after the app crashes
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,9 +90,9 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
     }
 
     /**
-     *
-     * @param item
-     * @return
+     * Change the current fragment to the fragment selected
+     * @param item item selected from BottomNavigationView
+     * @return Return True if the item selected was a valid fragment, false otherwise
      */
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {

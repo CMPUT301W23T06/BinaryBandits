@@ -191,9 +191,9 @@ public class QRCodeDB {
     }
 
     /**
-     *
-     * @param query
-     * @param callback
+     * Get all QR codes that satisfy a given query
+     * @param query Firebase Firestore query containing results to process
+     * @param callback has method containing what to do with queried list of QRCodes
      */
     public void getQRCodesByQuery(Query query, QRCodeListCallback callback) {
         ArrayList<QRCode> qrCodeList = new ArrayList<>();
@@ -232,68 +232,17 @@ public class QRCodeDB {
     }
 
     /**
-     *
-     * @return
+     * Query that retrieves all QR codes with coordinates (non-null coordinates field)
+     * @return Return the query that retrieves all QR codes with coordinates (non-null coordinates field)
      */
     public Query getQRCodesWithCoordinates() {
         return collectionReference.whereNotEqualTo("coordinates", null);
     }
 
     /**
-     *
-     * @param radius
-     * @param location
-     * @param callback
-     */
-    public void getNearbyQRCodes(float radius, ArrayList<Double> location, QRCodeListCallback callback) {
-        ArrayList<QRCode> qrCodeList = new ArrayList<>();
-        collectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    for(QueryDocumentSnapshot doc: task.getResult()) {
-                        Log.d(TAG, doc.getString("name"));
-                        if (doc != null) {
-                            String scannerUID = doc.getString("scannerUID");
-                            String hash = doc.getString("hash");
-                            String name = doc.getString("name");
-                            int points = doc.getLong("points").intValue();
-                            ArrayList<Double> coordinates = (ArrayList<Double>) doc.get("coordinates");
-                            String locationImage = doc.getString("locationImage");
-                            ArrayList<Map<String, Object>> comments = (ArrayList<Map<String, Object>>) doc.get("comments");
-
-                            ArrayList<Comment> convertedComments = getQRCodeHelper(comments);
-
-                            ArrayList<String> playersScannedBy = (ArrayList<String>) doc.get("playersScannedBy");
-                            int numPlayersScannedBy = doc.getLong("numPlayersScannedBy").intValue();
-                            QRCode qrCode = new QRCode(hash, name, points, scannerUID, coordinates,
-                                    locationImage, convertedComments, numPlayersScannedBy, playersScannedBy);
-                            if(coordinates != null) {
-                                double latitude = coordinates.get(0);
-                                double longitude = coordinates.get(1);
-                                if(latitude >= location.get(0)-radius && latitude <= location.get(0)+radius
-                                    && longitude >= location.get(1)-radius && longitude <= location.get(1)+radius) {
-                                    qrCodeList.add(qrCode);
-                                }
-                            }
-                        }
-                    }
-                    Log.d(TAG, qrCodeList.toString());
-                    callback.onQRCodeListCallback(qrCodeList);
-                }
-                else {
-                    Log.d(TAG, task.getException().getMessage());
-                }
-            }
-        });
-    }
-
-
-
-    /**
-     *
-     * @param qrCodeNames
-     * @param callback
+     * Get all QR codes with names in a list of given QR code names
+     * @param qrCodeNames names of QR codes to retrieve from the database
+     * @param callback has method containing what to do with queried list of QRCodes
      */
     public void getQRCodesFromList(ArrayList<String> qrCodeNames, QRCodeListCallback callback) {
         ArrayList<QRCode> qrCodeList = new ArrayList<>();
