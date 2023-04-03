@@ -268,7 +268,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         Marker marker = googleMap.addMarker(
                 new MarkerOptions()
                         .position(new LatLng(latitude, longitude)).title(name)
-                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_pink)));
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.red_marker)));
         assert marker != null;
         marker.setTag(qrCode);
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(coordinates, defaultZoom));
@@ -289,7 +289,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 Marker marker = googleMap.addMarker(
                         new MarkerOptions()
                                 .position(new LatLng(latitude, longitude)).title(name)
-                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_pink)));
+                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.red_marker)));
 
                 assert marker != null;
                 marker.setTag(qrCode);

@@ -98,7 +98,7 @@
     "elementType": "labels.icon",
     "stylers": [
       {
-        "visibility": "on"
+        "visibility": "off"
       }
     ]
   },
@@ -119,7 +119,7 @@
     "elementType": "labels.icon",
     "stylers": [
       {
-        "visibility": "on"
+        "visibility": "off"
       }
     ]
   },
