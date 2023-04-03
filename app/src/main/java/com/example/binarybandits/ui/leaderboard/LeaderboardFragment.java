@@ -30,7 +30,7 @@ import com.example.binarybandits.controllers.LeaderboardController;
 import com.example.binarybandits.controllers.PlayerController;
 import com.example.binarybandits.models.Player;
 import com.example.binarybandits.models.QRCode;
-import com.example.binarybandits.otherProfileActivity;
+import com.example.binarybandits.OtherProfileActivity;
 import com.example.binarybandits.player.PlayerCallback;
 import com.example.binarybandits.player.PlayerDB;
 import com.example.binarybandits.player.PlayerListCallback;
@@ -116,7 +116,7 @@ public class LeaderboardFragment extends Fragment {
                     }
                     // else send them to other players profile
                     else{
-                        Intent intent = new Intent(LeaderboardFragment.this.getActivity(), otherProfileActivity.class);
+                        Intent intent = new Intent(LeaderboardFragment.this.getActivity(), OtherProfileActivity.class);
                         Bundle extras = new Bundle();
                         extras.putString("name", String.valueOf(players.get(i).getUsername()));
                         extras.putString("list", "long");
@@ -143,7 +143,7 @@ public class LeaderboardFragment extends Fragment {
                     }
                     // else send them to other players profile
                     else {
-                        Intent intent = new Intent(LeaderboardFragment.this.getActivity(), otherProfileActivity.class);
+                        Intent intent = new Intent(LeaderboardFragment.this.getActivity(), OtherProfileActivity.class);
                         Bundle extras = new Bundle();
                         extras.putString("name", String.valueOf(players.get(0).getUsername()));
                         extras.putString("list", "short");
@@ -170,7 +170,7 @@ public class LeaderboardFragment extends Fragment {
                     }
                     // else send them to other players profile
                     else {
-                        Intent intent = new Intent(LeaderboardFragment.this.getActivity(), otherProfileActivity.class);
+                        Intent intent = new Intent(LeaderboardFragment.this.getActivity(), OtherProfileActivity.class);
                         Bundle extras = new Bundle();
                         extras.putString("name", String.valueOf(players.get(1).getUsername()));
                         extras.putString("list", "short");
@@ -196,7 +196,7 @@ public class LeaderboardFragment extends Fragment {
                     }
                     // else send them to other players profile
                     else {
-                        Intent intent = new Intent(LeaderboardFragment.this.getActivity(), otherProfileActivity.class);
+                        Intent intent = new Intent(LeaderboardFragment.this.getActivity(), OtherProfileActivity.class);
                         Bundle extras = new Bundle();
                         extras.putString("name", String.valueOf(players.get(2).getUsername()));
                         extras.putString("list", "short");

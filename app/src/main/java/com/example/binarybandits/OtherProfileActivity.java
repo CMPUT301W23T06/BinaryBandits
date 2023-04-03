@@ -1,15 +1,11 @@
 package com.example.binarybandits;
 
-import static android.content.ContentValues.TAG;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -26,7 +22,6 @@ import com.example.binarybandits.qrcode.QRArrayAdapter;
 import com.example.binarybandits.qrcode.QRCodeDB;
 import com.example.binarybandits.qrcode.QRCodeInfoActivity;
 import com.example.binarybandits.qrcode.QRCodeListCallback;
-import com.example.binarybandits.ui.leaderboard.LeaderboardFragment;
 import com.google.firebase.firestore.Query;
 import com.squareup.picasso.Picasso;
 

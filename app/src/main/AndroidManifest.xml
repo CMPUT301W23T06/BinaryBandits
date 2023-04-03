@@ -37,7 +37,7 @@
         <activity android:name=".ScanQRActivity"/>
         <activity android:name=".qrcode.QRCodeInfoActivity"/>
         <activity android:name=".qrcode.QRCodeScannedByActivity"/>
-        <activity android:name=".otherProfileActivity"/>
+        <activity android:name=".OtherProfileActivity"/>
         <activity android:name=".ui.QRedit.QRCodeEditActivity"/>
         <meta-data
             android:name="com.google.android.gms.vision.DEPENDENCIES"

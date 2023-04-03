@@ -23,7 +23,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.binarybandits.R;
 import com.example.binarybandits.models.Player;
-import com.example.binarybandits.otherProfileActivity;
+import com.example.binarybandits.OtherProfileActivity;
 import com.example.binarybandits.player.PlayerCallback;
 import com.example.binarybandits.player.PlayerDB;
 import com.example.binarybandits.DBConnector;
@@ -122,7 +122,7 @@ public class LeaderboardSearchFragment extends Fragment {
                                      */
                                     @Override
                                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                                        Intent intent = new Intent(LeaderboardSearchFragment.this.getActivity(), otherProfileActivity.class); // go to other player's profile
+                                        Intent intent = new Intent(LeaderboardSearchFragment.this.getActivity(), OtherProfileActivity.class); // go to other player's profile
                                         Bundle extras = new Bundle(); // pass the player's username to the other profile activity
                                         extras.putString("name", playerList.get(i).getUsername());
 
