@@ -24,6 +24,7 @@ import org.junit.Test;
 
 /**
  * Test class for the QRCodeScannedActivity view class.
+ * Outstanding Issue: Test only passes if no user is signed in
  */
 public class QRCodeScannedByActivityTest {
 
@@ -58,7 +59,7 @@ public class QRCodeScannedByActivityTest {
         solo.clickOnView(navBar.findViewById(R.id.navigation_profile));
         assertTrue(solo.waitForText("Profile", 1, 2000));
         solo.clickOnView(solo.getView(R.id.list_view_player_qr_codes));
-        solo.clickOnView(solo.getView(R.id.profileCardView3));
+        solo.clickOnView(solo.getView(R.id.cardView));
         solo.assertCurrentActivity("Wrong Activity", QRCodeInfoActivity.class);
         solo.clickOnView(solo.getView(R.id.other_players_button));
         solo.assertCurrentActivity("Wrong Activity", QRCodeScannedByActivity.class);

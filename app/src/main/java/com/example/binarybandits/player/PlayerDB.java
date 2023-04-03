@@ -296,6 +296,7 @@ public class PlayerDB {
      * @return Query result of searching for players in the list of usernames
      */
     public Query searchListOfPlayers(ArrayList<String> usernames) {
+        //Change to whereArrayCont
         return collectionReference.whereIn("username", usernames);
     }
 

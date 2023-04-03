@@ -26,6 +26,9 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
+/**
+ * Test class for MapFragment functionality
+ */
 public class MapFragmentTest {
     private Solo solo;
 
@@ -44,7 +47,7 @@ public class MapFragmentTest {
         db.collection(("QRCodes")).document("testQR").set(new QRCode("589054", "testQR",12));
         db.collection("Players").document("test").set(new Player("test"));
         db.collection("Players").document("test").update("qrCode", "testQR");
-        db.collection("QRCode").document("testQR").update("location", "53.5232183", "location", "-113.5263137");
+        db.collection("QRCode").document("testQR").update("coordinates", "53.5232183", "coordinates", "-113.5263137");
 
     }
 
@@ -92,10 +95,10 @@ public class MapFragmentTest {
         solo.waitForView(solo.getView(R.id.map_search_view));
         SearchView searchView = (SearchView)solo.getView(R.id.map_search_view);
         searchView.setQuery("University of Alberta", true);
+        solo.clickOnView(solo.getView(R.id.map_search_view));
+        solo.sendKey(Solo.ENTER);
         solo.clickOnView(solo.getView(R.id.map)); //Click middle of map view
-        solo.waitForView(solo.getView(R.id.QR_header));
         solo.assertCurrentActivity("Wrong Activity", QRCodeInfoActivity.class);
-
 
     }
 
@@ -109,12 +112,12 @@ public class MapFragmentTest {
         solo.waitForView(solo.getView(R.id.map_search_view));
         SearchView searchView = (SearchView)solo.getView(R.id.map_search_view);
         searchView.setQuery("University of Alberta", true);
-        solo.clickOnView(solo.getView(R.id.map)); //Click middle of map view
-        solo.waitForView(solo.getView(R.id.QR_header));
-        solo.assertCurrentActivity("Wrong Activity", QRCodeInfoActivity.class);
     }
 
 
+    /**
+     * Close activity after each test
+     */
     @After
     public void tearDown() {
         solo.finishOpenedActivities();

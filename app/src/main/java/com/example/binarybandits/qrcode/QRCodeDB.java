@@ -2,17 +2,12 @@ package com.example.binarybandits.qrcode;
 
 
 import android.graphics.Bitmap;
-import android.media.MediaCodec;
-import android.net.Uri;
 import android.util.Log;
-import android.util.Pair;
 
 import androidx.annotation.NonNull;
 
 import com.example.binarybandits.DBConnector;
-import com.example.binarybandits.Geolocation;
 import com.example.binarybandits.models.Comment;
-import com.example.binarybandits.models.Player;
 import com.example.binarybandits.models.QRCode;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -28,16 +23,11 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.google.type.DateTime;
-import com.squareup.picasso.Picasso;
-
-import org.checkerframework.checker.units.qual.A;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * Stores, retrieves, adds, and deletes QR code data
@@ -240,49 +230,45 @@ public class QRCodeDB {
     }
 
     /**
-     * Get all QR codes with names in a list of given QR code names
-     * @param qrCodeNames names of QR codes to retrieve from the database
+     * Get all QR codes that a player has scanned given the player's name
+     * @param playerName name of Player to find all QR codes scanned
      * @param callback has method containing what to do with queried list of QRCodes
      */
-    public void getQRCodesFromList(ArrayList<String> qrCodeNames, QRCodeListCallback callback) {
+    public void getPlayerQRCodes(String playerName, QRCodeListCallback callback) {
         ArrayList<QRCode> qrCodeList = new ArrayList<>();
-        if(qrCodeNames.isEmpty()) {
-            callback.onQRCodeListCallback(qrCodeList);
-        }
-        else {
-            Query query = collectionReference.whereIn("name", qrCodeNames);
-            query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                    if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot doc : task.getResult()) {
-                            Log.d(TAG, doc.getString("name"));
-                            if (doc != null) {
-                                String scannerUID = doc.getString("scannerUID");
-                                String hash = doc.getString("hash");
-                                String name = doc.getString("name");
-                                int points = doc.getLong("points").intValue();
-                                ArrayList<Double> coordinates = (ArrayList<Double>) doc.get("coordinates");
-                                String locationImage = doc.getString("locationImage");
-                                ArrayList<Map<String, Object>> comments = (ArrayList<Map<String, Object>>) doc.get("comments");
+        Query query = collectionReference.whereArrayContains("playersScannedBy", playerName);
+        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot doc : task.getResult()) {
+                        Log.d(TAG, doc.getString("name"));
+                        if (doc != null) {
+                            String scannerUID = doc.getString("scannerUID");
+                            String hash = doc.getString("hash");
+                            String name = doc.getString("name");
+                            int points = doc.getLong("points").intValue();
+                            ArrayList<Double> coordinates = (ArrayList<Double>) doc.get("coordinates");
+                            String locationImage = doc.getString("locationImage");
+                            ArrayList<Map<String, Object>> comments = (ArrayList<Map<String, Object>>) doc.get("comments");
 
-                                ArrayList<Comment> convertedComments = getQRCodeHelper(comments);
+                            ArrayList<Comment> convertedComments = getQRCodeHelper(comments);
 
-                                ArrayList<String> playersScannedBy = (ArrayList<String>) doc.get("playersScannedBy");
-                                int numPlayersScannedBy = doc.getLong("numPlayersScannedBy").intValue();
-                                QRCode qrCode = new QRCode(hash, name, points, scannerUID, coordinates,
-                                        locationImage, convertedComments, numPlayersScannedBy, playersScannedBy);
-                                qrCodeList.add(qrCode);
-                            }
+                            ArrayList<String> playersScannedBy = (ArrayList<String>) doc.get("playersScannedBy");
+                            int numPlayersScannedBy = doc.getLong("numPlayersScannedBy").intValue();
+                            QRCode qrCode = new QRCode(hash, name, points, scannerUID, coordinates,
+                                    locationImage, convertedComments, numPlayersScannedBy, playersScannedBy);
+                            qrCodeList.add(qrCode);
                         }
-                        Log.d(TAG, qrCodeList.toString());
-                        callback.onQRCodeListCallback(qrCodeList);
-                    } else {
-                        Log.d(TAG, task.getException().getMessage());
                     }
+                    Log.d(TAG, qrCodeList.toString());
+                    callback.onQRCodeListCallback(qrCodeList);
+                } else {
+                    Log.d(TAG, task.getException().getMessage());
+                    callback.onQRCodeListCallback(new ArrayList<>());
                 }
-            });
-        }
+            }
+        });
     }
 
     /**
