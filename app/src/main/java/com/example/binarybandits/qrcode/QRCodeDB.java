@@ -101,9 +101,7 @@ public class QRCodeDB {
                                 }
 
                                 //Coordinates is set to most recent location of QRCode
-                                if(qrCodeInDB.getCoordinates() != null) {
-                                    qrCodeInDB.setCoordinates(qrCode.getCoordinates());
-                                } else if (qrCode.getCoordinates() != null) {
+                                if(qrCodeInDB.getCoordinates() == null) {
                                     qrCodeInDB.setCoordinates(qrCode.getCoordinates());
                                 }
                                 qrCodeInDB.incrementNumPlayersScannedBy();
