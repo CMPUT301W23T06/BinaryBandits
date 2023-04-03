@@ -33,11 +33,13 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
+import java.util.ArrayList;
+
 /**
- * Assumptions: There is a player with the username "test" in the database that has two QR
- * codes scanned, one "UltraUniqueGiraffe" worth 58 points and one "SuperHilariousLeopard"
- * worth 68 points. (Where SuperHilariousLeopard is the QR code for the wikipedia page of QR codes)
- * QRCodeInfoActivityTest tests functionalities in QRCodeInfoActivity
+ * Assumptions: QR code SuperHilariousLeopard exists in the Firebase Database, worth 68 points.
+ * Link: https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/QR_code_for_mobile_English_Wikipedia
+ *          .svg/330px-QR_code_for_mobile_English_Wikipedia.svg.png
+ * (QR code from QR code Wikipedia page)
  */
 public class QRCodeInfoActivityTest {
 
@@ -58,17 +60,17 @@ public class QRCodeInfoActivityTest {
     public void setUp() throws Exception{
         solo = new Solo(getInstrumentation(),rule.getActivity());
 
+        //send bundle to QRCodeInfoActivity with QRcode name "SuperHilariousLeopard"
         Intent myIntent = new Intent(rule.getActivity(), QRCodeInfoActivity.class);
         Bundle extras = new Bundle();
         extras.putString("name", "SuperHilariousLeopard");
-        extras.putString("username", "robot");
+        extras.putString("username", "robot");  //NPC player to send through just to not cause errors
         extras.putBoolean("current_user", true);
         myIntent.putExtras(extras);
         // go to QRCodeInfoActivity to display the QR code
         rule.getActivity().startActivity(myIntent);
 
     }
-
 
 
 
@@ -80,11 +82,10 @@ public class QRCodeInfoActivityTest {
     public void start() throws Exception{
         Activity activity = rule.getActivity();
 
-
     }
 
     /**
-     * Assert we switch to QRCodeInfoActivity after we click on testQR
+     * Assert we switch to QRCodeInfoActivity
      */
     @Test
     public void checkActivity(){
@@ -131,19 +132,25 @@ public class QRCodeInfoActivityTest {
 
 
     /**
-     * Check if delete button works as intended (deletes QR code from users profile
-     *  and takes you back to an updated profile page)
+     * Check if delete button alert dialogue works. Does not check delete functionality from
+     * firestore
      */
     @Test
     public void checkNoDelete(){
         solo.assertCurrentActivity("Wrong Activity", QRCodeInfoActivity.class);
 
+        // Click on the delete button
         solo.clickOnView(solo.getView(R.id.delete_button));
-        solo.waitForDialogToOpen();
-        assertTrue(solo.waitForText("delete", 1, 2000));
 
+        // Wait for the dialog to open and check that it is showing the correct message
+        assertTrue(solo.waitForText("Are you sure you want to delete this QR code from your profile?", 1, 2000));
     }
 
+
+
+    /**
+     * Check if user can comment on their QR code and display comments
+     */
     @Test
     public void checkComments(){
         solo.assertCurrentActivity("Wrong Activity", QRCodeInfoActivity.class);
@@ -155,6 +162,9 @@ public class QRCodeInfoActivityTest {
 
     }
 
+    /**
+     * Check if see other players button takes you to the intended screen
+     */
     @Test
     public void checkOtherPlayers(){
         solo.assertCurrentActivity("Wrong Activity", QRCodeInfoActivity.class);
@@ -169,6 +179,11 @@ public class QRCodeInfoActivityTest {
 
     }
 
+    /**
+     * check if location image button displays a "no location image" alert dialogue if no location
+     * picture taken. In this case: user robot never takes a location imagine so alert dialogue should
+     * come up
+     */
     @Test
     public void checkNoLocationImg(){
         solo.assertCurrentActivity("Wrong Activity", QRCodeInfoActivity.class);
@@ -178,22 +193,50 @@ public class QRCodeInfoActivityTest {
 
     }
 
+
+    /**
+     * Check that a click on the geolocation button gives an alert dialogue that no geolocation was
+     * found. Save any instance of coordinates, delete them to see if no geolocation message works,
+     * reapply the coordinates to the QR code
+     */
     @Test
-    public void checkNoGeolocation(){
+    public void checkNoGeolocation() {
         solo.assertCurrentActivity("Wrong Activity", QRCodeInfoActivity.class);
 
         QRCodeDB db_q = new QRCodeDB(new DBConnector());
         db_q.getQRCode("SuperHilariousLeopard", new QRCodeCallback() {
             @Override
             public void onQRCodeCallback(QRCode qrCode) {
+                ArrayList<Double> coords = qrCode.getCoordinates();
                 qrCode.removeCoordinates();
+                solo.clickOnView(solo.getView(R.id.map_button));
+                solo.waitForDialogToOpen();
+                assertTrue(solo.waitForText("No geolocation", 1, 2000));
+                qrCode.setCoordinates(coords);
             }
         });
-
-        solo.clickOnView(solo.getView(R.id.map_button));
-        assertTrue(solo.waitForText("No geolocation", 1, 2000));
-
     }
+/*
+//    @Test
+//    public void checkGeolocation(){
+//        solo.assertCurrentActivity("Wrong Activity", QRCodeInfoActivity.class);
+//
+//        QRCodeDB db_q = new QRCodeDB(new DBConnector());
+//        db_q.getQRCode("SuperHilariousLeopard", new QRCodeCallback() {
+//            @Override
+//            public void onQRCodeCallback(QRCode qrCode) {
+//                ArrayList<Double> coords_temp = qrCode.getCoordinates();
+//                qrCode.removeCoordinates();
+//                ArrayList<Double> coords = new ArrayList<>();
+//                coords.add(0.0);
+//                coords.add(0.0);
+//                qrCode.setCoordinates(coords);
+//                solo.clickOnView(solo.getView(R.id.map_button));
+//                assertTrue(solo.waitForText("Search here", 1, 2000));
+//                qrCode.setCoordinates(coords_temp);
+//            }
+//        });
+//    } */
 
 
     /**

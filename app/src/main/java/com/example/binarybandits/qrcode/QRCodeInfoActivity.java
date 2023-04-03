@@ -300,8 +300,8 @@ public class QRCodeInfoActivity extends AppCompatActivity {
 
                                             //QRCodeInfoActivity.this.finish();
                                             // Send back to profile page with updated QR code list
-                                            // BUG: back to profile page shows home screen selected on bottom navigation
-                                            Toast message = Toast.makeText(QRCodeInfoActivity.this, "QRCode has been deleted!", Toast.LENGTH_LONG);
+                                            Toast message = Toast.makeText(QRCodeInfoActivity.this,
+                                                    "QRCode has been deleted!", Toast.LENGTH_LONG);
                                             message.show();
                                             Intent myIntent = new Intent(QRCodeInfoActivity.this, MainActivity.class);
                                             Bundle extras = new Bundle();
