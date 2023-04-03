@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,6 +42,8 @@ import java.util.Comparator;
 /**
  * ProfileFragment displays the current users profile page, including their username, total score,
  * total number of scans, highest and lowest scoring QR points, and a list of their QR codes
+ *
+ * Outstanding Issue: QR codes are only displayed properly when a player has 10 or less QR codes (due to use of whereIn in QRCodeDB)
  */
 public class ProfileFragment extends Fragment {
 
@@ -154,10 +157,12 @@ public class ProfileFragment extends Fragment {
 
                     //Get ListView of QR codes scanned
                     ArrayList<String> qrCodeNames = player.getQrCodesScanned();
+                    Log.d("Profile", qrCodeNames.toString());
 
                     qrCodeDB.getQRCodesFromList(qrCodeNames, new QRCodeListCallback() {
                         @Override
                         public void onQRCodeListCallback(ArrayList<QRCode> qrCodeList) {
+                            Log.d("Profile", qrCodeList.toString());
                             ListView QRlist = view.findViewById(R.id.list_view_player_qr_codes);
                             QRAdapter = new QRArrayAdapter(getActivity(), qrCodeList);
                             QRlist.setAdapter(QRAdapter);

@@ -32,6 +32,8 @@ import java.util.Objects;
  * switch activity to OtherProfileActivity
  * respond to back button press and send back to MainActivity
  * set fields of player profile of user clicked on
+ *
+ * Outstanding Issue: QR codes are only displayed properly when a player has 10 or less QR codes (due to use of whereIn in QRCodeDB)
  */
 public class OtherProfileActivity extends Activity {
     private ArrayList<Player> players;

@@ -12,6 +12,7 @@
 
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/profileCardView3"
         android:layout_width="52dp"
         android:layout_height="51dp"
         android:layout_margin="5dp"
