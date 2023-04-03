@@ -60,7 +60,7 @@ public class MainActivityTest {
     }
 
     /**
-     * test functionality of sing out button
+     * test functionality of sign out button
      */
     @Test
     public void testSignOut(){

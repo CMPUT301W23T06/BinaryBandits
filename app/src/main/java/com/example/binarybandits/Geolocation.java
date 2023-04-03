@@ -9,7 +9,7 @@ import android.os.Bundle;
 import androidx.core.app.ActivityCompat;
 
 /**
- *
+ * Class that contains functions used to get the Player's current locations
  */
 public class Geolocation {
 
@@ -18,9 +18,9 @@ public class Geolocation {
     private Context context;
 
     /**
-     *
-     * @param context
-     * @param listener
+     * Constructor for Geolocation class
+     * @param context the context of program
+     * @param listener listener that retrieves the Player's current location if location permissions are enabled
      */
     public Geolocation(Context context, LocationListener listener) {
         locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
@@ -28,7 +28,7 @@ public class Geolocation {
     }
 
     /**
-     *
+     * Get the Player's last known location
      */
     public void start() {
         if (ActivityCompat.checkSelfPermission(
@@ -42,7 +42,7 @@ public class Geolocation {
     }
 
     /**
-     *
+     * Stop getting location updates
      */
     public void stop() {
         locationManager.removeUpdates(locationListener);

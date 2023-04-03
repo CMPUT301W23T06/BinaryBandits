@@ -49,8 +49,8 @@ public class ScanQRActivity extends AppCompatActivity {
     private Shape.DrawableShape drawableShape = null;
 
     /**
-     *
-     * @param savedInstanceState
+     * Create the ScanQRActivity
+     * @param savedInstanceState the saved instance state that is restored after the app crashes
      */
     @SuppressLint("MissingInflatedId")
     @Override

@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 /**
- *
+ * ViewModel for Home fragment class.
  */
 public class HomeViewModel extends ViewModel {
     private final MutableLiveData<String> mText;

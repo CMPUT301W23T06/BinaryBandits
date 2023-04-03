@@ -43,8 +43,8 @@ public class otherProfileActivity extends Activity {
     private PlayerController controller;
 
     /**
-     *
-     * @param savedInstanceState
+     * Create the activity for another player's profile
+     * @param savedInstanceState the saved instance state that is restored after the app crashes
      */
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

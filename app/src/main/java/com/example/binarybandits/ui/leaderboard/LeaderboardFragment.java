@@ -68,19 +68,6 @@ public class LeaderboardFragment extends Fragment {
         View leaderboard = inflater.inflate(R.layout.fragment_leaderboard, container, false);
 
         PlayerDB db = new PlayerDB(new DBConnector());
-        QRCodeDB qrCodeDB = new QRCodeDB(new DBConnector());
-
-        /*
-        qrCodeDB.getAllQRCodes(new QRCodeListCallback() {
-            @Override
-            public void onQRCodeListCallback(ArrayList<QRCode> qrCodes) {
-                for(int i = 0; i < qrCodes.size(); i++) {
-                    qrCodes.get(i).setPlayersScannedBy(new ArrayList<>());
-                    qrCodeDB.updateQRCode(qrCodes.get(i));
-                }
-            }
-        });
-        */
 
         //Get list of players sorted by score
         db.getPlayersByQuery(db.getSortedPlayers(), new PlayerListCallback() {
@@ -223,7 +210,8 @@ public class LeaderboardFragment extends Fragment {
         toolbar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getFragmentManager().beginTransaction().replace(R.id.container, new ProfileFragment()).commit();
+                BottomNavigationView bottomNavigationView = getActivity().findViewById(R.id.nav_view);
+                bottomNavigationView.setSelectedItemId(R.id.navigation_profile);
             }
         });
 
