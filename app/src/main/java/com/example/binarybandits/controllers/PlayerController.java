@@ -6,8 +6,6 @@ import com.example.binarybandits.DBConnector;
 import com.example.binarybandits.ScoreCallback;
 import com.example.binarybandits.models.Player;
 import com.example.binarybandits.models.QRCode;
-import com.example.binarybandits.player.PlayerCallback;
-import com.example.binarybandits.player.PlayerDB;
 import com.example.binarybandits.qrcode.QRCodeDB;
 import com.example.binarybandits.qrcode.QRCodeListCallback;
 
@@ -45,7 +43,7 @@ public class PlayerController {
             callback.scoreCallback(highestQRCode);
         }
         else {
-            qrCodeDB.getQRCodesFromList(qrCodeNames, new QRCodeListCallback() {
+            qrCodeDB.getPlayerQRCodes(player.getUsername(), new QRCodeListCallback() {
                 @Override
                 public void onQRCodeListCallback(ArrayList<QRCode> qrCodeList) {
                     Log.d("Controller", qrCodeList.toString());
@@ -70,7 +68,7 @@ public class PlayerController {
             callback.scoreCallback(lowestQRCode);
         }
         else {
-            qrCodeDB.getQRCodesFromList(qrCodeNames, new QRCodeListCallback() {
+            qrCodeDB.getPlayerQRCodes(player.getUsername(), new QRCodeListCallback() {
                 @Override
                 public void onQRCodeListCallback(ArrayList<QRCode> qrCodeList) {
                     qrCodeList = sortQRCodes(qrCodeList);

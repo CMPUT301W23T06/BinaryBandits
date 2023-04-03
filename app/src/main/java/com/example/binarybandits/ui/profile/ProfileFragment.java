@@ -36,14 +36,13 @@ import com.example.binarybandits.qrcode.QRCodeListCallback;
 
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 
 /**
  * ProfileFragment displays the current users profile page, including their username, total score,
  * total number of scans, highest and lowest scoring QR points, and a list of their QR codes
  *
- * Outstanding Issue: QR codes are only displayed properly when a player has 10 or less QR codes (due to use of whereIn in QRCodeDB)
+ * Outstanding Issue: QR codes are only displayed properly when a player has 10 or less QR codes
  */
 public class ProfileFragment extends Fragment {
 
@@ -159,7 +158,7 @@ public class ProfileFragment extends Fragment {
                     ArrayList<String> qrCodeNames = player.getQrCodesScanned();
                     Log.d("Profile", qrCodeNames.toString());
 
-                    qrCodeDB.getQRCodesFromList(qrCodeNames, new QRCodeListCallback() {
+                    qrCodeDB.getPlayerQRCodes(player.getUsername(), new QRCodeListCallback() {
                         @Override
                         public void onQRCodeListCallback(ArrayList<QRCode> qrCodeList) {
                             Log.d("Profile", qrCodeList.toString());
