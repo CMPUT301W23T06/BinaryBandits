@@ -290,11 +290,11 @@ public class LeaderboardFragment extends Fragment {
         }
         // set users info at bottom of leaderboard
         user_name.setText(current_user.getUsername());
-
         CardView card4 = leaderboard.findViewById(R.id.card4);
         if(scoreLeaderboard) {
             user_score.setText(Integer.toString(current_user.getTotalScore()));
-            users_rank.setText("#"+Integer.toString(user_rank));
+            String rankString = String.format(Locale.CANADA,"#%d", user_rank);
+            users_rank.setText(rankString);
             String url_user = "https://api.dicebear.com/5.x/avataaars-neutral/png?seed=" + current_user.getUsername();
             Picasso.get().load(url_user).into(user_image);
             user_name.setVisibility(View.VISIBLE);
