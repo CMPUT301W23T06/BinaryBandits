@@ -1,6 +1,8 @@
 package com.example.binarybandits;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import android.app.Activity;
 import android.content.Context;
@@ -12,6 +14,7 @@ import com.example.binarybandits.models.Player;
 import com.example.binarybandits.player.PlayerDB;
 import com.robotium.solo.Solo;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -66,6 +69,19 @@ public class LeaderboardFragmentTest{
     }
 
     /**
+     * test switch to QR leaderboard and switch back
+     */
+    @Test
+    public void switchLeaderboards(){
+        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
+        solo.clickOnView(solo.getView(R.id.navigation_leaderboard)); //Click leaderboard
+        solo.waitForText("#4");
+        solo.clickOnButton("QR Code");
+        assertTrue("Could not find the button!", solo.searchText("You are in the top"));
+        solo.clickOnButton("Score");
+    }
+
+    /**
      * test to make sure player 2 button functions
      * @throws Exception
      */
@@ -103,6 +119,13 @@ public class LeaderboardFragmentTest{
         solo.clickOnView(solo.getView(R.id.player_name_text));//Click player Button
         solo.assertCurrentActivity("Wrong Activity", otherProfileActivity.class);
     }
-
+    /**
+     * Closes the activity after each test
+     * @throws Exception
+     */
+    @After
+    public void tearDown() throws Exception{
+        solo.finishOpenedActivities();
+    }
 
 }
