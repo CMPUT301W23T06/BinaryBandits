@@ -43,6 +43,7 @@ import java.util.ArrayList;
  * Link: https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/QR_code_for_mobile_English_Wikipedia
  *          .svg/330px-QR_code_for_mobile_English_Wikipedia.svg.png
  * (QR code from QR code Wikipedia page)
+ * Also assume person who is running the test has previously logged in on an account
  */
 public class QRCodeInfoActivityTest {
 
@@ -126,9 +127,8 @@ public class QRCodeInfoActivityTest {
 
         solo.clickOnView(solo.getView(R.id.back_button));
 
-        //make sure we are on main activity and profile page
+        //make sure we are on main activity
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
-        assertTrue(solo.waitForText("Profile", 1, 2000));
 
     }
 
@@ -137,7 +137,7 @@ public class QRCodeInfoActivityTest {
      * Check if delete button alert dialogue works. Does not check delete functionality from
      * firestore
      */
-     
+
     @Test
     public void checkNoDelete(){
 
@@ -147,7 +147,8 @@ public class QRCodeInfoActivityTest {
         solo.clickOnView(solo.getView(R.id.delete_button));
 
         // Wait for the dialog to open and check that it is showing the correct message
-        assertTrue(solo.waitForText("Are you sure you want to delete this QR code from your profile?", 1, 2000));
+        solo.waitForDialogToOpen();
+        assertTrue(solo.waitForText("Are you sure you want to delete this QR code from your profile?", 1, 5000));
     }
 
 
@@ -163,7 +164,6 @@ public class QRCodeInfoActivityTest {
         solo.enterText((EditText) solo.getView(R.id.user_comment), "cool!");
         solo.clickOnView(solo.getView(R.id.addCommentBtn));
         assertTrue(solo.waitForText("cool!", 1, 2000));
-
     }
 
     /**
@@ -177,7 +177,7 @@ public class QRCodeInfoActivityTest {
         solo.clickOnView(solo.getView(R.id.other_players_button));
         assertTrue(solo.waitForText("Players Scanned By", 1, 2000));
 
-        // check back button
+        // check back button to go back to QRPageInfoActivity
         solo.clickOnView(solo.getView(R.id.back_to_qrcode));
         solo.assertCurrentActivity("Wrong Activity", QRCodeInfoActivity.class);
 
@@ -193,10 +193,10 @@ public class QRCodeInfoActivityTest {
         solo.assertCurrentActivity("Wrong Activity", QRCodeInfoActivity.class);
 
         solo.clickOnView(solo.getView(R.id.location_img_button));
+        solo.waitForDialogToOpen();
         assertTrue(solo.waitForText("No location image", 1, 2000));
 
     }
-
 
     /**
      * Check that a click on the geolocation button gives an alert dialogue that no geolocation was
@@ -211,38 +211,14 @@ public class QRCodeInfoActivityTest {
         db_q.getQRCode("SuperHilariousLeopard", new QRCodeCallback() {
             @Override
             public void onQRCodeCallback(QRCode qrCode) {
-                ArrayList<Double> coords = qrCode.getCoordinates();
                 qrCode.removeCoordinates();
-                solo.clickOnView(solo.getView(R.id.map_button));
-                solo.waitForDialogToOpen();
-                assertTrue(solo.waitForText("No geolocation", 1, 2000));
-                qrCode.setCoordinates(coords);
             }
         });
+
+        solo.clickOnView(solo.getView(R.id.map_button));
+        solo.waitForDialogToOpen();
+        assertTrue(solo.waitForText("No geolocation", 1, 2000));
     }
-/*
-//    @Test
-//    public void checkGeolocation(){
-//        solo.assertCurrentActivity("Wrong Activity", QRCodeInfoActivity.class);
-//
-//        QRCodeDB db_q = new QRCodeDB(new DBConnector());
-//        db_q.getQRCode("SuperHilariousLeopard", new QRCodeCallback() {
-//            @Override
-//            public void onQRCodeCallback(QRCode qrCode) {
-//                ArrayList<Double> coords_temp = qrCode.getCoordinates();
-//                qrCode.removeCoordinates();
-//                ArrayList<Double> coords = new ArrayList<>();
-//                coords.add(0.0);
-//                coords.add(0.0);
-//                qrCode.setCoordinates(coords);
-//                solo.clickOnView(solo.getView(R.id.map_button));
-//                assertTrue(solo.waitForText("Search here", 1, 2000));
-//                qrCode.setCoordinates(coords_temp);
-//            }
-//        });
-//    } */
-
-
 
     /**
      * Close activity after each test

@@ -10,8 +10,7 @@ import androidx.test.rule.ActivityTestRule;
 
 
 import com.example.binarybandits.models.Player;
-import com.example.binarybandits.player.PlayerDB;
-import com.google.android.material.snackbar.BaseTransientBottomBar;
+
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.robotium.solo.Solo;
 import org.junit.Rule;
@@ -45,15 +44,8 @@ public class LeaderboardSearchFragmentTest {
     public void setUp() throws Exception {
         solo = new Solo(InstrumentationRegistry.getInstrumentation(), activityTestRule.getActivity());
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        //db.collection("Players").add(new Player("test"));
         db.collection("Players").document("test").set(new Player("test"));
     }
-
-    /*public Player setUpPlayer() {
-        //solo = new Solo(InstrumentationRegistry.getInstrumentation(), activityTestRule.getActivity());
-        Player player = new Player("test");
-        return player;
-    }*/
 
 
     /**

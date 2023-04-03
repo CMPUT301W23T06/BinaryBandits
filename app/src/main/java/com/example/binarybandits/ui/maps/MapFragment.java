@@ -2,6 +2,7 @@ package com.example.binarybandits.ui.maps;
 import static android.content.ContentValues.TAG;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
@@ -14,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
@@ -42,7 +44,9 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.slider.Slider;
 
 import org.checkerframework.checker.units.qual.A;
@@ -51,6 +55,7 @@ import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * View class that uses the Google Maps API to display geolocation of all QR codes. This
@@ -146,6 +151,26 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                         Log.d("MapActivity", e.toString());
                     }
 
+                    try {
+                        Address address = addressList.get(0);
+
+                        LatLng latLngOfAddress = new LatLng(address.getLatitude(), address.getLongitude());
+                        coordinatesOfAddress.set(0, address.getLatitude());
+                        coordinatesOfAddress.set(1, address.getLongitude());
+
+                        float radius = radiusSlider.getValue();
+                        getNearbyQRCodes(qrCodes, googleMap, coordinatesOfAddress, radius);
+                        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLngOfAddress, defaultZoom));
+                    } catch (Exception e) {
+                        Log.d("MapActivity", e.toString());
+                        try {
+                            Toast.makeText(getActivity(), "No results found", Toast.LENGTH_SHORT).show();
+                        }
+                        catch (Exception ex) {
+                            Log.d("MapActivity", ex.toString());
+                        }
+                    }
+                    /*
                     if (!addressList.isEmpty()) {
                         //Get the first result from the list of results (addresses)
                         Address address = addressList.get(0);
@@ -157,7 +182,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                         float radius = radiusSlider.getValue();
                         getNearbyQRCodes(qrCodes, googleMap, coordinatesOfAddress, radius);
                         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLngOfAddress, defaultZoom));
-                    }
+                    }*/
+
                 }
                 return false;
             }
@@ -182,13 +208,58 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
      * Get the user's current location and show current location on the MapFragment
      * @param googleMap Google Maps SDK object
      */
+    @SuppressLint("UseRequireInsteadOfGet")
     public void getCurrentLocation(GoogleMap googleMap) {
         //Referenced: https://developers.google.com/maps/documentation/android-sdk/current-place-tutorial
-        if (PermissionsController.locationPermissionGranted) {
-            if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (PermissionsController.locationPermissionGranted && MapFragment.this.getActivity() != null) {
+            try{
+                fusedLocationClient = LocationServices.getFusedLocationProviderClient(MapFragment.this.getActivity());
+                googleMap.setMyLocationEnabled(true);
+                fusedLocationClient.getLastLocation()
+                        .addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {
+                            @Override
+                            public void onSuccess(Location location) {
+                                // Got last known location. In some rare situations this can be null.
+                                if (location != null) {
+                                    LatLng coordinates = new LatLng(location.getLatitude(), location.getLongitude());
+                                    googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(coordinates, defaultZoom));
+                                    googleMap.getUiSettings().setMyLocationButtonEnabled(false);
+
+                                    //Initially set coordinates to current location
+                                    coordinatesOfAddress.add(location.getLatitude());
+                                    coordinatesOfAddress.add(location.getLongitude());
+                                    getNearbyQRCodes(qrCodes, googleMap, coordinatesOfAddress, 1);
+                                }
+                                else {
+                                    Log.d("Maps", "Current location is null. Using defaults.");
+                                    LatLng defaultLocation = new LatLng(43.4723, -80.5449);
+                                    googleMap.moveCamera(CameraUpdateFactory
+                                            .newLatLngZoom(defaultLocation, defaultZoom));
+                                    googleMap.getUiSettings().setMyLocationButtonEnabled(false);
+                                }
+                            }
+                        });
+            } catch (SecurityException e) {
+                Log.e("Exception: %s", e.getMessage());
+            }
+
+        } else {
+            //Set current location to an arbitrary location
+            //coordinatesOfAddress.add(0.0);
+            //coordinatesOfAddress.add(0.0);
+            LatLng defaultLocation = new LatLng(43.4723, -80.5449);
+            googleMap.moveCamera(CameraUpdateFactory
+                    .newLatLngZoom(defaultLocation, defaultZoom));
+            googleMap.getUiSettings().setMyLocationButtonEnabled(false);
+        }
+    }
+
+
+
+            /*if (ActivityCompat.checkSelfPermission(Objects.requireNonNull(MapFragment.this.getActivity()), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 PermissionsController.askLocationPermission(getActivity());
             }
-            fusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
+            fusedLocationClient = LocationServices.getFusedLocationProviderClient(MapFragment.this.getActivity());
             googleMap.setMyLocationEnabled(true);
             fusedLocationClient.getLastLocation()
                     .addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {
@@ -212,7 +283,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             coordinatesOfAddress.add(0.0);
             coordinatesOfAddress.add(0.0);
         }
-    }
+    }*/
+
+
+
 
     public void getQRCodes(QRCodeDB qrCodeDB, GoogleMap googleMap) {
         qrCodeDB.getQRCodesByQuery(qrCodeDB.getQRCodesWithCoordinates(), new QRCodeListCallback() {

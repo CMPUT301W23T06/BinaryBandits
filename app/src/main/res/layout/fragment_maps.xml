@@ -24,6 +24,13 @@
         map:uiZoomControls="true">
     </androidx.fragment.app.FragmentContainerView>
 
+    <Button
+        android:id="@+id/search_view_background"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:elevation="5dp"/>
+
     <androidx.appcompat.widget.SearchView
         android:id="@+id/map_search_view"
         android:layout_width="match_parent"
