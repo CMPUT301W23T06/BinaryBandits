@@ -45,6 +45,7 @@
         android:id="@+id/QR_score"
         android:layout_width="0dp"
         android:layout_height="55dp"
+        android:layout_marginEnd="10dp"
 
         android:gravity="center_vertical|end"
         android:text="###"
