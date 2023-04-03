@@ -24,9 +24,6 @@ import java.util.ArrayList;
 
 public class QRpage extends Fragment {
 
-    private QRpageViewModel mViewModel;
-
-
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
@@ -41,11 +38,5 @@ public class QRpage extends Fragment {
         return qrPage;
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        mViewModel = new ViewModelProvider(this).get(QRpageViewModel.class);
-        // TODO: Use the ViewModel
-    }
 
 }

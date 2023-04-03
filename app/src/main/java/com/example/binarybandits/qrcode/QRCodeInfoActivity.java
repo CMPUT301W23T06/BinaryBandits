@@ -293,9 +293,10 @@ public class QRCodeInfoActivity extends AppCompatActivity {
                                                         @Override
                                                         public void scoreCallback(int score) {
                                                             player.setHighestScore(score);
+                                                            Log.d("ProfileScore", String.valueOf(player.getHighestScore()));
+                                                            db_player.updatePlayer(player);
                                                         }
                                                     });
-                                                    db_player.updatePlayer(player);
                                                 }
                                             });
 
