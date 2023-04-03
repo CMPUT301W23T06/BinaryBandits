@@ -61,6 +61,7 @@ public class QRCodeInfoActivityTest {
      */
     @Before
     public void setUp() throws Exception{
+<<<<<<<<< Temporary merge branch 1
         solo = new Solo(getInstrumentation(),rule.getActivity());
 
         //send bundle to QRCodeInfoActivity with QRcode name "SuperHilariousLeopard"
@@ -72,7 +73,6 @@ public class QRCodeInfoActivityTest {
         myIntent.putExtras(extras);
         // go to QRCodeInfoActivity to display the QR code
         rule.getActivity().startActivity(myIntent);
-
     }
 
 
@@ -138,8 +138,10 @@ public class QRCodeInfoActivityTest {
      * Check if delete button alert dialogue works. Does not check delete functionality from
      * firestore
      */
+
     @Test
     public void checkNoDelete(){
+
         solo.assertCurrentActivity("Wrong Activity", QRCodeInfoActivity.class);
 
         // Click on the delete button
@@ -207,24 +209,17 @@ public class QRCodeInfoActivityTest {
         solo.assertCurrentActivity("Wrong Activity", QRCodeInfoActivity.class);
 
         QRCodeDB db_q = new QRCodeDB(new DBConnector());
-
         db_q.getQRCode("SuperHilariousLeopard", new QRCodeCallback() {
             @Override
             public void onQRCodeCallback(QRCode qrCode) {
                 ArrayList<Double> coords = qrCode.getCoordinates();
                 qrCode.removeCoordinates();
-
-                doTest(solo);
-
+                solo.clickOnView(solo.getView(R.id.map_button));
+                solo.waitForDialogToOpen();
+                assertTrue(solo.waitForText("No geolocation", 1, 2000));
                 qrCode.setCoordinates(coords);
             }
         });
-    }
-
-    private void doTest(Solo solo) {
-        solo.clickOnView(solo.getView(R.id.map_button));
-        solo.waitForDialogToOpen();
-        assertTrue(solo.waitForText("No geolocation available.", 1, 2000));
     }
 
 /*
