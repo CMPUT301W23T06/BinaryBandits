@@ -118,6 +118,24 @@ public class ProfileFragment extends Fragment {
                         }
                     });
 
+                    ImageView upArrow = view.findViewById(R.id.arrow_up);
+                    ImageView downArrow = view.findViewById(R.id.arrow_down);
+
+                    upArrow.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            sortQRList(false);
+                        }
+                    });
+
+                    downArrow.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            sortQRList(true);
+                        }
+                    });
+
+
                     // set total score and total QQR code count
                     scoreText.setText(String.valueOf(player.getTotalScore()));
                     totalQRText.setText(String.valueOf(player.getTotalQRCodes()));
@@ -200,15 +218,15 @@ public class ProfileFragment extends Fragment {
     }
 
     public void sortQRList(boolean inc) {
-        finalDataList.sort(new Comparator<QRCode>() {
-            @Override
-            public int compare(QRCode qr1, QRCode qr2) {
-                int result = Integer.compare(qr1.getPoints(), qr2.getPoints());
-                return inc ? result : -result;
-            }
-        });
-        QRAdapter.notifyDataSetChanged();
+        if (finalDataList != null) {
+            finalDataList.sort(new Comparator<QRCode>() {
+                @Override
+                public int compare(QRCode qr1, QRCode qr2) {
+                    int result = Integer.compare(qr1.getPoints(), qr2.getPoints());
+                    return inc ? result : -result;
+                }
+            });
+            QRAdapter.notifyDataSetChanged();
+        }
     }
-
-
 }
