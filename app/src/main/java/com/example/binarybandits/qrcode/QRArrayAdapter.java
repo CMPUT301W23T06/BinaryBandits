@@ -15,8 +15,6 @@ import com.example.binarybandits.R;
 import com.example.binarybandits.models.QRCode;
 import com.squareup.picasso.Picasso;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 
 /**
