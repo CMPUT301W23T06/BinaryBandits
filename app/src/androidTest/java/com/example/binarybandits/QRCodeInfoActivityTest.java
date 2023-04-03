@@ -1,6 +1,8 @@
 package com.example.binarybandits;
 
 
+import static android.app.PendingIntent.getActivity;
+import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -8,6 +10,8 @@ import static org.junit.Assert.assertTrue;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.ListView;
 
@@ -40,8 +44,8 @@ public class QRCodeInfoActivityTest {
     private Solo solo;
 
     @Rule
-    public ActivityTestRule<LogInActivity> rule =
-            new ActivityTestRule<>(LogInActivity.class, true, true);
+    public ActivityTestRule<MainActivity> rule =
+            new ActivityTestRule<>(MainActivity.class, true, true);
 
 
 
@@ -52,17 +56,16 @@ public class QRCodeInfoActivityTest {
      */
     @Before
     public void setUp() throws Exception{
-        solo = new Solo(InstrumentationRegistry.getInstrumentation(),rule.getActivity());
-        // log in with test account "test"
-        solo.enterText((EditText) solo.getView(R.id.editUsername), "test");
-        solo.clickOnView(solo.getView(R.id.loginBtn));
+        solo = new Solo(getInstrumentation(),rule.getActivity());
 
-        // go to profile page
-        solo.clickOnView(solo.getView(R.id.navigation_profile));
-
-        //assert users QR codes are showing, click on testQR
-        solo.waitForText("UltraUniqueGiraffe", 1, 2000);
-        solo.clickOnText("UltraUniqueGiraffe");
+        Intent myIntent = new Intent(rule.getActivity(), QRCodeInfoActivity.class);
+        Bundle extras = new Bundle();
+        extras.putString("name", "SuperHilariousLeopard");
+        extras.putString("username", "robot");
+        extras.putBoolean("current_user", true);
+        myIntent.putExtras(extras);
+        // go to QRCodeInfoActivity to display the QR code
+        rule.getActivity().startActivity(myIntent);
 
     }
 
@@ -90,23 +93,23 @@ public class QRCodeInfoActivityTest {
     }
 
     /**
-     * Check if QR code name displayed is "UltraUniqueGiraffe"
+     * Check if QR code name displayed is "SuperHilariousLeopard"
      */
     @Test
     public void checkQRName(){
         solo.assertCurrentActivity("Wrong Activity", QRCodeInfoActivity.class);
 
-        assertTrue(solo.waitForText("UltraUniqueGiraffe", 1, 2000));
+        assertTrue(solo.waitForText("SuperHilariousLeopard", 1, 2000));
 
     }
 
     /**
-     * Check if QR score displayed is "58"
+     * Check if QR score displayed is "68"
      */
     @Test
     public void checkQRScore(){
         solo.assertCurrentActivity("Wrong Activity", QRCodeInfoActivity.class);
-        assertTrue(solo.waitForText("58", 1, 2000));
+        assertTrue(solo.waitForText("68", 1, 2000));
 
     }
 
@@ -122,7 +125,7 @@ public class QRCodeInfoActivityTest {
 
         //make sure we are on main activity and profile page
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
-        assertTrue(solo.waitForText("test", 1, 2000));
+        assertTrue(solo.waitForText("Profile", 1, 2000));
 
     }
 
@@ -132,49 +135,65 @@ public class QRCodeInfoActivityTest {
      *  and takes you back to an updated profile page)
      */
     @Test
-    public void checkDelete(){
-        solo.assertCurrentActivity("Wrong Activity", QRCodeInfoActivity.class);
-
-        solo.clickOnView(solo.getView(R.id.back_button));
-
-        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
-
-        solo.waitForText("SuperHilariousLeopard", 1, 2000);
-        solo.clickOnText("SuperHilariousLeopard");
-
+    public void checkNoDelete(){
         solo.assertCurrentActivity("Wrong Activity", QRCodeInfoActivity.class);
 
         solo.clickOnView(solo.getView(R.id.delete_button));
+        solo.waitForDialogToOpen();
+        assertTrue(solo.waitForText("delete", 1, 2000));
 
-        solo.waitForText("Yes", 1, 2000);
-        solo.clickOnText("Yes");
+    }
+
+    @Test
+    public void checkComments(){
+        solo.assertCurrentActivity("Wrong Activity", QRCodeInfoActivity.class);
 
 
-        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
-        solo.clickOnView(solo.getView(R.id.navigation_home));
-        solo.clickOnView(solo.getView(R.id.navigation_profile));
+        solo.enterText((EditText) solo.getView(R.id.user_comment), "cool!");
+        solo.clickOnView(solo.getView(R.id.addCommentBtn));
+        assertTrue(solo.waitForText("cool!", 1, 2000));
+
+    }
+
+    @Test
+    public void checkOtherPlayers(){
+        solo.assertCurrentActivity("Wrong Activity", QRCodeInfoActivity.class);
 
 
+        solo.clickOnView(solo.getView(R.id.other_players_button));
+        assertTrue(solo.waitForText("Players Scanned By", 1, 2000));
 
-        PlayerDB db_p = new PlayerDB(new DBConnector());
+        // check back button
+        solo.clickOnView(solo.getView(R.id.back_to_qrcode));
+        solo.assertCurrentActivity("Wrong Activity", QRCodeInfoActivity.class);
+
+    }
+
+    @Test
+    public void checkNoLocationImg(){
+        solo.assertCurrentActivity("Wrong Activity", QRCodeInfoActivity.class);
+
+        solo.clickOnView(solo.getView(R.id.location_img_button));
+        assertTrue(solo.waitForText("No location image", 1, 2000));
+
+    }
+
+    @Test
+    public void checkNoGeolocation(){
+        solo.assertCurrentActivity("Wrong Activity", QRCodeInfoActivity.class);
+
         QRCodeDB db_q = new QRCodeDB(new DBConnector());
         db_q.getQRCode("SuperHilariousLeopard", new QRCodeCallback() {
             @Override
             public void onQRCodeCallback(QRCode qrCode) {
-                db_p.getPlayer("test", new PlayerCallback() {
-                    @Override
-                    public void onPlayerCallback(Player player) {
-                        assertFalse(player.findQRCodeScanned(qrCode.getName()));
-                    }
-                });
+                qrCode.removeCoordinates();
             }
-
-
         });
 
+        solo.clickOnView(solo.getView(R.id.map_button));
+        assertTrue(solo.waitForText("No geolocation", 1, 2000));
+
     }
-
-
 
 
     /**

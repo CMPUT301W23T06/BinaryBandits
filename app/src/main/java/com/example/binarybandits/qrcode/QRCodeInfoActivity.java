@@ -190,6 +190,10 @@ public class QRCodeInfoActivity extends AppCompatActivity {
                     });
 
 
+                    /**
+                     * When view_map_button is clicked, send to map fragment via main activity such
+                     * that the corresponding QR code is zoomed in on and highlighted in the map
+                     */
                     view_map_button.setOnClickListener((new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
