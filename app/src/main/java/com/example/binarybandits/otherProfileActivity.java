@@ -26,6 +26,7 @@ import com.google.firebase.firestore.Query;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Objects;
 
 /**
@@ -38,6 +39,8 @@ import java.util.Objects;
 public class otherProfileActivity extends Activity {
     private ArrayList<Player> players;
     private PlayerController controller;
+    private ArrayList<QRCode> finalDataList;
+    private ArrayAdapter<QRCode> QRAdapter;
 
     /**
      * Create the activity for another player's profile
@@ -60,6 +63,36 @@ public class otherProfileActivity extends Activity {
         Bundle extras = getIntent().getExtras();
         String player_name = extras.getString("name");
         String typeOfList = extras.getString("list");
+
+        highest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sortQRList(false);
+            }
+        });
+        lowest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sortQRList(true);
+            }
+        });
+
+        ImageView upArrow = findViewById(R.id.arrow_up);
+        ImageView downArrow = findViewById(R.id.arrow_down);
+
+        upArrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sortQRList(false);
+            }
+        });
+
+        downArrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sortQRList(true);
+            }
+        });
 
         //Query used to order players depends on whether the current leaderboard is the total score leaderboard
         //or the highest scoring QR code leaderboard
@@ -123,9 +156,9 @@ public class otherProfileActivity extends Activity {
                     @Override
                     public void onQRCodeListCallback(ArrayList<QRCode> qrCodeList) {
                         ListView QRlist = findViewById(R.id.list_view_player_qr_codes);
-                        ArrayAdapter<QRCode> QRAdapter = new QRArrayAdapter(otherProfileActivity.this, qrCodeList);
+                        QRAdapter = new QRArrayAdapter(otherProfileActivity.this, qrCodeList);
                         QRlist.setAdapter(QRAdapter);
-                        ArrayList<QRCode> finalDataList = qrCodeList;
+                        finalDataList = qrCodeList;
                         QRAdapter.notifyDataSetChanged();
 
                         /**
@@ -186,5 +219,17 @@ public class otherProfileActivity extends Activity {
         });
 
     }
-}
 
+    public void sortQRList(boolean inc) {
+        if (finalDataList != null) {
+            finalDataList.sort(new Comparator<QRCode>() {
+                @Override
+                public int compare(QRCode qr1, QRCode qr2) {
+                    int result = Integer.compare(qr1.getPoints(), qr2.getPoints());
+                    return inc ? result : -result;
+                }
+            });
+            QRAdapter.notifyDataSetChanged();
+        }
+    }
+}
