@@ -45,6 +45,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.slider.Slider;
 
+import org.checkerframework.checker.units.qual.A;
+
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -53,7 +55,7 @@ import java.util.List;
 /**
  * View class that uses the Google Maps API to display geolocation of all QR codes. This
  * class also has a search button that takes users to MapSearchFragment.
- * Outstanding Issues:
+ * Outstanding Issues: N/A
  */
 public class MapFragment extends Fragment implements OnMapReadyCallback {
 
@@ -69,23 +71,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         // Inflate the layout for this fragment
         mapView = inflater.inflate(R.layout.fragment_maps, container, false);
 
-        // if sent from QRpage, the QRcode name is passed through. Get QRcode coordinates and send
-        // to
-        if (getArguments() != null) {
-            Bundle args = getArguments();
-            String qrCode = args.getString("QRCode");
-            Log.d("name", qrCode);
-
-
-            QRCodeDB db_qr = new QRCodeDB(new DBConnector());
-            db_qr.getQRCode(qrCode, new QRCodeCallback() {
-                @Override
-                public void onQRCodeCallback(QRCode qrCode) {
-                    ArrayList<Double> coords = qrCode.getCoordinates();
-                }
-            });
-        }
-
 
         // Get a handle to the fragment and register the callback.
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
@@ -93,6 +78,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         return mapView;
     }
 
+    QRCodeDB qrCodeDB = new QRCodeDB(new DBConnector());
     /**
      * Get a handle to the GoogleMap object and display markers for every QR code with a geolocation
      * @param googleMap Google Maps SDK object
@@ -112,14 +98,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         } catch (Resources.NotFoundException e) {
             Log.e(TAG, "Can't find style. Error: ", e);
         }
-        getCurrentLocation(googleMap);
 
-        QRCodeDB qrCodeDB = new QRCodeDB(new DBConnector());
 
-        ArrayList<Double> coordinatesTest = new ArrayList<>();
-        coordinatesTest.add(53.5269807);
-        coordinatesTest.add(-113.5233741);
-        Log.d("Maps", String.valueOf(coordinatesTest.get(0)));
+        getQRCodes(qrCodeDB, googleMap);
 
         //When the user clicks on a marker, show the visual representation, and points of QR code
         googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
@@ -130,7 +111,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 QRCode qrCode = (QRCode)marker.getTag();
                 Log.d("Maps", String.valueOf(qrCode.getPoints()));
 
-                //TODO: When a marker is clicked, players are taken to QRCodeInfoActivity. Need to change to a popup as shown on the storyboard
                 Intent myIntent = new Intent(getActivity(), QRCodeInfoActivity.class);
                 Bundle extras = new Bundle();
                 extras.putString("name", String.valueOf(qrCode.getName()));
@@ -142,8 +122,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 return false;
             }
         });
-
-        getQRCodes(qrCodeDB, googleMap);
 
         //Referenced: https://www.geeksforgeeks.org/how-to-add-searchview-in-google-maps-in-android/
         //Author: https://auth.geeksforgeeks.org/user/chaitanyamunje/articles
@@ -197,6 +175,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 getNearbyQRCodes(qrCodes, googleMap, coordinatesOfAddress, value);
             }
         });
+
     }
 
     /**
@@ -240,7 +219,23 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             @Override
             public void onQRCodeListCallback(ArrayList<QRCode> qrCodeList) {
                 qrCodes.addAll(qrCodeList);
-                placeMarkers(qrCodeList, googleMap);
+                getCurrentLocation(googleMap);
+
+                // if sent from QRpage, the QRcode name is passed through. Get QRcode coordinates and send
+                // to getQRCodeFromLocation
+                Bundle args = getArguments();
+                String qrCode = args.getString("QRCode");
+                if (!qrCode.equals("none")) {
+                    Log.d("name", qrCode);
+
+                    QRCodeDB db_qr = new QRCodeDB(new DBConnector());
+                    db_qr.getQRCode(qrCode, new QRCodeCallback() {
+                        @Override
+                        public void onQRCodeCallback(QRCode qrCode) {
+                            getQRCodeFromLocation(qrCode, googleMap);
+                        }
+                    });
+                }
             }
         });
     }
@@ -265,6 +260,20 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         }
         googleMap.clear();
         placeMarkers(resultsList, googleMap);
+    }
+
+    public void getQRCodeFromLocation(QRCode qrCode, GoogleMap googleMap) {
+        LatLng coordinates = new LatLng(qrCode.getCoordinates().get(0), qrCode.getCoordinates().get(1));
+        String name = qrCode.getName();
+        double latitude = qrCode.getCoordinates().get(0);
+        double longitude = qrCode.getCoordinates().get(1);
+        Marker marker = googleMap.addMarker(
+                new MarkerOptions()
+                        .position(new LatLng(latitude, longitude)).title(name)
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_pink)));
+        assert marker != null;
+        marker.setTag(qrCode);
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(coordinates, defaultZoom));
     }
 
     /**

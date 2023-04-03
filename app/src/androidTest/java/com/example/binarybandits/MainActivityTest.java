@@ -9,6 +9,7 @@ import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 
 import com.example.binarybandits.qrcode.QRCodeInfoActivity;
+import com.example.binarybandits.ui.auth.LogInActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.robotium.solo.Solo;
 import org.junit.After;
@@ -58,6 +59,17 @@ public class MainActivityTest {
         solo.assertCurrentActivity("Should be second activity", ScanQRActivity.class);
     }
 
+    /**
+     * test functionality of sign out button
+     */
+    @Test
+    public void testSignOut(){
+        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
+        assertTrue(solo.waitForText("scanning", 1, 2000));
+        solo.clickOnButton("Sign Out");
+        solo.assertCurrentActivity("Should be on login", LogInActivity.class);
+
+    }
 
     /**
      * Check if profile page is displayed

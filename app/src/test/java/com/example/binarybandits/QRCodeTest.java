@@ -10,6 +10,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import org.checkerframework.checker.units.qual.C;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -103,7 +105,10 @@ public class QRCodeTest {
         //Check that a QR code does not have a location image on creation. Players need to add a location image
         assertNull(mockQRCode.getLocationImage());
 
-        //mockQRCode.setLocationImage("");
+        //Example URL used to test setting URL
+        String url = "https://www.google.com/search?q=google+images&rlz=1C1OPNX_enCA993CA993&source=lnms&tbm=isch&sa=X&ved=2ahUKEwi04cXxnYz-AhUgIzQIHSNBDc4Q_AUoAXoECAEQAw&biw=1536&bih=745&dpr=2.5#imgrc=OpPMLjJA9-wyEM";
+        mockQRCode.setLocationImage("https://www.google.com/search?q=google+images&rlz=1C1OPNX_enCA993CA993&source=lnms&tbm=isch&sa=X&ved=2ahUKEwi04cXxnYz-AhUgIzQIHSNBDc4Q_AUoAXoECAEQAw&biw=1536&bih=745&dpr=2.5#imgrc=OpPMLjJA9-wyEM");
+        assertEquals(mockQRCode.getLocationImage(), url);
    }
 
     /**
@@ -133,19 +138,19 @@ public class QRCodeTest {
 
     /**
      * Tests getters and setters for a QR code's comments
-     * (COMMENTED OUT WHILE COMMENTS ARE BEING IMPLEMENTED)
      */
-    /*@Test
+    @Test
     public void testComments() {
         QRCode mockQRCode = mockQRCode();
         //A QRCode should initially have no comments
         assertNull(mockQRCode.getComments());
 
         ArrayList<Comment> comments = new ArrayList<Comment>();
-        //TODO: Need to add comments to ArrayList in test
-
+        Comment testComment = new Comment("PieceOfPi", "Cool QRCode!");
+        comments.add(testComment);
+        mockQRCode.setComments(comments);
         assertEquals(mockQRCode.getComments(), comments);
-    }*/
+    }
 
     /**
      * Tests getter for image URL. Note that there is no setter for image URL since

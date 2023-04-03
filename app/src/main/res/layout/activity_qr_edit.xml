@@ -6,6 +6,16 @@
     android:layout_height="match_parent"
     android:background="@color/background_black">
 
+    <nl.dionsegijn.konfetti.xml.KonfettiView
+        android:id="@+id/konfettiView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="250dp"
@@ -84,6 +94,7 @@
         android:layout_marginBottom="32dp"
         android:background="@drawable/big_rounded_button"
         android:backgroundTint="@color/red"
+        android:fontFamily="@font/poppins"
         android:text="Save"
         android:textAllCaps="false"
         android:textColor="#FFFFFF"
@@ -110,11 +121,12 @@
         android:layout_width="wrap_content"
         android:layout_height="19dp"
         android:layout_marginTop="10dp"
-        android:visibility="invisible"
-        android:text="View image"
+        android:fontFamily="@font/poppins"
         android:onClick="showImagePopup"
+        android:text="View image"
         android:textColor="@color/yellow"
         android:textSize="14sp"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageConfirmationText" />

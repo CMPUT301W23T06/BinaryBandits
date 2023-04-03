@@ -85,6 +85,7 @@ dependencies {
     implementation 'androidx.navigation:navigation-ui:2.5.3'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'com.google.firebase:firebase-storage:20.1.0'
+    implementation 'nl.dionsegijn:konfetti-xml:2.0.2'
     //implementation files('C:\\Users\\alexa\\AppData\\Local\\Android\\Sdk\\platforms\\android-33\\android.jar')
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'

@@ -46,7 +46,7 @@ public class ProfileFragment extends Fragment {
 
     private ImageView imageView;
     private PlayerController playerController;
-    private ArrayList<QRCode> dataList;
+    private ArrayList<QRCode> finalDataList;
     private ArrayAdapter<QRCode> QRAdapter;
 
     /**
@@ -159,9 +159,9 @@ public class ProfileFragment extends Fragment {
                         @Override
                         public void onQRCodeListCallback(ArrayList<QRCode> qrCodeList) {
                             ListView QRlist = view.findViewById(R.id.list_view_player_qr_codes);
-                            ArrayAdapter<QRCode> QRAdapter = new QRArrayAdapter(getActivity(), qrCodeList);
+                            QRAdapter = new QRArrayAdapter(getActivity(), qrCodeList);
                             QRlist.setAdapter(QRAdapter);
-                            ArrayList<QRCode> finalDataList = qrCodeList;
+                            finalDataList = qrCodeList;
                             QRAdapter.notifyDataSetChanged();
 
                             /**
@@ -196,7 +196,7 @@ public class ProfileFragment extends Fragment {
     }
 
     public void sortQRList(boolean inc) {
-        dataList.sort(new Comparator<QRCode>() {
+        finalDataList.sort(new Comparator<QRCode>() {
             @Override
             public int compare(QRCode qr1, QRCode qr2) {
                 int result = Integer.compare(qr1.getPoints(), qr2.getPoints());

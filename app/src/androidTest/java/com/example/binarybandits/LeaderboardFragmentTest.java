@@ -4,32 +4,43 @@ import static org.junit.Assert.assertEquals;
 
 import android.app.Activity;
 import android.content.Context;
+import android.widget.EditText;
 
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 
+import com.example.binarybandits.controllers.AuthController;
 import com.example.binarybandits.models.Player;
 import com.example.binarybandits.player.PlayerDB;
+import com.example.binarybandits.ui.auth.LogInActivity;
 import com.robotium.solo.Solo;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
+/**
+ * Test class for the LeaderboardFragment view class.
+ */
 public class LeaderboardFragmentTest{
     private Solo solo;
+    private PlayerDB db = new PlayerDB(new DBConnector());
 
     @Rule
-    public ActivityTestRule<MainActivity> rule =
-            new ActivityTestRule<>(MainActivity.class, true, true);
+    public ActivityTestRule<LogInActivity> rule =
+            new ActivityTestRule<>(LogInActivity.class, true, true);
     /**
      * Runs before all tests and creates solo instance.
      * @throws Exception
      */
     @Before
     public void setUp() throws Exception{
-
         solo = new Solo(InstrumentationRegistry.getInstrumentation(),rule.getActivity());
+        AuthController.setUserLoggedInStatus(rule.getActivity(), false);
+        solo.assertCurrentActivity("Wrong Activity", LogInActivity.class);
+        solo.enterText((EditText) solo.getView(R.id.editUsername), "robot");
+        solo.clickOnView(solo.getView(R.id.loginBtn));
     }
 
     /**
@@ -100,9 +111,18 @@ public class LeaderboardFragmentTest{
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
         solo.clickOnView(solo.getView(R.id.navigation_leaderboard)); //Click leaderboard
         solo.waitForText("#4"); // wait until screen is loaded
-        solo.clickOnView(solo.getView(R.id.player_name_text));//Click player Button
+        solo.clickOnView(solo.getView(R.id.playerList));
+        solo.clickOnView(solo.getView(R.id.profileCardView));
         solo.assertCurrentActivity("Wrong Activity", otherProfileActivity.class);
     }
 
+    /**
+     * 
+     */
+    @After
+    public void tearDown() {
+        solo.finishOpenedActivities();
+        AuthController.setUserLoggedInStatus(rule.getActivity(), false);
+    }
 
 }

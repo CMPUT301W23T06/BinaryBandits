@@ -184,7 +184,7 @@
         android:id="@+id/login_Text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="264dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="604dp"
         android:fontFamily="@font/poppins_semibold"
         android:onClick="onClickLogInBtn"
@@ -193,7 +193,7 @@
         android:textSize="15sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/textView2"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textView2"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView

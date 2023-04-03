@@ -26,6 +26,9 @@ import com.example.binarybandits.qrcode.QRCodeCallback;
 import com.example.binarybandits.qrcode.QRCodeDB;
 import com.example.binarybandits.qrcode.QRCodeInfoActivity;
 import com.example.binarybandits.ui.auth.LogInActivity;
+import com.example.binarybandits.ui.auth.SignUpActivity;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.robotium.solo.Solo;
 
 import org.junit.After;
@@ -119,7 +122,7 @@ public class QRCodeInfoActivityTest {
      * Check if back button works as intended (takes you back to profile page)
      */
     @Test
-    public void checkBackButton(){
+    public void checkBackButton() {
         solo.assertCurrentActivity("Wrong Activity", QRCodeInfoActivity.class);
 
         solo.clickOnView(solo.getView(R.id.back_button));
@@ -143,7 +146,7 @@ public class QRCodeInfoActivityTest {
         solo.clickOnView(solo.getView(R.id.delete_button));
 
         // Wait for the dialog to open and check that it is showing the correct message
-        assertTrue(solo.waitForText("Are you sure you want to delete this QR code from your profile?", 1, 2000));
+        assertTrue(solo.waitForText("Are you sure you want to delete this QR code from your profile?", 1, 5000));
     }
 
 
@@ -204,18 +207,26 @@ public class QRCodeInfoActivityTest {
         solo.assertCurrentActivity("Wrong Activity", QRCodeInfoActivity.class);
 
         QRCodeDB db_q = new QRCodeDB(new DBConnector());
+
         db_q.getQRCode("SuperHilariousLeopard", new QRCodeCallback() {
             @Override
             public void onQRCodeCallback(QRCode qrCode) {
                 ArrayList<Double> coords = qrCode.getCoordinates();
                 qrCode.removeCoordinates();
-                solo.clickOnView(solo.getView(R.id.map_button));
-                solo.waitForDialogToOpen();
-                assertTrue(solo.waitForText("No geolocation", 1, 2000));
+
+                doTest(solo);
+
                 qrCode.setCoordinates(coords);
             }
         });
     }
+
+    private void doTest(Solo solo) {
+        solo.clickOnView(solo.getView(R.id.map_button));
+        solo.waitForDialogToOpen();
+        assertTrue(solo.waitForText("No geolocation available.", 1, 2000));
+    }
+
 /*
 //    @Test
 //    public void checkGeolocation(){
@@ -245,6 +256,8 @@ public class QRCodeInfoActivityTest {
      */
     @After
     public void tearDown() throws Exception{
+        PlayerDB playerDB = new PlayerDB(new DBConnector());
+        playerDB.deletePlayer("test");
         solo.finishOpenedActivities();
     }
 

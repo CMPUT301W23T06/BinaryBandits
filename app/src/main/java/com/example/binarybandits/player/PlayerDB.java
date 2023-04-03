@@ -353,4 +353,5 @@ public class PlayerDB {
     public void deletePlayer(String username) {
         collectionReference.document(username).delete();
     }
+
 }

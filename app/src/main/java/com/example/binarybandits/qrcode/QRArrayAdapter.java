@@ -20,24 +20,24 @@ import org.w3c.dom.Text;
 import java.util.ArrayList;
 
 /**
- *
+ * Class that links the app UI to a list of QR codes.
  */
 public class QRArrayAdapter extends ArrayAdapter<QRCode> {
     /**
-     *
+     * Constructor for QRArrayAdapter
      * @param context
-     * @param qrCodes
+     * @param qrCodes list of QRCode objects
      */
     public QRArrayAdapter(Context context, ArrayList<QRCode> qrCodes) {
         super(context, 0, qrCodes);
     }
 
     /**
-     *
+     * Set the name, score, and picture of each QR code in the list of QR codes
      * @param position
      * @param convertView
      * @param parent
-     * @return
+     * @return Return the resulting view of setting each entry in the array adapter
      */
     @NonNull
     @Override
