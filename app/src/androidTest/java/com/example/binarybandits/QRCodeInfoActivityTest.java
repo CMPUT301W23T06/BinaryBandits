@@ -43,6 +43,7 @@ import java.util.ArrayList;
  * Link: https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/QR_code_for_mobile_English_Wikipedia
  *          .svg/330px-QR_code_for_mobile_English_Wikipedia.svg.png
  * (QR code from QR code Wikipedia page)
+ * Also assume person who is running the test has previously logged in on an account
  */
 public class QRCodeInfoActivityTest {
 
@@ -61,7 +62,6 @@ public class QRCodeInfoActivityTest {
      */
     @Before
     public void setUp() throws Exception{
-<<<<<<<<< Temporary merge branch 1
         solo = new Solo(getInstrumentation(),rule.getActivity());
 
         //send bundle to QRCodeInfoActivity with QRcode name "SuperHilariousLeopard"
@@ -208,41 +208,20 @@ public class QRCodeInfoActivityTest {
     public void checkNoGeolocation() {
         solo.assertCurrentActivity("Wrong Activity", QRCodeInfoActivity.class);
 
-        QRCodeDB db_q = new QRCodeDB(new DBConnector());
-        db_q.getQRCode("SuperHilariousLeopard", new QRCodeCallback() {
-            @Override
-            public void onQRCodeCallback(QRCode qrCode) {
-                ArrayList<Double> coords = qrCode.getCoordinates();
-                qrCode.removeCoordinates();
-                solo.clickOnView(solo.getView(R.id.map_button));
-                solo.waitForDialogToOpen();
-                assertTrue(solo.waitForText("No geolocation", 1, 2000));
-                qrCode.setCoordinates(coords);
-            }
-        });
-    }
-
-/*
-//    @Test
-//    public void checkGeolocation(){
-//        solo.assertCurrentActivity("Wrong Activity", QRCodeInfoActivity.class);
-//
 //        QRCodeDB db_q = new QRCodeDB(new DBConnector());
 //        db_q.getQRCode("SuperHilariousLeopard", new QRCodeCallback() {
 //            @Override
 //            public void onQRCodeCallback(QRCode qrCode) {
-//                ArrayList<Double> coords_temp = qrCode.getCoordinates();
 //                qrCode.removeCoordinates();
-//                ArrayList<Double> coords = new ArrayList<>();
-//                coords.add(0.0);
-//                coords.add(0.0);
-//                qrCode.setCoordinates(coords);
-//                solo.clickOnView(solo.getView(R.id.map_button));
-//                assertTrue(solo.waitForText("Search here", 1, 2000));
-//                qrCode.setCoordinates(coords_temp);
 //            }
 //        });
-//    } */
+
+        solo.clickOnView(solo.getView(R.id.map_button));
+        solo.waitForDialogToOpen();
+        assertTrue(solo.waitForText("No geolocation", 1, 2000));
+
+
+    }
 
 
     /**

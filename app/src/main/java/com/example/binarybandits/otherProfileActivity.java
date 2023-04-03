@@ -34,11 +34,11 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 /**
- * switch activity to otherProfileActivity
+ * switch activity to OtherProfileActivity
  * respond to back button press and send back to MainActivity
  * set fields of player profile of user clicked on
  */
-public class otherProfileActivity extends Activity {
+public class OtherProfileActivity extends Activity {
     private ArrayList<Player> players;
     private PlayerController controller;
 
@@ -126,7 +126,7 @@ public class otherProfileActivity extends Activity {
                     @Override
                     public void onQRCodeListCallback(ArrayList<QRCode> qrCodeList) {
                         ListView QRlist = findViewById(R.id.list_view_player_qr_codes);
-                        ArrayAdapter<QRCode> QRAdapter = new QRArrayAdapter(otherProfileActivity.this, qrCodeList);
+                        ArrayAdapter<QRCode> QRAdapter = new QRArrayAdapter(OtherProfileActivity.this, qrCodeList);
                         QRlist.setAdapter(QRAdapter);
                         ArrayList<QRCode> finalDataList = qrCodeList;
                         QRAdapter.notifyDataSetChanged();
@@ -142,7 +142,7 @@ public class otherProfileActivity extends Activity {
 
                                 // create intent with name of the QR code, username of the user, and a
                                 // true boolean value that confirms we are on the current users profile
-                                Intent myIntent = new Intent(otherProfileActivity.this, QRCodeInfoActivity.class);
+                                Intent myIntent = new Intent(OtherProfileActivity.this, QRCodeInfoActivity.class);
                                 Bundle extras = new Bundle();
                                 extras.putString("name", String.valueOf(finalDataList.get(position).getName()));
                                 extras.putString("username", String.valueOf(finalOtherPlayer.getUsername()));
@@ -157,7 +157,7 @@ public class otherProfileActivity extends Activity {
                 });
 
                 /*dataList = otherPlayer.getQrCodesScanned();
-                ArrayAdapter<QRCode> QRAdapter = new QRArrayAdapter(otherProfileActivity.this, dataList);
+                ArrayAdapter<QRCode> QRAdapter = new QRArrayAdapter(OtherProfileActivity.this, dataList);
                 QRlist.setAdapter(QRAdapter);
 
                 ArrayList<QRCode> finalDataList = dataList;
@@ -167,14 +167,14 @@ public class otherProfileActivity extends Activity {
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
 
-                        Intent myIntent = new Intent(otherProfileActivity.this, QRCodeInfoActivity.class);
+                        Intent myIntent = new Intent(OtherProfileActivity.this, QRCodeInfoActivity.class);
 
                         Bundle extras = new Bundle();
                         extras.putString("name", String.valueOf(finalDataList.get(position).getName()));
                         extras.putString("username", String.valueOf(finalOtherPlayer.getUsername()));
                         extras.putBoolean("current_user", false);
                         myIntent.putExtras(extras);
-                        otherProfileActivity.this.startActivity(myIntent);
+                        OtherProfileActivity.this.startActivity(myIntent);
                     }
                 });*/
             }
@@ -184,7 +184,7 @@ public class otherProfileActivity extends Activity {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                otherProfileActivity.this.finish();
+                OtherProfileActivity.this.finish();
             }
         });
 
