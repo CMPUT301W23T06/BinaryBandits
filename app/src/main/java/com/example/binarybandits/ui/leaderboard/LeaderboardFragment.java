@@ -223,7 +223,8 @@ public class LeaderboardFragment extends Fragment {
         toolbar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getFragmentManager().beginTransaction().replace(R.id.container, new ProfileFragment()).commit();
+                BottomNavigationView bottomNavigationView = getActivity().findViewById(R.id.nav_view);
+                bottomNavigationView.setSelectedItemId(R.id.navigation_profile);
             }
         });
 
