@@ -26,6 +26,9 @@ import com.example.binarybandits.qrcode.QRCodeCallback;
 import com.example.binarybandits.qrcode.QRCodeDB;
 import com.example.binarybandits.qrcode.QRCodeInfoActivity;
 import com.example.binarybandits.ui.auth.LogInActivity;
+import com.example.binarybandits.ui.auth.SignUpActivity;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.robotium.solo.Solo;
 
 import org.junit.After;
@@ -69,7 +72,6 @@ public class QRCodeInfoActivityTest {
         myIntent.putExtras(extras);
         // go to QRCodeInfoActivity to display the QR code
         rule.getActivity().startActivity(myIntent);
-
     }
 
 
@@ -119,7 +121,7 @@ public class QRCodeInfoActivityTest {
      * Check if back button works as intended (takes you back to profile page)
      */
     @Test
-    public void checkBackButton(){
+    public void checkBackButton() {
         solo.assertCurrentActivity("Wrong Activity", QRCodeInfoActivity.class);
 
         solo.clickOnView(solo.getView(R.id.back_button));
@@ -135,8 +137,10 @@ public class QRCodeInfoActivityTest {
      * Check if delete button alert dialogue works. Does not check delete functionality from
      * firestore
      */
+     
     @Test
     public void checkNoDelete(){
+
         solo.assertCurrentActivity("Wrong Activity", QRCodeInfoActivity.class);
 
         // Click on the delete button
@@ -239,12 +243,15 @@ public class QRCodeInfoActivityTest {
 //    } */
 
 
+
     /**
      * Close activity after each test
      * @throws Exception
      */
     @After
     public void tearDown() throws Exception{
+        PlayerDB playerDB = new PlayerDB(new DBConnector());
+        playerDB.deletePlayer("test");
         solo.finishOpenedActivities();
     }
 

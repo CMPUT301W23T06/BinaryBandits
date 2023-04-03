@@ -73,12 +73,12 @@ public class LeaderboardSearchFragmentTest {
 
         solo.clickOnView(solo.getView(R.id.button));
 
-        solo.enterText((EditText) solo.getView(R.id.search_bar), "test");
+        solo.enterText((EditText) solo.getView(R.id.search_bar), "robot");
 
-        solo.waitForText("test", 1, 2000);
-        solo.clickOnMenuItem("test");
+        solo.waitForText("robot", 1, 2000);
+        solo.clickOnMenuItem("robot");
         solo.clickOnView(solo.getView(R.id.search_results));
-        solo.clickOnView(solo.getView(R.id.profileCardView));
+        solo.clickOnView(solo.getView(R.id.profileCardView2));
         solo.assertCurrentActivity("Wrong Activity", otherProfileActivity.class);
     }
 
@@ -89,22 +89,21 @@ public class LeaderboardSearchFragmentTest {
     public void testOnItemClicked() {
         // Check if the current activity is the LeaderboardSearchFragment activity
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
-
         solo.clickOnView(solo.getView(R.id.navigation_leaderboard));
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
 
         solo.clickOnView(solo.getView(R.id.button));
 
-        solo.enterText((EditText) solo.getView(R.id.search_bar), "test");
+        solo.enterText((EditText) solo.getView(R.id.search_bar), "robot");
 
 
-        solo.waitForText("test", 1, 2000);
-        solo.clickOnMenuItem("test");
+        solo.waitForText("robot", 1, 2000);
+        solo.clickOnMenuItem("robot");
         solo.clickOnView(solo.getView(R.id.search_results));
-        solo.clickOnView(solo.getView(R.id.profileCardView));
+        solo.clickOnView(solo.getView(R.id.profileCardView2));
         solo.assertCurrentActivity("Wrong Activity", otherProfileActivity.class);
 
-        assertTrue(solo.waitForText("test", 1, 2000));
+        assertTrue(solo.waitForText("robot", 1, 2000));
 
     }
 
@@ -122,12 +121,12 @@ public class LeaderboardSearchFragmentTest {
         solo.clickOnView(solo.getView(R.id.button));
 
 
-        solo.enterText((EditText) solo.getView(R.id.search_bar), "test");
-        solo.waitForText("test", 1, 2000);
+        solo.enterText((EditText) solo.getView(R.id.search_bar), "robot");
+        solo.waitForText("robot", 1, 2000);
 
         solo.clearEditText((EditText) solo.getView(R.id.search_bar));
 
-        assertFalse(solo.waitForText("test",2,2000)==true);
+        assertFalse(solo.waitForText("robot",2,2000)==true);
 
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
 
@@ -144,9 +143,9 @@ public class LeaderboardSearchFragmentTest {
 
         solo.clickOnView(solo.getView(R.id.navigation_leaderboard));
         solo.clickOnView(solo.getView(R.id.button));
-        solo.enterText((EditText) solo.getView(R.id.search_bar), "test");
+        solo.enterText((EditText) solo.getView(R.id.search_bar), "robot");
         solo.clickOnView(solo.getView(R.id.search_bar));
-        solo.waitForText("test", 1, 2000);
+        solo.waitForText("robot", 1, 2000);
 
         solo.clickOnView(solo.getView(R.id.back_to_leaderboard));
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);

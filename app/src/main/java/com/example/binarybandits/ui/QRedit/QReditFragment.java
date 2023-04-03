@@ -25,7 +25,7 @@ import com.example.binarybandits.R;
 /**
  *
  */
-public class QReditFragment extends Fragment {
+public class QReditFragment extends Fragment{
 
     private QReditViewModel mViewModel;
     private int REQUEST_IMAGE_CAPTURE = 1 ;
@@ -89,32 +89,11 @@ public class QReditFragment extends Fragment {
         }}
 
     /**
-     *
-     * @param view
-     */
-    public void onCheckboxClicked(View view) {
-        // Is the view now checked?
-        boolean checked = ((CheckBox) view).isChecked();
-
-        // Check which checkbox was clicked
-        switch(view.getId()) {
-            case R.id.checkBox:
-                if (checked) {
-                    // TODO Record the geolocation
-
-                }
-
-                break;
-
-        }
-    }
-
-    /**
-     *
-     * @param inflater
-     * @param container
-     * @param savedInstanceState
-     * @return
+     * Creates the QRCodeEditFragmentView
+     * @param inflater the layout inflater
+     * @param container the view group container
+     * @param savedInstanceState the saved instance state that is restored after the app crashes
+     * @return Return the created QRCodeEditFragment view java object
      */
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -123,8 +102,8 @@ public class QReditFragment extends Fragment {
     }
 
     /**
-     *
-     * @param savedInstanceState
+     * Contains code determining what to do when the activity is created.
+     * @param savedInstanceState the saved instance state that is restored after the app crashes
      */
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
