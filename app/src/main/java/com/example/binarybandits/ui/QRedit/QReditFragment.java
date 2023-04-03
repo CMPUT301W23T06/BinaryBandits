@@ -23,7 +23,7 @@ import android.widget.ImageView;
 import com.example.binarybandits.R;
 
 /**
- *
+ * This fragment is responsible for displaying the location image
  */
 public class QReditFragment extends Fragment{
 
@@ -99,6 +99,23 @@ public class QReditFragment extends Fragment{
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_qredit, container, false);
+    }
+
+    public void onCheckboxClicked(View view) {
+        // Is the view now checked?
+        boolean checked = ((CheckBox) view).isChecked();
+
+        // Check which checkbox was clicked
+        switch(view.getId()) {
+            case R.id.checkBox:
+                if (checked) {
+                    // TODO Record the geolocation
+
+                }
+
+                break;
+
+        }
     }
 
     /**

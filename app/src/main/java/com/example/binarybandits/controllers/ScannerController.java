@@ -21,8 +21,12 @@ public class ScannerController {
      * code in the player's list
      * @param qrCode QR code to add to player's list
      * @param player Player to add QR code to
+     * @param shareLocation True if location shared, false otherwise
      */
-    public void addQRCode(QRCode qrCode, Player player) {
+    public void addQRCode(QRCode qrCode, Player player, boolean shareLocation) {
+        if(!shareLocation) {
+            qrCode.setCoordinates(null);
+        }
         QRCodeDB qrCodeDB = new QRCodeDB(new DBConnector());
         PlayerDB playerDB = new PlayerDB(new DBConnector());
         playerDB.getPlayer(player.getUsername(), new PlayerCallback() {

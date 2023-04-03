@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -180,7 +181,8 @@ public class QRCodeEditActivity extends AppCompatActivity {
                         //playersScannedBy.add(username);
                         //Create a new QR code and add it to the database. Location image can be set by clicking add image button
                         QRCode qrCode = new QRCode(hash, name, points, uid, coordinates, "", new ArrayList<>(), 1, new ArrayList<>());
-                        scannerController.addQRCode(qrCode, player);
+                        Log.d("ScannerController", String.valueOf(locationCheckBox.isChecked()));
+                        scannerController.addQRCode(qrCode, player, locationCheckBox.isChecked());
                     }
                 });
 
