@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">BinaryBandits</string>
+    <string name="app_name">Binary Bandits</string>
     <string name="start_scanning_text">Let\'s start scanning.</string>
     <string name="start_scanning_subtext">Scan a QR code below, or use the navigation bar to access more options.</string>
     <string name="scan_code_content_desc">Scan a QR code</string>
