@@ -57,6 +57,8 @@ QR Bandits is developed using the following technologies:
 
 - Android Studio
 - Java
+- Firebase
+- Google Maps API
 
 ## Getting Started
 To run this app locally, please follow these steps:
