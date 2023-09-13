@@ -1,11 +1,26 @@
 # QR Bandits
 ###  Unleash your inner bandit!
+![QRBanditsPromo](https://github.com/CMPUT301W23T06/BinaryBandits/assets/90285768/34d43572-8d2b-4003-9a8b-f1c8832a6418)
 
 ## Overview
 QR Bandits is a mobile gaming application developed by the Binary Bandits team for CMPUT 301. 
 It provides users with an interactive and engaging gaming experience centered around scanning QR codes they encounter in their daily lives. 
 With QR Bandits, you'll be able to explore new locations, compete for the top spot on the leaderboard, and unleash your inner bandit.
 The app also offers features like QR code details, player profiles, a map showing QR code locations, and more. 
+
+## Demo Videos
+
+### QR Code Scanning
+https://github.com/CMPUT301W23T06/BinaryBandits/assets/90285768/1584cbc3-71e9-4f47-98b6-b744da23dc19
+
+### Leaderboards
+https://github.com/CMPUT301W23T06/BinaryBandits/assets/90285768/ca4173b3-f84c-402f-a11c-0b224b233bda
+
+### Profile
+https://github.com/CMPUT301W23T06/BinaryBandits/assets/90285768/60685b33-fc6b-4db9-b805-f5c0f33f370e
+
+### Maps and QR Code Locations
+https://github.com/CMPUT301W23T06/BinaryBandits/assets/90285768/bc2e5a6d-5af7-4d68-985c-15913aa10a13
 
 ## Features
 
@@ -42,9 +57,6 @@ QR Bandits is developed using the following technologies:
 
 - Android Studio
 - Java
-
-
-## (demo video)
 
 ## Getting Started
 To run this app locally, please follow these steps:
